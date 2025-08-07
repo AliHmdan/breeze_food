@@ -69,8 +69,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 },
                 icon: Image.asset(
                   _obscure
-                      ? 'assets/icons/eye.png' // صورة "إظهار"
-                      : 'assets/icons/eye.png', // صورة "إخفاء"
+                      ? 'assets/icons/eye.png' 
+                      : 'assets/icons/hide.png',
                   width: 24,
                   height: 24,
                   color: AppColor.black,

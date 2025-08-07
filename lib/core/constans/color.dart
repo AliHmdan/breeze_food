@@ -8,5 +8,6 @@ class AppColor {
   static const Color yellow = Color(0xffF2E665);
   static const Color gry = Color(0xffCFCFCF);
   static const Color black = Color(0xff3F3F3F);
+  static const Color Dark = Color(0xff2F2F2F);
   static const Color LightActive = Color(0xff757575);
 }

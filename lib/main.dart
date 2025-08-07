@@ -1,4 +1,7 @@
+import 'package:breezefood/presentation/screens/auth/new_passowrd.dart';
+import 'package:breezefood/presentation/screens/auth/verfiy_code.dart';
 import 'package:breezefood/presentation/screens/spalsh_screen.dart';
+import 'package:breezefood/presentation/screens/successful.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -19,7 +22,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: ' breeze food',
           debugShowCheckedModeBanner: false,
-          home: SpalshScreen(),
+          home: Successful(),
         );
       },
     );

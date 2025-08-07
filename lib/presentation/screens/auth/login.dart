@@ -1,6 +1,5 @@
 import 'package:breezefood/core/constans/color.dart';
 import 'package:breezefood/presentation/widgets/custom_button.dart';
-import 'package:breezefood/presentation/widgets/custom_phone_field.dart';
 import 'package:breezefood/presentation/widgets/custom_sub_title.dart';
 import 'package:breezefood/presentation/widgets/custom_text_form_field.dart';
 import 'package:breezefood/presentation/widgets/custom_title.dart';
@@ -65,14 +64,51 @@ class Login extends StatelessWidget {
                     CustomSubTitle(
                       subtitle: "Please Enter your phone to login",
                       color: AppColor.gry,
-                      fontsize: 16.sp,
+                      fontsize: 14.sp,
                     ),
 
                     SizedBox(height: 32.h),
 
-                    // ✅ إدخال رقم الهاتف المدمج مع اختيار الدولة
-                    const PhoneInputWidget(),
 
+                    // const PhoneInputWidget(),
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
+                          decoration: BoxDecoration(
+                            color: AppColor.white,
+                            borderRadius: BorderRadius.circular(12.r),
+                            border: Border.all(color: Colors.grey.shade400),
+                          ),
+                          child: Row(
+                            children: [
+                              // صورة علم سوريا (تأكد من أنك أضفت الصورة في assets و pubspec.yaml)
+                              Image.asset(
+                                'assets/icons/syria.png', // ضع المسار الصحيح للصورة
+                                width: 30.w,
+                                height: 30.h,
+                                fit: BoxFit.cover,
+                              ),
+                              SizedBox(width: 8.w),
+                              Text(
+                                '+963',
+                                style: TextStyle(fontSize: 14.sp,),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: 10.w),
+                        // حقل إدخال رقم الهاتف
+                        Expanded(
+                          child: CustomTextFormField( hintText: "Phone Number",
+                            backgroundColor: AppColor.white,
+                            hintColor: AppColor.gry,
+
+
+                          )
+                        ),
+                      ],
+                    ),
                     SizedBox(height: 16.h),
 
                     // ✅ كلمة المرور
@@ -97,7 +133,7 @@ class Login extends StatelessWidget {
 
                     SizedBox(height: 24.h),
 
-                    CustomButton(title: "Continue"),
+                    CustomButton(title: "Continue",onPressed: (){},),
 
                     SizedBox(height: 24.h),
 

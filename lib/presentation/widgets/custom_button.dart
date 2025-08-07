@@ -4,8 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomButton extends StatelessWidget {
   final String title;
+  final void Function()? onPressed;
 
-  const CustomButton({super.key, required this.title});
+  const CustomButton({super.key, required this.title, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class CustomButton extends StatelessWidget {
       width: double.infinity,
       height: 50.h,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColor.primaryColor,
           shape: RoundedRectangleBorder(
@@ -22,7 +23,7 @@ class CustomButton extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: TextStyle(fontSize: 16.sp, color: AppColor.white),
+          style: TextStyle(fontSize: 16.sp, color: AppColor.white,fontFamily: "Manrope",fontWeight: FontWeight.w400),
         ),
       ),
     );
