@@ -12,8 +12,8 @@ class CustomTitle extends StatelessWidget {
     return Text(
       title,
       style: TextStyle(
-        fontSize: 20.sp,
-        fontWeight: FontWeight.bold,
+        fontSize: 16.sp,
+        fontWeight: FontWeight.w700,
         fontFamily: 'Manrope',
         color: color,
       ),
