@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextFormField extends StatefulWidget {
+  final String? label;
+  final Color? labelColor;
   final TextEditingController? controller;
   final String hintText;
   final Color hintColor;
@@ -22,6 +24,7 @@ class CustomTextFormField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.validator,
     this.obscureInitially = true,
+     this.label,  this.labelColor,
   }) : super(key: key);
 
   @override
@@ -46,6 +49,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       validator: widget.validator,
       style: TextStyle(color: AppColor.LightActive),
       decoration: InputDecoration(
+
         hintText: widget.hintText,
         hintStyle: TextStyle(
           color: widget.hintColor,
@@ -68,9 +72,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                   });
                 },
                 icon: Image.asset(
-                  _obscure
-                      ? 'assets/icons/eye.png' 
-                      : 'assets/icons/hide.png',
+                  _obscure ? 'assets/icons/eye.png' : 'assets/icons/hide.png',
                   width: 24,
                   height: 24,
                   color: AppColor.black,
