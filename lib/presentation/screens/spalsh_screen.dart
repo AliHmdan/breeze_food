@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:breezefood/presentation/screens/auth/login.dart';
 
+import '../../core/constans/routes.dart';
+
 class SpalshScreen extends StatelessWidget {
   const SpalshScreen({super.key});
 
@@ -14,10 +16,7 @@ class SpalshScreen extends StatelessWidget {
       child: BlocListener<SplashCubit, SplashState>(
         listener: (context, state) {
           if (state is SplashFinished) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const Login()),
-            );
+            Navigator.pushReplacementNamed(context, AppRoute.login);
           }
         },
         child: Scaffold(

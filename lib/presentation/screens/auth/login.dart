@@ -1,196 +1,164 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
+import '../../../blocs/auth/login/login_bloc.dart';
+import '../../../blocs/auth/login/login_event.dart';
+import '../../../blocs/auth/login/login_state.dart';
+import '../../../core/constans/routes.dart';
+import '../../../data/repositories/auth_repository.dart';
+
 import 'package:breezefood/core/constans/color.dart';
 import 'package:breezefood/presentation/widgets/custom_button.dart';
 import 'package:breezefood/presentation/widgets/custom_sub_title.dart';
 import 'package:breezefood/presentation/widgets/custom_text_form_field.dart';
 import 'package:breezefood/presentation/widgets/custom_title.dart';
-import 'package:breezefood/presentation/widgets/social_login_buttons.dart';
-import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Login extends StatelessWidget {
-  const Login({super.key});
+  Login({super.key});
+
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.primaryColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // ✅ رأس الشاشة مع الشعار
-            SizedBox(
-              width: double.infinity,
-              height: 265.h,
-              child: Stack(
-                alignment: Alignment.center,
+    return BlocProvider(
+      create: (_) => LoginBloc(AuthRepository()),
+      child: Scaffold(
+        backgroundColor: AppColor.primaryColor,
+        body: BlocConsumer<LoginBloc, LoginState>(
+          listener: (context, state) {
+            if (state is LoginSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Login successful")),
+              );
+
+              Navigator.pushNamed(context, AppRoute.verfiy_code);
+            } else if (state is LoginFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.error)),
+              );
+            }
+          },
+          builder: (context, state) {
+            return SingleChildScrollView(
+              child: Column(
                 children: [
-                  Image.asset(
-                    "assets/images/top-view-burgers-with-cherry-tomatoes.png",
-                    width: double.infinity,
-                    height: 265.h,
-                    fit: BoxFit.cover,
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/top-view-burgers-with-cherry-tomatoes.png",
+                        width: double.infinity,
+                        height: 265.h,
+                        fit: BoxFit.cover,
+                      ),
+                      Image.asset(
+                        "assets/images/logo.png",
+                        width: 150.w,
+                      ),
+                    ],
                   ),
-                  Image.asset("assets/images/logo.png", width: 150.w),
-                ],
-              ),
-            ),
-
-            // ✅ القسم السفلي
-            Container(
-              decoration: BoxDecoration(
-                image: const DecorationImage(
-                  image: AssetImage("assets/images/background_auth.png"),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.r),
-                  topRight: Radius.circular(20.r),
-                ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 40.h),
-
-                    CustomTitle(
-                      title: "Welcome to Foodgo",
-                      color: AppColor.white,
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(24.r),
+                        topRight: Radius.circular(24.r),
+                      ),
+                      image: const DecorationImage(
+                        image: AssetImage("assets/images/background_auth.png"),
+                        fit: BoxFit.cover,
+                      ),
                     ),
-
-                    SizedBox(height: 8.h),
-
-                    CustomSubTitle(
-                      subtitle: "Please Enter your phone to login",
-                      color: AppColor.gry,
-                      fontsize: 14.sp,
-                    ),
-
-                    SizedBox(height: 32.h),
-
-
-                    // const PhoneInputWidget(),
-                    Row(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
-                          decoration: BoxDecoration(
-                            color: AppColor.white,
-                            borderRadius: BorderRadius.circular(12.r),
-                            border: Border.all(color: Colors.grey.shade400),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomTitle(
+                            title: "Welcome to Foodgo",
+                            color: Colors.black,
                           ),
-                          child: Row(
+                          SizedBox(height: 8.h),
+                          CustomSubTitle(
+                            subtitle: "Please Enter your phone to login",
+                            color: AppColor.gry,
+                            fontsize: 14.sp,
+                          ),
+                          SizedBox(height: 32.h),
+                          Row(
                             children: [
-                              // صورة علم سوريا (تأكد من أنك أضفت الصورة في assets و pubspec.yaml)
-                              Image.asset(
-                                'assets/icons/syria.png', // ضع المسار الصحيح للصورة
-                                width: 30.w,
-                                height: 30.h,
-                                fit: BoxFit.cover,
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
+                                decoration: BoxDecoration(
+                                  color: AppColor.white,
+                                  borderRadius: BorderRadius.circular(12.r),
+                                  border: Border.all(color: Colors.grey.shade400),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/icons/syria.png',
+                                      width: 30.w,
+                                      height: 30.h,
+                                    ),
+                                    SizedBox(width: 8.w),
+                                    Text('+963', style: TextStyle(fontSize: 14.sp)),
+                                  ],
+                                ),
                               ),
-                              SizedBox(width: 8.w),
-                              Text(
-                                '+963',
-                                style: TextStyle(fontSize: 14.sp,),
+                              SizedBox(width: 10.w),
+                              Expanded(
+                                child: CustomTextFormField(
+                                  controller: phoneController,
+                                  hintText: "Phone Number",
+                                  backgroundColor: AppColor.white,
+                                  hintColor: AppColor.gry,
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                        SizedBox(width: 10.w),
-                        // حقل إدخال رقم الهاتف
-                        Expanded(
-                          child: CustomTextFormField( hintText: "Phone Number",
+                          SizedBox(height: 16.h),
+                          CustomTextFormField(
+                            controller: passwordController,
+                            hintText: "Password",
                             backgroundColor: AppColor.white,
                             hintColor: AppColor.gry,
-
-
+                            isPassword: true,
+                            obscureInitially: true,
+                          ),
+                          SizedBox(height: 24.h),
+                          state is LoginLoading
+                              ? Center(
+                            child: Lottie.asset(
+                              'assets/lottie/loading.json',
+                              width: 120.w,
+                              height: 120.h,
+                            ),
                           )
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16.h),
-
-                    // ✅ كلمة المرور
-                    CustomTextFormField(
-                      hintText: "Password",
-                      backgroundColor: AppColor.white,
-                      hintColor: AppColor.gry,
-                      isPassword: true,
-                      obscureInitially: true,
-                    ),
-
-                    SizedBox(height: 8.h),
-
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: CustomSubTitle(
-                        subtitle: "Forget password",
-                        color: AppColor.primaryColor,
-                        fontsize: 12.sp,
+                              : CustomButton(
+                            title: "Continue",
+                            onPressed: () {
+                              // إرسال الحدث فقط بدون تنقل مباشر
+                              context.read<LoginBloc>().add(
+                                LoginSubmitted(
+                                  phoneController.text,
+                                  passwordController.text,
+                                ),
+                              );
+                            },
+                          )
+                        ],
                       ),
                     ),
-
-                    SizedBox(height: 24.h),
-
-                    CustomButton(title: "Continue",onPressed: (){},),
-
-                    SizedBox(height: 24.h),
-
-                    Row(
-                      children: [
-                        Expanded(child: Divider(color: Colors.grey.shade300)),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.w),
-                          child: Text(
-                            "or sign in with",
-                            style: TextStyle(
-                              color: AppColor.white,
-                              fontSize: 12.sp,
-                              fontFamily: "Manrope",
-                            ),
-                          ),
-                        ),
-                        Expanded(child: Divider(color: AppColor.white)),
-                      ],
-                    ),
-
-                    SizedBox(height: 16.h),
-
-                    const SocialLoginButtons(),
-
-                    SizedBox(height: 24.h),
-
-                    Center(
-                      child: Text.rich(
-                        TextSpan(
-                          text: "Don’t have an account? ",
-                          style: TextStyle(
-                            color: AppColor.white,
-                            fontSize: 12.sp,
-                            fontFamily: "Manrope",
-                          ),
-                          children: [
-                            TextSpan(
-                              text: "Sign up Now",
-                              style: TextStyle(
-                                color: AppColor.primaryColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12.sp,
-                                fontFamily: "Manrope",
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: 32.h),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
