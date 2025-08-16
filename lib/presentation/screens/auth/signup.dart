@@ -124,7 +124,7 @@ class Signup extends StatelessWidget {
                     SizedBox(height: 8.h),
 
 
-                    SizedBox(height: 24.h),
+
 
                     // ✅ زر الدخول
                     CustomButton(
@@ -155,7 +155,7 @@ class Signup extends StatelessWidget {
 
                     SizedBox(height: 16.h),
 
-                    // ✅ أزرار Google و Apple
+
                     const SocialLoginButtons(),
 
                     SizedBox(height: 30.h),

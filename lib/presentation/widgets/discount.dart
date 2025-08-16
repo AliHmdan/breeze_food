@@ -1,6 +1,7 @@
 import 'package:breezefood/core/constans/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class Discount extends StatefulWidget {
   final String imagePath;
@@ -8,7 +9,7 @@ class Discount extends StatefulWidget {
   final String subtitle;
   final String price;
   final VoidCallback onFavoriteToggle;
-  final IconData icons;
+  final IconData? icons;
   final String discount;
 
   const Discount({
@@ -17,7 +18,7 @@ class Discount extends StatefulWidget {
     required this.title,
     required this.subtitle,
     required this.price,
-    required this.onFavoriteToggle, required this.icons, required this.discount,
+    required this.onFavoriteToggle,  this.icons, required this.discount,
   }) : super(key: key);
 
   @override
@@ -123,24 +124,19 @@ class _DiscountState extends State<Discount>
                         widget.discount,
                         style: TextStyle(
                           color: AppColor.white,
-                          fontSize: 12, // قلل حجم النص
+                          fontSize: 12,
                         ),
                       ),
-                      const SizedBox(width: 4), // قلل المسافة
+                      const SizedBox(width: 4),
 
                       Container(
-                      // قللناه من 8
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: AppColor.white,
-                            width: 1.5, // قلل سمك البوردير
-                          ),
-                        ),
-                        child: Icon(
-                          widget.icons,
+
+
+                        child: SvgPicture.asset(
+                          'assets/icons/nspah.svg',
+                          width: 24.w,
+                          height: 24.h,
                           color: AppColor.white,
-                          size: 16, // قلل حجم الأيقونة
                         ),
                       ),
 

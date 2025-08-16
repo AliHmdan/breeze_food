@@ -6,6 +6,7 @@ import 'package:breezefood/presentation/screens/auth/phone_number.dart';
 import 'package:breezefood/presentation/screens/auth/signup.dart';
 import 'package:breezefood/presentation/screens/auth/verfiy_code.dart';
 import 'package:breezefood/presentation/screens/home/home.dart';
+import 'package:breezefood/presentation/screens/search.dart';
 import 'package:breezefood/presentation/screens/spalsh_screen.dart';
 import 'package:breezefood/presentation/screens/successful.dart';
 import 'package:breezefood/presentation/widgets/custom_date_picker_screen.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: ' breeze food',
           debugShowCheckedModeBanner: false,
-          home: Home(),
+          home: Search(),
           // initialRoute: AppRoute.spalshscreen,
       //     routes: {
       //       AppRoute.login: (context) =>  Login(),
