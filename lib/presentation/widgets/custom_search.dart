@@ -5,14 +5,15 @@ import 'package:flutter_svg/svg.dart';
 import '../../core/constans/color.dart';
 
 class CustomSearch extends StatelessWidget {
-  const CustomSearch({super.key});
+  final String hint;
+  const CustomSearch({super.key, required this.hint});
 
   @override
   Widget build(BuildContext context) {
     return  TextFormField(
       decoration: InputDecoration(
 
-        hintText: "Search",
+        hintText: hint,
         hintStyle: TextStyle(
           color: AppColor.gry,
           fontSize: 14.sp,
