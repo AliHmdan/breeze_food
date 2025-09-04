@@ -1,10 +1,11 @@
+import 'package:breezefood/presentation/widgets/custom_arrow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../core/constans/color.dart';
-import '../../widgets/custom_sub_title.dart';
-import '../../widgets/custom_title.dart';
+import '../../widgets/title/custom_sub_title.dart';
+import '../../widgets/title/custom_title.dart';
 
 class VerfiyCode extends StatelessWidget {
   const VerfiyCode({super.key});
@@ -26,25 +27,7 @@ class VerfiyCode extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 9),
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: AppColor.Dark,
-                        size: 16.sp,
-                      ),
-                    ),
-                  ),
-                ),
+                CustomArrow(onTap: (){}, color: AppColor.Dark, background: AppColor.white),
                 SizedBox(height: 10.h),
                 CustomTitle(title: "Enter the Code", color: AppColor.white),
                 SizedBox(height: 8.h),

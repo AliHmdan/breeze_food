@@ -8,10 +8,10 @@ import '../../../core/constans/routes.dart';
 import '../../../data/repositories/auth_repository.dart';
 
 import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/presentation/widgets/custom_button.dart';
-import 'package:breezefood/presentation/widgets/custom_sub_title.dart';
-import 'package:breezefood/presentation/widgets/custom_text_form_field.dart';
-import 'package:breezefood/presentation/widgets/custom_title.dart';
+import 'package:breezefood/presentation/widgets/button/custom_button.dart';
+import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
+import 'package:breezefood/presentation/widgets/auth/custom_text_form_field.dart';
+import 'package:breezefood/presentation/widgets/title/custom_title.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

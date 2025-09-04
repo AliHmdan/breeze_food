@@ -14,7 +14,7 @@ class Stores extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         image: const DecorationImage(
           image: AssetImage(
-            "assets/images/003.jpg", // ضع رابط الصورة هنا
+            "assets/images/003.jpg",
           ),
           fit: BoxFit.cover,
         ),

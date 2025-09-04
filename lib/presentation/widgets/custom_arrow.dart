@@ -5,17 +5,19 @@ import '../../core/constans/color.dart';
 
 class CustomArrow extends StatelessWidget {
   final void Function()? onTap ;
-  const CustomArrow({super.key, required this.onTap});
+  final Color color;
+  final Color background;
+  const CustomArrow({super.key, required this.onTap, required this.color, required this.background});
 
   @override
   Widget build(BuildContext context) {
     return  GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 40,
-        height: 40,
+        width: 40.w,
+        height: 40.h,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: background,
           shape: BoxShape.circle,
 
         ),
@@ -23,8 +25,8 @@ class CustomArrow extends StatelessWidget {
           padding: const EdgeInsets.only(left: 9),
           child: Icon(
             Icons.arrow_back_ios,
-            color: AppColor.Dark,
-            size: 16.sp,
+            color: color,
+            size: 22.sp,
           ),
         ),
       ),

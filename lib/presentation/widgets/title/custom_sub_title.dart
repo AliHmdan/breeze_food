@@ -15,7 +15,12 @@ class CustomSubTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       subtitle,
-      style: TextStyle(fontSize: fontsize, color: color, fontFamily: "Manrope",fontWeight: FontWeight.w400),
+      style: TextStyle(
+        fontSize: fontsize,
+        color: color,
+        fontFamily: "Manrope",
+        fontWeight: FontWeight.w400,
+      ),
     );
   }
 }

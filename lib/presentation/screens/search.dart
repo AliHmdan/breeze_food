@@ -160,7 +160,8 @@ class _SearchState extends State<Search> {
       body:
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
+        child:
+        Column(
           children: [
             if (showSuggestions && filteredSuggestions.isNotEmpty)
               Container(
@@ -193,8 +194,6 @@ class _SearchState extends State<Search> {
                   ),
                 ),
               ),
-
-
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -217,6 +216,7 @@ class _SearchState extends State<Search> {
                 ),
               ),
             ),
+
           ],
         ),
       ),

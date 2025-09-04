@@ -1,8 +1,8 @@
-import 'package:breezefood/presentation/widgets/custom_text_form_field.dart';
+import 'package:breezefood/presentation/widgets/auth/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import '../../../core/constans/color.dart';
-import '../../widgets/custom_date_picker_screen.dart';
-import '../../widgets/data_picker.dart'; // اسم الملف الجديد
+import '../../widgets/auth/custom_date_picker_screen.dart';
+import '../../widgets/auth/data_picker.dart'; // اسم الملف الجديد
 
 class InformationScreen extends StatelessWidget {
   const InformationScreen({Key? key}) : super(key: key);
