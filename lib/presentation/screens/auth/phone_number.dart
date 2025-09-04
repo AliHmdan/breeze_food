@@ -1,12 +1,12 @@
-import 'package:breezefood/presentation/widgets/custom_button.dart';
+import 'package:breezefood/presentation/widgets/button/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../core/constans/color.dart';
-import '../../widgets/custom_sub_title.dart';
-import '../../widgets/custom_text_form_field.dart';
-import '../../widgets/custom_title.dart';
+import '../../widgets/title/custom_sub_title.dart';
+import '../../widgets/auth/custom_text_form_field.dart';
+import '../../widgets/title/custom_title.dart';
 
 class PhoneNumber extends StatelessWidget {
   const PhoneNumber({super.key});

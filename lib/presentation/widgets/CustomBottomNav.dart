@@ -1,8 +1,9 @@
 import 'package:breezefood/core/constans/color.dart';
+import 'package:breezefood/presentation/screens/orders.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/home/home.dart';
-import '../shop_page.dart';
+import '../screens/stores.dart';
 
 
 class CustomBottomNav extends StatelessWidget {
@@ -20,14 +21,14 @@ class CustomBottomNav extends StatelessWidget {
         page = const Home();
         break;
       case 1:
-        page = const ShopPage();
+        page = const Stores();
         break;
       // case 2:
       //   page = const FavoritesPage();
       //   break;
-      // case 3:
-      //   page = const OrdersPage();
-      //   break;
+      case 3:
+        page = const Orders();
+        break;
       default:
         page = const Home();
     }
@@ -70,7 +71,7 @@ class CustomBottomNav extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _buildNavItem(context, Icons.home_outlined, "Home", 0),
-            _buildNavItem(context, Icons.storefront_sharp, "Shop", 1),
+            _buildNavItem(context, Icons.storefront_sharp, "Stores", 1),
             _buildNavItem(context, Icons.favorite_border, "Favorites", 2),
             _buildNavItem(context, Icons.receipt_sharp, "Orders", 3),
           ],

@@ -3,11 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../core/constans/color.dart';
-import 'custom_sub_title.dart';
-import 'custom_title.dart';
+import 'title/custom_sub_title.dart';
+import 'title/custom_title.dart';
 
 class CustomAppbarHome extends StatelessWidget {
-  const CustomAppbarHome({super.key});
+  final String title;
+  final String? subtitle;
+  final String? image;
+  final IconData? icon;
+  const CustomAppbarHome({super.key,  this.image, this.icon,  this.subtitle, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -24,26 +28,29 @@ class CustomAppbarHome extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CustomTitle(title: "Deliver to", color: AppColor.white),
+            CustomTitle(title: title, color: AppColor.white),
             Row(
               children: [
-                SvgPicture.asset(
-                  'assets/icons/location.svg',
-                  color: AppColor.gry,
-                  width: 20,
-                  height: 20,
-                ),
-                const SizedBox(width: 4),
+                if (image != null) // <-- شرط حتى لا يعطي خطأ لو null
+                  SvgPicture.asset(
+                    image!,
+                    color: AppColor.gry,
+                    width: 20,
+                    height: 20,
+                  ),
+                SizedBox(width: image != null ? 4 : 0),
+                if (subtitle !=null)
                 CustomSubTitle(
-                  subtitle: "Poplar Ave,CA",
+                  subtitle: "$subtitle",
                   color: AppColor.gry,
                   fontsize: 12.sp,
                 ),
-                Icon(
-                  Icons.keyboard_arrow_down,
-                  color: AppColor.gry,
-                  size: 24.sp,
-                ),
+                if (icon != null)
+                  Icon(
+                    icon,
+                    color: AppColor.gry,
+                    size: 24.sp,
+                  ),
               ],
             ),
           ],

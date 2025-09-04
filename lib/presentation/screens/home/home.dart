@@ -1,23 +1,21 @@
 import 'package:breezefood/core/constans/color.dart';
 import 'package:breezefood/presentation/screens/search.dart';
-import 'package:breezefood/presentation/widgets/Stores.dart';
-import 'package:breezefood/presentation/widgets/custom_button_order.dart';
-import 'package:breezefood/presentation/widgets/custom_search.dart';
+import 'package:breezefood/presentation/widgets/home/Stores.dart';
+import 'package:breezefood/presentation/widgets/button/custom_button_order.dart';
+import 'package:breezefood/presentation/widgets/auth/custom_search.dart';
 
-import 'package:breezefood/presentation/widgets/custom_title_section.dart';
+import 'package:breezefood/presentation/widgets/home/custom_title_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../pag4.dart';
-import '../../page3.dart';
-import '../../shop_page.dart';
 import '../../widgets/CustomBottomNav.dart';
 import '../../widgets/custom_appbar_home.dart';
-import '../../widgets/custom_carousel_slider.dart';
-import '../../widgets/custom_fast_food.dart';
-import '../../widgets/discount.dart';
-import '../../widgets/most_popular.dart';
-import '../../widgets/rating_stores.dart';
+import '../../widgets/home/custom_carousel_slider.dart';
+import '../../widgets/home/custom_fast_food.dart';
+import '../../widgets/home/discount.dart';
+import '../../widgets/home/most_popular.dart';
+import '../../widgets/home/rating_stores.dart';
+import '../discount_grid_Page.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -27,22 +25,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _selectedIndex = 0;
-
-  final List<Widget> _pages = [
-    const Center(
-      child: Text("Home Page", style: TextStyle(color: Colors.white)),
-    ),
-    const Center(
-      child: Text("Shop Page", style: TextStyle(color: Colors.white)),
-    ),
-    const Center(
-      child: Text("Favorites Page", style: TextStyle(color: Colors.white)),
-    ),
-    const Center(
-      child: Text("Orders Page", style: TextStyle(color: Colors.white)),
-    ),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,16 +35,21 @@ class _HomeState extends State<Home> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              CustomAppbarHome(),
+              CustomAppbarHome(
+                title: "Deliver to",
+                subtitle: "Poplar Ave,CA",
+                image: "assets/icons/location.svg",
+                icon: Icons.keyboard_arrow_down,
+              ),
               const SizedBox(height: 15),
-              InkWell(onTap: (){
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => Search(),
-                  ),
-                );
-              },
-                  child: CustomSearch(hint: "Search",)),
+              InkWell(
+                onTap: () {
+                  Navigator.of(
+                    context,
+                  ).push(MaterialPageRoute(builder: (context) => Search()));
+                },
+                child: CustomSearch(hint: "Search"),
+              ),
               SizedBox(height: 20),
               BrunchCarousel(),
               const SizedBox(height: 15),
@@ -109,6 +96,11 @@ class _HomeState extends State<Home> {
                 title: "Discounts",
                 all: "All",
                 icon: Icons.arrow_forward_ios_outlined,
+                ontap: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => DiscountGridPage()),
+                  );
+                },
               ),
               const SizedBox(height: 10),
               Container(
@@ -149,7 +141,10 @@ class _HomeState extends State<Home> {
                 children: [
                   Container(
                     height: 320.h,
-                    padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 3,
+                      horizontal: 5,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColor.black,
                       borderRadius: BorderRadius.circular(25),
@@ -209,16 +204,12 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ],
-              )
-
-
-
-
+              ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar:  const CustomBottomNav(currentIndex: 0),
+      bottomNavigationBar: const CustomBottomNav(currentIndex: 0),
     );
   }
 }

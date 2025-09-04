@@ -1,8 +1,8 @@
 import 'package:breezefood/core/constans/color.dart';
 import 'package:breezefood/presentation/widgets/custom_arrow.dart';
-import 'package:breezefood/presentation/widgets/custom_button.dart';
-import 'package:breezefood/presentation/widgets/custom_text_form_field.dart';
-import 'package:breezefood/presentation/widgets/custom_title.dart';
+import 'package:breezefood/presentation/widgets/button/custom_button.dart';
+import 'package:breezefood/presentation/widgets/auth/custom_text_form_field.dart';
+import 'package:breezefood/presentation/widgets/title/custom_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -25,7 +25,7 @@ class NewPassowrd extends StatelessWidget {
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomArrow(onTap: (){}),
+              CustomArrow(onTap: (){},background: AppColor.white,color: AppColor.Dark,),
               SizedBox(height: 25.h,),
               CustomTitle(title: " Enter your new password", color: AppColor.white),
               SizedBox(height: 25.h,),
