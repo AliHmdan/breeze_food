@@ -17,7 +17,7 @@ class _MealCardState extends State<MealCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(12),
+      // margin: const EdgeInsets.all(12),
       padding: const EdgeInsets.only(left: 1,right: 10),
       decoration: BoxDecoration(
         color: AppColor.black,

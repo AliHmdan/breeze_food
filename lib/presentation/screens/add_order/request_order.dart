@@ -1,13 +1,17 @@
 import 'package:breezefood/core/constans/color.dart';
 import 'package:breezefood/presentation/widgets/add_order/custom_add.dart';
+import 'package:breezefood/presentation/widgets/home/custom_title_section.dart';
 import 'package:breezefood/presentation/widgets/request_order/coupon.dart';
+import 'package:breezefood/presentation/widgets/request_order/custom_buttom_map.dart';
 import 'package:breezefood/presentation/widgets/request_order/meal_card.dart';
 import 'package:breezefood/presentation/widgets/request_order/total.dart';
 import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../widgets/request_order/delvery_location.dart';
 import '../../widgets/request_order/product_option.dart';
+import '../../widgets/request_order/title_location.dart';
 import '../../widgets/title/custom_appbar_profile.dart';
 
 class RequestOrder extends StatefulWidget {
@@ -41,10 +45,11 @@ class _RequestOrderState extends State<RequestOrder> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
           child: Column(
             children: [
               MealCard(),
+              SizedBox(height: 8),
               Row(
                 children: [
                   Icon(Icons.add, color: AppColor.primaryColor, size: 20.sp),
@@ -55,12 +60,12 @@ class _RequestOrderState extends State<RequestOrder> {
                   ),
                 ],
               ),
-              SizedBox(height: 8,),
+              SizedBox(height: 8),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 10.w,),
+                // margin: EdgeInsets.symmetric(horizontal: 10.w),
                 padding: EdgeInsets.all(12.w),
                 decoration: BoxDecoration(
-                  color: AppColor.black, // لون الخلفية الداكن
+                  color: AppColor.black,
                   borderRadius: BorderRadius.circular(11.r),
                 ),
                 child: Column(
@@ -71,34 +76,38 @@ class _RequestOrderState extends State<RequestOrder> {
                       color: AppColor.white,
                       fontsize: 16.sp,
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(height: 5),
                     ProudectOption(),
                   ],
                 ),
               ),
-              SizedBox(height: 8,),
+              SizedBox(height: 8),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 10.w),
-                padding: EdgeInsets.symmetric(vertical: 18.h,horizontal: 10.w),
+                // margin: EdgeInsets.symmetric(horizontal: 10.w),
+                padding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 10.w),
                 decoration: BoxDecoration(
-                  color: AppColor.black, // لون الخلفية الداكن
+                  color: AppColor.black,
                   borderRadius: BorderRadius.circular(11.r),
                 ),
-                child: Column(  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomSubTitle(subtitle: "Coupon", color: AppColor.white, fontsize: 16.sp),
-                    SizedBox(height: 5,),
-                    CouponCard(code: "Q345FCXC")
-
+                    CustomSubTitle(
+                      subtitle: "Coupon",
+                      color: AppColor.white,
+                      fontsize: 16.sp,
+                    ),
+                    SizedBox(height: 5),
+                    CouponCard(code: "Q345FCXC"),
                   ],
                 ),
               ),
-              SizedBox(height: 8,),
+              SizedBox(height: 8),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 10.w),
-                padding: EdgeInsets.symmetric(vertical: 18.h,horizontal: 10.w),
+                // margin: EdgeInsets.symmetric(horizontal: 10.w),
+                padding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 10.w),
                 decoration: BoxDecoration(
-                  color: AppColor.black, // لون الخلفية الداكن
+                  color: AppColor.black,
                   borderRadius: BorderRadius.circular(11.r),
                 ),
                 child: Column(
@@ -112,8 +121,22 @@ class _RequestOrderState extends State<RequestOrder> {
                   ],
                 ),
               ),
+              SizedBox(height: 10),
+              CustomTitleSection(title: "Delivery to"),
+              const TitleLocation(),
+              SizedBox(height: 10),
+              DeliveryLocationCard(),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  // Floor number
+                 CustomButtomMap(title: "Floor number",),
+                  SizedBox(width: 8.w),
 
-
+                  // Door number
+                  CustomButtomMap(title: "Door number",),
+                ],
+              )
             ],
           ),
         ),
