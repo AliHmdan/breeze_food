@@ -1,15 +1,20 @@
 import 'package:breezefood/core/constans/color.dart';
+import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/presentation/widgets/button/custom_button.dart';
 import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
 import 'package:breezefood/presentation/widgets/auth/custom_text_form_field.dart';
 import 'package:breezefood/presentation/widgets/title/custom_title.dart';
 import 'package:breezefood/presentation/widgets/auth/social_login_buttons.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Signup extends StatelessWidget {
-  const Signup({super.key});
-
+  Signup({super.key});
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController ConfirmPasswordController =
+      TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,10 +32,7 @@ class Signup extends StatelessWidget {
                   height: 265.h,
                   fit: BoxFit.cover,
                 ),
-                Image.asset(
-                  "assets/images/logo.png",
-                  width: 150.w,
-                ),
+                Image.asset("assets/images/logo.png", width: 150.w),
               ],
             ),
 
@@ -69,7 +71,10 @@ class Signup extends StatelessWidget {
                     Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.w,
+                            vertical: 10.h,
+                          ),
                           decoration: BoxDecoration(
                             color: AppColor.white,
                             borderRadius: BorderRadius.circular(12.r),
@@ -83,16 +88,14 @@ class Signup extends StatelessWidget {
                                 height: 30.h,
                               ),
                               SizedBox(width: 8.w),
-                              Text(
-                                '+963',
-                                style: TextStyle(fontSize: 14.sp),
-                              ),
+                              Text('+963', style: TextStyle(fontSize: 14.sp)),
                             ],
                           ),
                         ),
                         SizedBox(width: 10.w),
                         Expanded(
                           child: CustomTextFormField(
+                            controller: phoneController,
                             hintText: "Phone Number",
                             backgroundColor: AppColor.white,
                             hintColor: AppColor.gry,
@@ -105,6 +108,7 @@ class Signup extends StatelessWidget {
 
                     // ✅ Password
                     CustomTextFormField(
+                      controller: passwordController,
                       hintText: "Password",
                       backgroundColor: AppColor.white,
                       hintColor: AppColor.gry,
@@ -115,21 +119,23 @@ class Signup extends StatelessWidget {
 
                     // ✅ Password
                     CustomTextFormField(
+                      controller: ConfirmPasswordController,
                       hintText: "Confirm Password",
                       backgroundColor: AppColor.white,
                       hintColor: AppColor.gry,
                       isPassword: true,
                       obscureInitially: true,
                     ),
-                    SizedBox(height: 8.h),
-
-
-
+                    SizedBox(height: 30.h),
 
                     // ✅ زر الدخول
                     CustomButton(
                       title: "Continue",
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(
+                          context,
+                        ).pushReplacementNamed(AppRoute.verifyCode);
+                      },
                     ),
 
                     SizedBox(height: 24.h),
@@ -155,7 +161,6 @@ class Signup extends StatelessWidget {
 
                     SizedBox(height: 16.h),
 
-
                     const SocialLoginButtons(),
 
                     SizedBox(height: 30.h),
@@ -169,7 +174,7 @@ class Signup extends StatelessWidget {
                             color: AppColor.white,
                             fontSize: 14.sp,
                             fontFamily: "Manrope",
-                            fontWeight: FontWeight.w400
+                            fontWeight: FontWeight.w400,
                           ),
                           children: [
                             TextSpan(
@@ -180,6 +185,12 @@ class Signup extends StatelessWidget {
                                 fontSize: 12.sp,
                                 fontFamily: "Manrope",
                               ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.of(
+                                    context,
+                                  ).pushNamed(AppRoute.login);
+                                },
                             ),
                           ],
                         ),

@@ -2,7 +2,6 @@ import 'package:breezefood/blocs/splash_screen/splash_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:breezefood/presentation/screens/auth/login.dart';
 
 import '../../core/constans/routes.dart';
 

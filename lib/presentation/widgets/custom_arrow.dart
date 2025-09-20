@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../core/constans/color.dart';
 
 class CustomArrow extends StatelessWidget {
   final void Function()? onTap ;
@@ -26,7 +25,7 @@ class CustomArrow extends StatelessWidget {
           child: Icon(
             Icons.arrow_back_ios,
             color: color,
-            size: 22.sp,
+            size: 16.sp,
           ),
         ),
       ),

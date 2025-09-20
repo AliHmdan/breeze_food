@@ -1,4 +1,5 @@
 import 'package:breezefood/core/constans/color.dart';
+import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/presentation/widgets/custom_arrow.dart';
 import 'package:breezefood/presentation/widgets/button/custom_button.dart';
 import 'package:breezefood/presentation/widgets/auth/custom_text_form_field.dart';
@@ -25,7 +26,9 @@ class NewPassowrd extends StatelessWidget {
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomArrow(onTap: (){},background: AppColor.white,color: AppColor.Dark,),
+              CustomArrow(onTap: (){
+                Navigator.of(context).pop();
+              },background: AppColor.white,color: AppColor.Dark,),
               SizedBox(height: 25.h,),
               CustomTitle(title: " Enter your new password", color: AppColor.white),
               SizedBox(height: 25.h,),
@@ -45,7 +48,9 @@ class NewPassowrd extends StatelessWidget {
                 obscureInitially: true,
               ),
               SizedBox(height: 30.h,),
-              CustomButton(title: "Ok",onPressed: (){},)
+              CustomButton(title: "Ok",onPressed: (){
+                 Navigator.of(context).pushNamed(AppRoute.successful);
+              },)
             ],
           ),
         ),

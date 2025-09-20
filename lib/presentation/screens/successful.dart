@@ -1,4 +1,5 @@
 import 'package:breezefood/core/constans/color.dart';
+import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/presentation/widgets/button/custom_button.dart';
 import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
 import 'package:breezefood/presentation/widgets/title/custom_title.dart';
@@ -49,7 +50,10 @@ class Successful extends StatelessWidget {
                       fontsize: 14.sp,
                     ),
                     SizedBox(height: 20.h,),
-                    CustomButton(title: "Ok",onPressed: (){},),
+                    CustomButton(title: "Ok",onPressed: (){
+                                       Navigator.of(context).pushReplacementNamed(AppRoute.login);
+
+                    },),
                     const Spacer(),
                   ],
                 ),

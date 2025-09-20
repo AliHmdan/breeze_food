@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/constans/color.dart';
-import '../widgets/home/discount.dart';
 import '../widgets/title/custom_appbar_profile.dart';
 import '../widgets/discount_grid_page/discount_details.dart';
 
