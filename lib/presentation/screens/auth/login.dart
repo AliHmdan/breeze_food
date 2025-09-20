@@ -1,3 +1,7 @@
+import 'package:breezefood/presentation/screens/auth/new_passowrd.dart';
+import 'package:breezefood/presentation/screens/home/home.dart';
+import 'package:breezefood/presentation/widgets/auth/social_login_buttons.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -30,15 +34,15 @@ class Login extends StatelessWidget {
         body: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) {
             if (state is LoginSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Login successful")),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text("Login successful")));
 
-              Navigator.pushNamed(context, AppRoute.verfiy_code);
+              Navigator.pushNamed(context, AppRoute.verifyCode);
             } else if (state is LoginFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.error)),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.error)));
             }
           },
           builder: (context, state) {
@@ -54,14 +58,12 @@ class Login extends StatelessWidget {
                         height: 265.h,
                         fit: BoxFit.cover,
                       ),
-                      Image.asset(
-                        "assets/images/logo.png",
-                        width: 150.w,
-                      ),
+                      Image.asset("assets/images/logo.png", width: 150.w),
                     ],
                   ),
                   Container(
                     width: double.infinity,
+
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
@@ -74,13 +76,16 @@ class Login extends StatelessWidget {
                       ),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 24.w,
+                        vertical: 32.h,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomTitle(
                             title: "Welcome to Foodgo",
-                            color: Colors.black,
+                            color: Colors.white,
                           ),
                           SizedBox(height: 8.h),
                           CustomSubTitle(
@@ -92,11 +97,16 @@ class Login extends StatelessWidget {
                           Row(
                             children: [
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w,
+                                  vertical: 10.h,
+                                ),
                                 decoration: BoxDecoration(
                                   color: AppColor.white,
                                   borderRadius: BorderRadius.circular(12.r),
-                                  border: Border.all(color: Colors.grey.shade400),
+                                  border: Border.all(
+                                    color: Colors.grey.shade400,
+                                  ),
                                 ),
                                 child: Row(
                                   children: [
@@ -106,7 +116,10 @@ class Login extends StatelessWidget {
                                       height: 30.h,
                                     ),
                                     SizedBox(width: 8.w),
-                                    Text('+963', style: TextStyle(fontSize: 14.sp)),
+                                    Text(
+                                      '+963',
+                                      style: TextStyle(fontSize: 14.sp),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -130,27 +143,106 @@ class Login extends StatelessWidget {
                             isPassword: true,
                             obscureInitially: true,
                           ),
+                          GestureDetector(onTap: () {
+                             Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => NewPassowrd(),
+                                      ),
+                                    );
+                          },
+                            child: CustomSubTitle(
+                              subtitle: "Forget password? ",
+                              color: AppColor.primaryColor,
+                              fontsize: 12.sp,
+                              
+                            ),
+                          ),
                           SizedBox(height: 24.h),
                           state is LoginLoading
                               ? Center(
-                            child: Lottie.asset(
-                              'assets/lottie/loading.json',
-                              width: 120.w,
-                              height: 120.h,
-                            ),
-                          )
+                                  child: Lottie.asset(
+                                    'assets/lottie/loading.json',
+                                    width: 120.w,
+                                    height: 120.h,
+                                  ),
+                                )
                               : CustomButton(
-                            title: "Continue",
-                            onPressed: () {
-                              // إرسال الحدث فقط بدون تنقل مباشر
-                              context.read<LoginBloc>().add(
-                                LoginSubmitted(
-                                  phoneController.text,
-                                  passwordController.text,
+                                  title: "Continue",
+                                  onPressed: () {
+                                    // إرسال الحدث فقط بدون تنقل مباشر
+                                    context.read<LoginBloc>().add(
+                                      LoginSubmitted(
+                                        phoneController.text,
+                                        passwordController.text,
+                                      ),
+                                    );
+                                       Navigator.of(context).pushReplacementNamed(AppRoute.home);
+                                  },
                                 ),
-                              );
-                            },
-                          )
+
+                          SizedBox(height: 24.h),
+
+                          // ✅ Divider
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Divider(color: Colors.grey.shade300),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                                child: Text(
+                                  "Or Sign in with",
+                                  style: TextStyle(
+                                    color: AppColor.white,
+                                    fontSize: 14.sp,
+                                    fontFamily: "Manrope",
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Divider(color: Colors.grey.shade300),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 16.h),
+
+                          const SocialLoginButtons(),
+
+                          SizedBox(height: 30.h),
+
+                          // ✅ التسجيل
+                          Center(
+                            child: Text.rich(
+                              TextSpan(
+                                text: "Already have an account? ",
+                                style: TextStyle(
+                                  color: AppColor.white,
+                                  fontSize: 14.sp,
+                                  fontFamily: "Manrope",
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: "Sign Up Now",
+                                    style: TextStyle(
+                                      color: AppColor.primaryColor,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12.sp,
+                                      fontFamily: "Manrope",
+                                      
+                                    ),
+                                     recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              Navigator.of(context).pushNamed(AppRoute.signUp);
+            },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 32.h),
                         ],
                       ),
                     ),
