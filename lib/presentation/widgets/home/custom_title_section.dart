@@ -18,7 +18,7 @@ class CustomTitleSection extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.bold,
             color: AppColor.white,
             fontSize: 14.sp,
             fontFamily: "Manrope",

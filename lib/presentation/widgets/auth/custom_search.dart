@@ -8,80 +8,108 @@ class CustomSearch extends StatelessWidget {
   final IconData? icon;
   final String hint;
   final String? boxicon;
-  const CustomSearch({super.key, required this.hint,  this.icon, this.boxicon});
+  final void Function()? onTap;
+  final bool readOnly;
+  final double height; // ✅ باراميتر للتحكم بالارتفاع
+  final double borderRadius; // ✅ باراميتر للتحكم بالـ radius
+
+  const CustomSearch({
+    super.key,
+    required this.hint,
+    this.icon,
+    this.boxicon,
+    this.onTap,
+    this.readOnly = true,
+    this.height = 50, // قيمة افتراضية
+    this.borderRadius = 30, // قيمة افتراضية
+  });
 
   @override
   Widget build(BuildContext context) {
-    return  Row(
+    return Row(
       children: [
         if (icon != null)
-        Container(
-          decoration: BoxDecoration(
-            color: AppColor.white,
-            borderRadius: BorderRadius.circular(50.0),
-          ),
-          child: IconButton(
-            icon: Icon(
-              icon,
-              color: AppColor.black,
-              size: 20,
+          Container(
+            width: 40.w,
+            height: 40.w,
+            decoration: BoxDecoration(
+              color: AppColor.white,
+              borderRadius: BorderRadius.circular(50.r),
             ),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ),
-        Expanded(
-          child: TextFormField(
-            decoration: InputDecoration(
-
-              hintText: hint,
-              hintStyle: TextStyle(
-                color: AppColor.gry,
-                fontSize: 14.sp,
-                fontFamily: "Manrope",
-                fontWeight: FontWeight.w400,
+            child: IconButton(
+              icon: Icon(
+                icon,
+                color: AppColor.black,
+                size: 18.sp, // ✅ متجاوب
               ),
-              prefixIcon: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: SvgPicture.asset(
-                  'assets/icons/search.svg',
-                  color: AppColor.gry,
-                  width: 20.w,
-                  height: 20.h,
+              onPressed: () => Navigator.pop(context),
+            ),
+          ),
+        SizedBox(width: 8.w),
+        Expanded(
+          child: SizedBox(
+            height: height.h, // ✅ تحكم بالارتفاع
+            child: TextFormField(
+              readOnly: readOnly,
+              onTap: onTap,
+              style: TextStyle(
+                fontSize: 14.sp,
+              ),
+              decoration: InputDecoration(
+                hintText: hint,
+                hintStyle: TextStyle(
+                  color: AppColor.LightActive,
+                  fontSize: 14.sp,
+                  fontFamily: "Manrope",
+                  // fontWeight: FontWeight.w400,
+                ),
+                prefixIcon: Padding(
+                  padding: EdgeInsets.all(12.w), // ✅ متجاوب
+                  child: SvgPicture.asset(
+                    'assets/icons/search.svg',
+                    color: AppColor.LightActive,
+                    width: 8.w,
+                    height: 8.w,
+                  ),
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 12.w,
+                  vertical: 10.h,
+                ),
+                filled: true,
+                fillColor: AppColor.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(borderRadius.r),
+                  borderSide: BorderSide.none,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(borderRadius.r),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(borderRadius.r),
+                  borderSide: BorderSide.none,
                 ),
               ),
-              contentPadding: EdgeInsets.all(10),
-              filled: true,
-              fillColor: AppColor.white,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
-                borderSide: BorderSide.none,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
-                borderSide: BorderSide.none,
-              ),
             ),
           ),
         ),
-        SizedBox(width: 5.w,),
-        if (boxicon !=null)
+        SizedBox(width: 3.w),
+        if (boxicon != null)
           Container(
-          padding: const EdgeInsets.all(10.0),
-          decoration: BoxDecoration(
-            color: AppColor.white,
-            borderRadius: BorderRadius.circular(50.0),
+            width: 40.w,
+            height: 40.w,
+            padding: EdgeInsets.all(4.w),
+            decoration: BoxDecoration(
+              color: AppColor.white,
+              borderRadius: BorderRadius.circular(50.r),
+            ),
+            child: SvgPicture.asset(
+              boxicon!,
+              width: 40.w,
+              height: 40.w,
+            ),
           ),
-          child:
-          SvgPicture.asset(
-            boxicon!,
-            width: 30.w,
-            height: 30.h,
-          ),
-        ),
       ],
     );
   }

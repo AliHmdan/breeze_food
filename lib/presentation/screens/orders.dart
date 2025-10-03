@@ -104,7 +104,7 @@ class _OrdersState extends State<Orders> with SingleTickerProviderStateMixin {
           ],
         ),
       ),
-      bottomNavigationBar: CustomBottomNav(currentIndex: 3),
+      // bottomNavigationBar: CustomBottomNav(currentIndex: 3),
     );
   }
 }

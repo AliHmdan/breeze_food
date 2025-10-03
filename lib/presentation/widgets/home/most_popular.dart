@@ -62,43 +62,43 @@ class _PopularItemCardState extends State<PopularItemCard>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.onTap, // ✅ صار على الكرت كامل
+      onTap: widget.onTap,
       child: SizedBox(
-        width: 140.w,
+        width: 160.w, // ✅ عرض موحد لكل الكرت
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(12),
-                    topRight: Radius.circular(12),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12.r),
+                    topRight: Radius.circular(12.r),
                   ),
                   child: Image.asset(
                     widget.imagePath,
-                    height: 120.h,
-                    width: 165.w,
+                    height: 100.h,
+                    width: double.infinity, 
                     fit: BoxFit.cover,
                   ),
                 ),
                 Positioned(
-                  top: 8,
-                  right: 8,
+                  top: 4.h,
+                  right: 2.w,
                   child: InkWell(
                     onTap: _toggleFavorite,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(20.r),
                     child: ScaleTransition(
                       scale: _scaleAnimation,
                       child: Container(
-                        padding: const EdgeInsets.all(6),
+                        padding: EdgeInsets.all(6.w),
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
                           isFavorite ? Icons.favorite : Icons.favorite_border,
                           color: isFavorite ? AppColor.red : AppColor.gry,
-                          size: 22.sp,
+                          size: 20.sp,
                         ),
                       ),
                     ),
@@ -109,70 +109,75 @@ class _PopularItemCardState extends State<PopularItemCard>
             Container(
               decoration: BoxDecoration(
                 color: AppColor.Dark,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(12),
-                  bottomRight: Radius.circular(12),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(12.r),
+                  bottomRight: Radius.circular(12.r),
                 ),
               ),
-              child: Column(
-                children: [
-                  Center(
-                    child: Text(
-                      widget.title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12.sp,
-                        fontFamily: "Manrope",
-                        color: AppColor.white,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  if (widget.subtitle != null)
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5.w, ),
+                child: Column(
+                  children: [
                     Center(
                       child: Text(
-                        widget.subtitle!,
-                        textAlign: TextAlign.center,
+                        widget.title,
                         style: TextStyle(
-                          color: AppColor.white,
-                          fontSize: 10.sp,
+                          // fontWeight: FontWeight.w400,
+                          fontSize: 14.sp,
                           fontFamily: "Manrope",
-                          fontWeight: FontWeight.w400,
+                          color: AppColor.white,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  SizedBox(height: 4.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (widget.oldPrice != null) // ✅ يظهر فقط لو فيه قيمة
-                        Text(
-                          widget.oldPrice!,
+                    if (widget.subtitle != null)
+                      Center(
+                        child: Text(
+                          widget.subtitle!,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: AppColor.red,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12.sp,
+                            color: AppColor.white,
+                            fontSize: 10.sp,
                             fontFamily: "Manrope",
-                            decoration: TextDecoration.lineThrough,
-                            decorationColor: AppColor.red,
-                            decorationThickness: 2,
+                            fontWeight: FontWeight.w400,
                           ),
-                        ),
-                      if (widget.oldPrice != null) const SizedBox(width: 12),
-                      Text(
-                        widget.price,
-                        style: TextStyle(
-                          color: AppColor.green,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12.sp,
-                          fontFamily: "Manrope",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 4.h),
-                ],
+                    SizedBox(height: 2.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (widget.oldPrice != null)
+                          Text(
+                            widget.oldPrice!,
+                            style: TextStyle(
+                              color: AppColor.red,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 11.sp,
+                              fontFamily: "Manrope",
+                              decoration: TextDecoration.lineThrough,
+                              decorationColor: AppColor.red,
+                              decorationThickness: 2,
+                            ),
+                          ),
+                        if (widget.oldPrice != null) SizedBox(width: 8.w),
+                        Text(
+                          widget.price,
+                          style: TextStyle(
+                            color: AppColor.yellow,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12.sp,
+                            fontFamily: "Manrope",
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 4.h),
+                  ],
+                ),
               ),
             ),
           ],

@@ -18,7 +18,7 @@ class CustomTextFormField extends StatefulWidget {
     Key? key,
     this.controller,
     required this.hintText,
-    this.hintColor = Colors.white70,
+    this.hintColor = AppColor.LightActive,
     this.backgroundColor = const Color(0xFF2C2C2E),
     this.isPassword = false,
     this.keyboardType = TextInputType.text,
@@ -55,13 +55,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           color: widget.hintColor,
           fontSize: 14.sp,
           fontFamily: 'Manrope',
-          // fontWeight: FontWeight.w400,
+         
         ),
         filled: true,
         fillColor: widget.backgroundColor,
-        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 3.h),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(11.r),
+          borderRadius: BorderRadius.circular(8.r),
           borderSide: BorderSide.none,
         ),
         suffixIcon: widget.isPassword

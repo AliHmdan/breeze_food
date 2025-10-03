@@ -19,10 +19,17 @@ class CustomAppbarHome extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // صورة البروفايل
-        CircleAvatar(
-          radius: 30.r,
-          backgroundImage: AssetImage('assets/images/01.jpg'),
-        ),
+       CircleAvatar(
+  radius: 20.r,
+  child: ClipOval(
+    child: Image.asset(
+      'assets/images/01.jpg',
+      width: 40.w,
+      height: 40.h,
+      fit: BoxFit.cover,
+    ),
+  ),
+),
 
         // النص والموقع
         Column(
@@ -34,7 +41,7 @@ class CustomAppbarHome extends StatelessWidget {
                 if (image != null) // <-- شرط حتى لا يعطي خطأ لو null
                   SvgPicture.asset(
                     image!,
-                    color: AppColor.gry,
+                    color: AppColor.LightActive,
                     width: 20,
                     height: 20,
                   ),
@@ -42,13 +49,13 @@ class CustomAppbarHome extends StatelessWidget {
                 if (subtitle !=null)
                 CustomSubTitle(
                   subtitle: "$subtitle",
-                  color: AppColor.gry,
+                  color: AppColor.LightActive,
                   fontsize: 12.sp,
                 ),
                 if (icon != null)
                   Icon(
                     icon,
-                    color: AppColor.gry,
+                    color: AppColor.LightActive,
                     size: 24.sp,
                   ),
               ],
@@ -58,8 +65,8 @@ class CustomAppbarHome extends StatelessWidget {
 
         // أيقونة الإشعارات
         Container(
-          width: 50.w,
-          height: 50.h,
+          width: 35.w,
+          height: 35.h,
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
             shape: BoxShape.circle,

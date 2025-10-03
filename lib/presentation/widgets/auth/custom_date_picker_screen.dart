@@ -80,6 +80,7 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      
       controller: _dateController,
       readOnly: true,
       style: const TextStyle(color: AppColor.LightActive),
@@ -96,16 +97,18 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
         suffixIcon: IconButton(
           icon: SvgPicture.asset(
             'assets/icons/date.svg',
-            height: 24,
-            width: 24,
+            height: 20,
+            width: 20,
             color: AppColor.Dark, // يمكنك تخصيص اللون حسب الحاجة
           ),
           onPressed: () => _selectDate(context),
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8.r),
           borderSide: BorderSide.none,
         ),
+            contentPadding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 12.w),
+
       ),
       onTap: () {
         _selectDate(context);

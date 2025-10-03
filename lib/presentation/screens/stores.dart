@@ -1,3 +1,4 @@
+import 'package:breezefood/core/constans/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -64,103 +65,105 @@ class Stores extends StatelessWidget {
           SizedBox(height: 20.h),
 
           // 🔽 هنا نستخدم ListView.builder
-          Container(
-
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(60.r),
-              color: AppColor.black,
+        Container(
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(50.r),
+    color: AppColor.LightActive,
+  ),
+  child: ListView.builder(
+    scrollDirection: Axis.vertical,
+    itemCount: restaurants.length,
+    shrinkWrap: true, 
+    physics: const NeverScrollableScrollPhysics(),
+    itemBuilder: (context, index) {
+      final restaurant = restaurants[index];
+      return GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushNamed(AppRoute.StoreDetails);
+        },
+        child: Container(
+          height: 120.h,
+          margin: EdgeInsets.only(
+            top: index == 0 ? 0 : 8.h, // ✅ أول عنصر بدون فراغ
+            left: 8.w,
+            right: 8.w,
+            bottom: 8.h,
+          ), // ✅ بدل الـ padding
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(60.r),
+            image: DecorationImage(
+              image: AssetImage(restaurant["image"]),
+              fit: BoxFit.cover,
             ),
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: restaurants.length,
-              shrinkWrap: true, // مهم عشان ما يصير تعارض مع ListView الرئيسي
-              physics: const NeverScrollableScrollPhysics(), // نخلي التمرير للرئيسي فقط
-              itemBuilder: (context, index) {
-                final restaurant = restaurants[index];
-                return Container(
-                  padding: const EdgeInsets.all(10),
-                  // margin: const EdgeInsets.symmetric(vertical: 6),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(60.r),
-                    color: AppColor.black,
-                  ),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(60.r),
+            child: Stack(
+              children: [
+                Positioned.fill(
                   child: Container(
-
-                    height: 130.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(60.r),
-                      image: DecorationImage(
-                        image: AssetImage(restaurant["image"]),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(60.r),
-                      child: Stack(
+                    color: Colors.black.withOpacity(0.4),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // الصف الأول (التقييم + الطلبات + الوقت)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Positioned.fill(
-                            child: Container(
-                              color: Colors.black.withOpacity(0.4),
-                            ),
+                          Row(
+                            children: [
+                              const Icon(Icons.star,
+                                  color: Colors.yellow, size: 16),
+                              const SizedBox(width: 4),
+                              CustomSubTitle(
+                                subtitle:
+                                    "${restaurant["rating"]} | ${restaurant["orders"]}",
+                                color: AppColor.white,
+                                fontsize: 10.sp,
+                              ),
+                            ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // الصف الأول (التقييم + الطلبات + الوقت)
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const Icon(Icons.star,
-                                            color: Colors.yellow, size: 16),
-                                        const SizedBox(width: 4),
-                                        CustomSubTitle(
-                                          subtitle:
-                                          "${restaurant["rating"]} | ${restaurant["orders"]}",
-                                          color: AppColor.white,
-                                          fontsize: 10.sp,
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(Icons.timer,
-                                            color: Colors.white, size: 16),
-                                        const SizedBox(width: 4),
-                                        CustomSubTitle(
-                                          subtitle: restaurant["time"],
-                                          color: AppColor.white,
-                                          fontsize: 10.sp,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 20.h),
-                                Center(
-                                  child: CustomTitle(
-                                    title: restaurant["name"],
-                                    color: AppColor.white,
-                                  ),
-                                ),
-                              ],
-                            ),
+                          Row(
+                            children: [
+                              const Icon(Icons.timer,
+                                  color: Colors.white, size: 16),
+                              const SizedBox(width: 4),
+                              CustomSubTitle(
+                                subtitle: restaurant["time"],
+                                color: AppColor.white,
+                                fontsize: 10.sp,
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ),
+                      SizedBox(height: 20.h),
+                      Center(
+                        child: CustomTitle(
+                          title: restaurant["name"],
+                          color: AppColor.white,
+                        ),
+                      ),
+                    ],
                   ),
-                );
-              },
+                ),
+              ],
             ),
           ),
+        ),
+      );
+    },
+  ),
+)
+
         ],
       ),
-      bottomNavigationBar: const CustomBottomNav(currentIndex: 1),
+      // bottomNavigationBar: const CustomBottomNav(currentIndex: 1),
     );
   }
 }

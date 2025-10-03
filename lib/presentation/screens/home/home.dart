@@ -63,25 +63,31 @@ class _HomeState extends State<Home> {
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
 
                 decoration: BoxDecoration(
-                  color: AppColor.black,
+                  color: AppColor.LightActive,
                   borderRadius: BorderRadius.circular(15),
                 ),
-                height: 230.h,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: PopularItemCard(
-                        imagePath: 'assets/images/004.jpg',
-                        title: 'Chicken shish without...',
-                        subtitle: 'burger king',
-                        price: '2.00\$',
-                        onFavoriteToggle: () {
-                          print('تم الضغط على المفضلة للعنصر رقم $index');
-                        },
-                      ),
+                height: 199.h,
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    double itemWidth = constraints.maxWidth / 2.3;
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          width: itemWidth,
+                          margin: EdgeInsets.only(right: 10.w),
+                          child: PopularItemCard(
+                            imagePath: 'assets/images/004.jpg',
+                            title: 'Chicken shish without...',
+                            subtitle: 'burger king',
+                            price: '2.00\$',
+                            onFavoriteToggle: () {
+                              print('تم الضغط على المفضلة للعنصر رقم $index');
+                            },
+                          ),
+                        );
+                      },
                     );
                   },
                 ),
@@ -90,7 +96,7 @@ class _HomeState extends State<Home> {
               CustomTitleSection(title: "Stores"),
               Stores(),
               SizedBox(height: 2.h),
-              RatingStores(),
+              // RatingStores(),
               const SizedBox(height: 10),
               CustomTitleSection(
                 title: "Discounts",
@@ -107,27 +113,35 @@ class _HomeState extends State<Home> {
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
 
                 decoration: BoxDecoration(
-                  color: AppColor.black,
+                  color: AppColor.LightActive,
                   borderRadius: BorderRadius.circular(15),
                 ),
-                height: 230.h,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: Discount(
-                        imagePath: 'assets/images/004.jpg',
-                        title: 'Chicken shish without...',
-                        subtitle: 'burger king',
-                        price: '2.00\$',
-                        onFavoriteToggle: () {
-                          print('تم الضغط على المفضلة للعنصر رقم $index');
-                        },
-                        // icons: Icons.close,
-                        discount: "50",
-                      ),
+                height: 199.h,
+
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    double itemWidth = constraints.maxWidth / 2.3;
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          width: itemWidth,
+                          margin: EdgeInsets.only(right: 10.w),
+
+                          child: Discount(
+                            imagePath: 'assets/images/004.jpg',
+                            title: 'Chicken shish without...',
+                            subtitle: 'burger king',
+                            price: '2.00\$',
+                            onFavoriteToggle: () {
+                              print('تم الضغط على المفضلة للعنصر رقم $index');
+                            },
+                            // icons: Icons.close,
+                            discount: "50",
+                          ),
+                        );
+                      },
                     );
                   },
                 ),
@@ -146,7 +160,7 @@ class _HomeState extends State<Home> {
                       horizontal: 5,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColor.black,
+                      color: AppColor.LightActive,
                       borderRadius: BorderRadius.circular(25),
                     ),
                     child: ListView(
@@ -209,7 +223,7 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
-      bottomNavigationBar: const CustomBottomNav(currentIndex: 0),
+      // bottomNavigationBar: const CustomBottomNav(currentIndex: 0),
     );
   }
 }

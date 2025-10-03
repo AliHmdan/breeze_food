@@ -1,4 +1,7 @@
 import 'package:breezefood/core/constans/routes.dart';
+import 'package:breezefood/presentation/screens/add_order/pay.dart';
+import 'package:breezefood/presentation/screens/add_order/request_order.dart';
+import 'package:breezefood/presentation/screens/add_order/success.dart';
 
 import 'package:breezefood/presentation/screens/auth/information.dart';
 import 'package:breezefood/presentation/screens/auth/login.dart';
@@ -7,7 +10,10 @@ import 'package:breezefood/presentation/screens/auth/phone_number.dart';
 import 'package:breezefood/presentation/screens/auth/signup.dart';
 import 'package:breezefood/presentation/screens/auth/verfiy_code.dart';
 import 'package:breezefood/presentation/screens/home/home.dart';
+import 'package:breezefood/presentation/screens/search.dart';
 import 'package:breezefood/presentation/screens/spalsh_screen.dart';
+import 'package:breezefood/presentation/screens/store_details/stroe_details.dart';
+import 'package:breezefood/presentation/screens/stores.dart';
 import 'package:breezefood/presentation/screens/successful.dart';
 
 import 'package:flutter/material.dart';
@@ -27,26 +33,38 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MaterialApp(
-          title: ' breeze food',
-          debugShowCheckedModeBanner: false,
-          // home: Signup()
-          // StroeDetails( categories: ["Burger", "Chrispy", "India food", "Home"])
-          // DetailsCategoris(),
-          initialRoute: AppRoute.splashScreen,
-          routes: {
-            AppRoute.splashScreen: (context) => const SpalshScreen(), 
-            AppRoute.login: (context) =>  Login(),
-            AppRoute.signUp: (context) =>  Signup(),
-            AppRoute.verifyCode:(context)=> VerfiyCode(),
-            AppRoute.successful:(context)=> Successful(),
-            AppRoute.phoneNumber:(context)=> PhoneNumber(),
-            AppRoute.newPassword:(context)=> NewPassowrd(),
-            AppRoute.information:(context)=> InformationScreen(),
-              AppRoute.home:(context)=> Home(),
-          },
+        return MediaQuery(    
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.2),
+          child: MaterialApp(
+            title: ' breeze food',
+            debugShowCheckedModeBanner: false,
+            // home:
+            // Stores()
+            // StoreDetails( categories: ["Burger", "Chrispy", "India food", "Home"])
+            // DetailsCategoris(),
+            initialRoute: AppRoute.splashScreen,
+            routes: {
+              AppRoute.splashScreen: (context) => const SpalshScreen(),
+          
+              AppRoute.signUp: (context) => Signup(),
+              AppRoute.verifyCode: (context) => VerfiyCode(),
+              AppRoute.successful: (context) => Successful(),
+              AppRoute.phoneNumber: (context) => PhoneNumber(),
+              AppRoute.newPassword: (context) => NewPassowrd(),
+              AppRoute.information: (context) => InformationScreen(),
+              AppRoute.login: (context) => Login(),
+              AppRoute.home: (context) => Home(),
+              AppRoute.search: (context) => Search(),
+              AppRoute.pay: (context) => Pay(),
+              AppRoute.Success: (context) => Success(),
+              AppRoute.Stores: (context) => Stores(),
+              AppRoute.StoreDetails: (context) => StoreDetails(
+                categories: ["Burger", "Chrispy", "India food", "Home"],
+              ),
+            },
+          ),
         );
-      //
+        //
       },
     );
   }

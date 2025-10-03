@@ -26,7 +26,7 @@ class RestaurantCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(40), // حواف بيضاوية كبيرة
+      borderRadius: BorderRadius.circular(50.r), // حواف بيضاوية كبيرة
       child: Stack(
         children: [
           // الخلفية (ملونة أو أبيض وأسود إذا مغلق)
@@ -36,7 +36,7 @@ class RestaurantCard extends StatelessWidget {
                 : const ColorFilter.mode(Colors.transparent, BlendMode.multiply),
             child: Image.asset(
               imageUrl,
-              height: 100.h,
+              height: 110.h,
               width: double.infinity,
               fit: BoxFit.cover,
             ),
@@ -44,7 +44,7 @@ class RestaurantCard extends StatelessWidget {
 
           // التدرج العلوي والأسفل لتوضيح النص
           Container(
-            height: 100.h,
+            height: 110.h,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [

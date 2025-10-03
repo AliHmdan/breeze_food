@@ -161,63 +161,65 @@ class _SearchState extends State<Search> {
       Padding(
         padding: const EdgeInsets.all(8.0),
         child:
-        Column(
-          children: [
-            if (showSuggestions && filteredSuggestions.isNotEmpty)
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12), // هنا تحدد قيمة الزوايا
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: filteredSuggestions.length,
-                    separatorBuilder: (context, index) => Divider(
-                      color: dividerColor,
-                      thickness: dividerThickness,
-                      height: 1,
-                    ),
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(
-                          filteredSuggestions[index],
-                          style: TextStyle(
-                            color: suggestionTextColor,
-                            fontSize: 14.sp,
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              if (showSuggestions && filteredSuggestions.isNotEmpty)
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12), // هنا تحدد قيمة الزوايا
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: filteredSuggestions.length,
+                      separatorBuilder: (context, index) => Divider(
+                        color: dividerColor,
+                        thickness: dividerThickness,
+                        height: 1,
+                      ),
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(
+                            filteredSuggestions[index],
+                            style: TextStyle(
+                              color: suggestionTextColor,
+                              fontSize: 14.sp,
+                            ),
                           ),
+                          onTap: () => _addTag(filteredSuggestions[index]),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Wrap(
+                    spacing: 6,
+                    runSpacing: 6,
+                    children: searchTags.map((tag) {
+                      return Chip(
+                        label: Text(tag),
+                        labelStyle: TextStyle(color: Colors.white),
+                        backgroundColor: Colors.grey[800],
+                        deleteIcon: Icon(
+                          Icons.close,
+                          size: 16,
+                          color: Colors.white,
                         ),
-                        onTap: () => _addTag(filteredSuggestions[index]),
+                        onDeleted: () => _removeTag(tag),
                       );
-                    },
+                    }).toList(),
                   ),
                 ),
               ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Wrap(
-                  spacing: 6,
-                  runSpacing: 6,
-                  children: searchTags.map((tag) {
-                    return Chip(
-                      label: Text(tag),
-                      labelStyle: TextStyle(color: Colors.white),
-                      backgroundColor: Colors.grey[800],
-                      deleteIcon: Icon(
-                        Icons.close,
-                        size: 16,
-                        color: Colors.white,
-                      ),
-                      onDeleted: () => _removeTag(tag),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ),
-
-          ],
+          
+            ],
+          ),
         ),
       ),
     );

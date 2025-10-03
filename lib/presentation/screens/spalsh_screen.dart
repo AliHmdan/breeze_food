@@ -1,4 +1,5 @@
 import 'package:breezefood/blocs/splash_screen/splash_cubit.dart';
+import 'package:breezefood/core/constans/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,25 +20,16 @@ class SpalshScreen extends StatelessWidget {
           }
         },
         child: Scaffold(
-          body: Stack(
+          backgroundColor: AppColor.primaryColor,
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                "assets/images/background_auth.png",
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                fit: BoxFit.cover,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                    child: Image.asset(
-                      "assets/images/Delivery.png",
-                      height: 500.h,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ],
+              Center(
+                child: Image.asset(
+                  "assets/images/Delivery.png",
+                  height: 500.h,
+                  fit: BoxFit.cover,
+                ),
               ),
             ],
           ),

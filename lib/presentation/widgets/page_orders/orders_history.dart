@@ -37,24 +37,38 @@ class OrdersHistory extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 12),
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final tileWidth = constraints.maxWidth;    // عرض عنصر القائمة
-              final actionTargetWidth = 80.w;            // عرض زر Refresh
-              final paneRatio =
-              (actionTargetWidth / tileWidth).clamp(0.12, 0.6);
+              final tileWidth = constraints.maxWidth; // عرض عنصر القائمة
+              final actionTargetWidth = 80.w; // عرض زر Refresh
+              final paneRatio = (actionTargetWidth / tileWidth).clamp(
+                0.12,
+                0.6,
+              );
 
               final actionPane = ActionPane(
                 motion: const DrawerMotion(),
                 extentRatio: paneRatio,
+                // 👇 المسافة بين الأزرار أو بين الزر والكارد
+                dragDismissible: false,
                 children: [
+                  // فراغ صغير قبل الزر
+                  SizedBox(width: 8.w),
+
                   CustomSlidableAction(
                     onPressed: (context) {
                       debugPrint("Refresh ${order["restaurant"]}");
                     },
                     backgroundColor: Colors.grey.shade800,
                     borderRadius: BorderRadius.circular(12),
-                    flex: 1, // 👈 يدي الزر مساحة مناسبة
-                    child: Icon(Icons.refresh, color: Colors.white, size: 28),
+                    flex: 1,
+                    child: const Icon(
+                      Icons.refresh,
+                      color: Colors.white,
+                      size: 28,
+                    ),
                   ),
+
+                  // فراغ صغير بعد الزر (اختياري)
+                  SizedBox(width: 8.w),
                 ],
               );
 
@@ -128,7 +142,7 @@ class OrdersHistory extends StatelessWidget {
                                   subtitle: order["date"]!,
                                   color: AppColor.white,
                                   fontsize: 10.sp,
-                                )
+                                ),
                               ],
                             ),
                           ],
