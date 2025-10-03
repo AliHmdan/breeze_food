@@ -15,15 +15,11 @@ class _RatingStoresState extends State<RatingStores> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         // mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            "|",
-            style: TextStyle(color: AppColor.white),
-          ),
+         
           RatingBarIndicator(
             rating: ratingValue,
             itemBuilder: (context, index) => const Icon(

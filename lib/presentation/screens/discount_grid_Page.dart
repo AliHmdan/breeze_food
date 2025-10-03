@@ -43,7 +43,10 @@ class DiscountGridPage extends StatelessWidget {
             title: "Discount",
             icon: Icons.arrow_back_ios,
             ontap: () {
-              Navigator.pop(context);
+             Navigator.of(context).pushNamedAndRemoveUntil(
+                                    "/home",
+                                    (route) => false,
+                                  );
             },
           ),
         ),
@@ -59,34 +62,35 @@ class DiscountGridPage extends StatelessWidget {
               height: double.infinity,
 
               decoration: BoxDecoration(
-                color: AppColor.black,
+                color: AppColor.LightActive,
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Padding(
                 padding: EdgeInsets.all(8.0),
                 child: GridView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    mainAxisSpacing: 1.h,
-                    crossAxisSpacing: 12.w,
-                    childAspectRatio: 0.75,
-                  ),
-                  itemCount: items.length,
-                  itemBuilder: (context, index) {
-                    final item = items[index];
-                    return DiscountDetails(
-                      imagePath: item["imagePath"]!,
-                      title: item["title"]!,
-                      subtitle: item["subtitle"]!,
-                      price: item["price"]!,
-                      discount: item["discount"]!,
-                      onFavoriteToggle: () {
-                        print("Favorite toggled for ${item["title"]}");
-                      },
-                    );
-                  },
-                ),
+  physics: const BouncingScrollPhysics(),
+  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: crossAxisCount,
+    mainAxisSpacing: 5.h,   // ✅ المسافة الطولية بين الصفوف
+    crossAxisSpacing: 12.w,  // ✅ المسافة العرضية بين الأعمدة
+    childAspectRatio: 1.1,  // ✅ نسبة العرض للارتفاع
+  ),
+  itemCount: items.length,
+  itemBuilder: (context, index) {
+    final item = items[index];
+    return DiscountDetails(
+      imagePath: item["imagePath"]!,
+      title: item["title"]!,
+      subtitle: item["subtitle"]!,
+      price: item["price"]!,
+      discount: item["discount"]!,
+      onFavoriteToggle: () {
+        debugPrint("Favorite toggled for ${item["title"]}");
+      },
+    );
+  },
+)
+
               ),
             );
           },

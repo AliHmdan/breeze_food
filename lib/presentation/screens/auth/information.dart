@@ -1,3 +1,4 @@
+import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/presentation/widgets/auth/custom_text_form_field.dart';
 import 'package:breezefood/presentation/widgets/button/custom_button.dart';
 import 'package:breezefood/presentation/widgets/custom_arrow.dart';
@@ -39,7 +40,7 @@ class InformationScreen extends StatelessWidget {
 
                   SizedBox(height: 16.h),
 
-                  /// العنوان
+               
                   CustomSubTitle(
                     subtitle: "Please enter your information",
                     color: AppColor.white,
@@ -66,11 +67,12 @@ class InformationScreen extends StatelessWidget {
                   CustomButton(
                     title: "Login",
                     onPressed: () {
-                      // هنا منطق تسجيل الدخول
+              
+                      Navigator.of(context).pushReplacementNamed(AppRoute.home);
                     },
                   ),
 
-                  SizedBox(height: 40.h), // مسافة إضافية للشاشات الصغيرة
+                  SizedBox(height: 40.h), 
                 ],
               ),
             ),

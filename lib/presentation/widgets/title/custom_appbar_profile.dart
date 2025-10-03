@@ -11,7 +11,8 @@ class CustomAppbarProfile extends StatelessWidget {
     super.key,
     this.icon,
     this.subtitle,
-    required this.title, required this.ontap,
+    required this.title,
+    required this.ontap,
   });
 
   @override
@@ -22,7 +23,8 @@ class CustomAppbarProfile extends StatelessWidget {
       children: [
         /// الأيقونة داخل دائرة
         if (icon != null)
-          GestureDetector(onTap:ontap ,
+          GestureDetector(
+            onTap: ontap,
             child: Container(
               padding: EdgeInsets.all(4), // يحدد حجم الدائرة الداخلية
               decoration: BoxDecoration(
@@ -30,22 +32,18 @@ class CustomAppbarProfile extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: AppColor.LightActive, // لون الـ border
-                  width: 2,            // سماكة الـ border
+                  width: 2, // سماكة الـ border
                 ),
               ),
-              child: Center( // 👈 يضمن أن الأيقونة في الوسط تماماً
+              child: Center(
+                // 👈 يضمن أن الأيقونة في الوسط تماماً
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 5),
-                  child: Icon(
-                    icon,
-                    color: AppColor.white,
-                    size: 20.sp,
-                  ),
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Icon(icon, color: AppColor.white, size: 16.sp),
                 ),
               ),
             ),
-          )
-   ,
+          ),
         Spacer(),
 
         /// العنوان دايماً يظهر
@@ -58,8 +56,7 @@ class CustomAppbarProfile extends StatelessWidget {
           ),
         ),
 
-Spacer()
-
+        Spacer(),
       ],
     );
   }

@@ -11,4 +11,10 @@ class AppRoute {
   static const String information = "/information";
 // ========================= HOME ========================
   static const String home = "/home";
+  static const String search = "/search";
+  static const String pay = "/pay";
+  static const String Success = "/success";
+  // ========================= Stores ========================
+   static const String Stores = "/stores";
+   static const String StoreDetails = "/store_details";
 }

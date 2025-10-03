@@ -46,7 +46,7 @@ class VerfiyCode extends StatelessWidget {
                 ),
                 SizedBox(height: 45.h),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.8,
+                  width: MediaQuery.of(context).size.width * 0.9,
                   child: PinCodeTextField(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     appContext: context,
@@ -55,8 +55,8 @@ class VerfiyCode extends StatelessWidget {
                     pinTheme: PinTheme(
                       shape: PinCodeFieldShape.box,
                       borderRadius: BorderRadius.circular(10),
-                      fieldHeight: 60,
-                      fieldWidth: 60,
+                      fieldHeight: 70,
+                      fieldWidth: 70,
                       activeColor: AppColor.primaryColor,
                       selectedColor: AppColor.primaryColor,
                       inactiveColor: AppColor.gry,
