@@ -59,9 +59,14 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
           child: MediaQuery(
             data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
             child: UnconstrainedBox( // 👇 هذا لتقليص عرض الـ DatePicker
-              child: SizedBox(
-                width: 350.w, // 👈 التحكم في عرض الـ DatePicker
-                child: child!,
+              child: Center(
+                child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                 maxWidth: 350.w,
+                      maxHeight: 600.h,// 👈 التحكم في عرض الـ DatePicker
+                    ),
+                  child: child!,
+                ),
               ),
             ),
           ),

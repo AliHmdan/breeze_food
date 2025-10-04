@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constans/color.dart';
 
 class CustomAppbarProfile extends StatelessWidget {
-  final String title;
+  final String? title;
   final String? subtitle;
   final IconData? icon;
   final void Function() ontap;
@@ -11,7 +11,7 @@ class CustomAppbarProfile extends StatelessWidget {
     super.key,
     this.icon,
     this.subtitle,
-    required this.title,
+     this.title,
     required this.ontap,
   });
 
@@ -47,8 +47,9 @@ class CustomAppbarProfile extends StatelessWidget {
         Spacer(),
 
         /// العنوان دايماً يظهر
+         if (title != null)
         Text(
-          title,
+          "$title",
           style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.bold,
