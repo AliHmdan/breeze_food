@@ -28,6 +28,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+ 
     return Scaffold(
       backgroundColor: AppColor.Dark,
 
@@ -209,10 +210,9 @@ class _HomeState extends State<Home> {
                         ],
                       ),
                     ),
-        
-                    // الزر في المنتصف ويطفو فوق الحافة
-                    Positioned(
-                      bottom: 0, // نصف الزر تحت الحافة
+                       // الزر في المنتصف ويطفو فوق الحافة
+                       Positioned(
+                      bottom: 85, // نصف الزر تحت الحافة
                       left: 0,
                       right: 0,
                       child: Center(
@@ -221,15 +221,25 @@ class _HomeState extends State<Home> {
                           onPressed: () {},
                         ),
                       ),
-                    ),
+                    ), 
+          /// Bottom Navigation عائم
+          Positioned(
+            left: 20,
+            right: 20,
+            bottom: 20,
+            child:Custombottomnav()
+          ),
+                 
+                 
                   ],
                 ),
+                
               ],
             ),
           ),
         ),
       ),
-      // bottomNavigationBar: const CustomBottomNav(currentIndex: 0),
+    
     );
   }
 }

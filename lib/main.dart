@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             title: ' breeze food',
             debugShowCheckedModeBanner: false,
-            // home:
+            // home:Home()
             // Stores()
             // StoreDetails( categories: ["Burger", "Chrispy", "India food", "Home"])
             // DetailsCategoris(),
