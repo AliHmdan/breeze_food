@@ -10,6 +10,7 @@ import 'package:breezefood/presentation/screens/auth/phone_number.dart';
 import 'package:breezefood/presentation/screens/auth/signup.dart';
 import 'package:breezefood/presentation/screens/auth/verfiy_code.dart';
 import 'package:breezefood/presentation/screens/home/home.dart';
+import 'package:breezefood/presentation/screens/profile/profile.dart';
 import 'package:breezefood/presentation/screens/search.dart';
 import 'package:breezefood/presentation/screens/spalsh_screen.dart';
 import 'package:breezefood/presentation/screens/store_details/stroe_details.dart';
@@ -38,14 +39,13 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             title: ' breeze food',
             debugShowCheckedModeBanner: false,
-            // home:
+            // home:Home()
             // Stores()
             // StoreDetails( categories: ["Burger", "Chrispy", "India food", "Home"])
             // DetailsCategoris(),
             initialRoute: AppRoute.splashScreen,
             routes: {
               AppRoute.splashScreen: (context) => const SpalshScreen(),
-          
               AppRoute.signUp: (context) => Signup(),
               AppRoute.verifyCode: (context) => VerfiyCode(),
               AppRoute.successful: (context) => Successful(),
@@ -57,9 +57,11 @@ class MyApp extends StatelessWidget {
               AppRoute.search: (context) => Search(),
               AppRoute.pay: (context) => Pay(),
               AppRoute.Success: (context) => Success(),
+                    AppRoute.profile: (context) => Profile(),
               AppRoute.Stores: (context) => Stores(),
               AppRoute.StoreDetails: (context) => StoreDetails(
                 categories: ["Burger", "Chrispy", "India food", "Home"],
+             
               ),
             },
           ),

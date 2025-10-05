@@ -17,4 +17,6 @@ class AppRoute {
   // ========================= Stores ========================
    static const String Stores = "/stores";
    static const String StoreDetails = "/store_details";
+     // ========================= Profile ========================
+   static const String profile = "/profile";
 }

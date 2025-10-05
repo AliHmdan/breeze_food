@@ -94,7 +94,7 @@ class Login extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CustomTitle(
-                                    title: "Welcome to Foodgo",
+                                    title: "Welcome to breeze",
                                     color: Colors.white,
                                   ),
                                   SizedBox(height: 2.h),
@@ -180,7 +180,7 @@ class Login extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(height: 24.h),
-
+  
                                   // Button or loading
                                   state is LoginLoading
                                       ? Center(
@@ -193,12 +193,12 @@ class Login extends StatelessWidget {
                                       : CustomButton(
                                           title: "Continue",
                                           onPressed: () {
-                                            context.read<LoginBloc>().add(
-                                              LoginSubmitted(
-                                                phoneController.text,
-                                                passwordController.text,
-                                              ),
-                                            );
+                                            // context.read<LoginBloc>().add(
+                                            //   LoginSubmitted(
+                                            //     phoneController.text,
+                                            //     passwordController.text,
+                                            //   ),
+                                            // );
                                             Navigator.of(
                                               context,
                                             ).pushNamedAndRemoveUntil(
@@ -207,6 +207,9 @@ class Login extends StatelessWidget {
                                             );
                                           },
                                         ),
+                                  // CustomButton(title: "Continue", onPressed: (){
+                                  //   Navigator.of(context).pushNamed(AppRoute.home);
+                                  // })
                                 ],
                               ),
                             ),

@@ -11,7 +11,8 @@ class CustomAppbarHome extends StatelessWidget {
   final String? subtitle;
   final String? image;
   final IconData? icon;
-  const CustomAppbarHome({super.key,  this.image, this.icon,  this.subtitle, required this.title});
+  final void Function()? onTap;
+  const CustomAppbarHome({super.key,  this.image, this.icon,  this.subtitle, required this.title, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -19,17 +20,19 @@ class CustomAppbarHome extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // صورة البروفايل
-       CircleAvatar(
-  radius: 20.r,
-  child: ClipOval(
-    child: Image.asset(
-      'assets/images/01.jpg',
-      width: 40.w,
-      height: 40.h,
-      fit: BoxFit.cover,
-    ),
-  ),
-),
+       InkWell(onTap:onTap ,
+         child: CircleAvatar(
+           radius: 20.r,
+           child: ClipOval(
+             child: Image.asset(
+               'assets/images/01.jpg',
+               width: 40.w,
+               height: 40.h,
+               fit: BoxFit.cover,
+             ),
+           ),
+         ),
+       ),
 
         // النص والموقع
         Column(
