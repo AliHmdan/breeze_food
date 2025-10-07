@@ -8,9 +8,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constans/color.dart';
 import '../../widgets/auth/custom_date_picker_screen.dart';
 
-class InformationScreen extends StatelessWidget {
+class InformationScreen extends StatefulWidget {
   const InformationScreen({Key? key}) : super(key: key);
 
+  @override
+  State<InformationScreen> createState() => _InformationScreenState();
+}
+
+class _InformationScreenState extends State<InformationScreen> {
+   late TextEditingController firstnameController;
+  late TextEditingController lastnameController;
+
+  @override
+  void initState() {
+    super.initState();
+    firstnameController = TextEditingController();
+    lastnameController = TextEditingController();
+   
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,15 +66,18 @@ class InformationScreen extends StatelessWidget {
 
                   /// الاسم
                   CustomTextFormField(
-                    hintText: "Full Name",
-                    backgroundColor: AppColor.white,
-                    hintColor: AppColor.gry,
+                    hintText: "First Name",
+                   controller: firstnameController,
                   ),
 
                   SizedBox(height: 20.h),
-
+ CustomTextFormField(
+                    hintText: "Last Name",
+                    controller: lastnameController,
+                   
+                  ),
                   /// التاريخ
-                  const CustomDatePickerField(),
+                  // const CustomDatePickerField(),
 
                   SizedBox(height: 30.h),
 

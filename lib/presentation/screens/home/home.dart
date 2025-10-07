@@ -1,6 +1,9 @@
 import 'package:breezefood/core/constans/color.dart';
 import 'package:breezefood/core/constans/routes.dart';
+import 'package:breezefood/presentation/screens/profile/profile.dart';
 import 'package:breezefood/presentation/screens/search.dart';
+import 'package:breezefood/presentation/widgets/animated_ad_banner.dart';
+import 'package:breezefood/presentation/widgets/animated_background.dart';
 import 'package:breezefood/presentation/widgets/home/Stores.dart';
 import 'package:breezefood/presentation/widgets/button/custom_button_order.dart';
 import 'package:breezefood/presentation/widgets/auth/custom_search.dart';
@@ -28,7 +31,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
- 
     return Scaffold(
       backgroundColor: AppColor.Dark,
 
@@ -57,22 +59,40 @@ class _HomeState extends State<Home> {
                   child: CustomSearch(hint: "Search"),
                 ),
                 SizedBox(height: 20),
-                BrunchCarousel(),
+                // BrunchCarousel(),
+                AnimatedBackground(
+                  height: 150,
+                  child: Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/nextPage');
+                      },
+                      child: const Text('انتقل إلى الصفحة التالية'),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 15),
                 CustomTitleSection(
                   title: "Most popular",
                   all: "All",
                   icon: Icons.arrow_forward_ios_outlined,
+                  ontap: () {
+                    Navigator.of(context).pushNamed(AppRoute.PopularGridPage);
+                  },
                 ),
                 const SizedBox(height: 10),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-        
+                  padding: EdgeInsets.only(
+                    top: 10,
+                    bottom: 10,
+                    left: 8,
+                    right: 0.5,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColor.LightActive,
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  height: 199.h,
+                  height: 178,
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       double itemWidth = constraints.maxWidth / 2.3;
@@ -109,21 +129,24 @@ class _HomeState extends State<Home> {
                   all: "All",
                   icon: Icons.arrow_forward_ios_outlined,
                   ontap: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => DiscountGridPage()),
-                    );
+                    Navigator.of(context).pushNamed(AppRoute.discountDetails);
                   },
                 ),
                 const SizedBox(height: 10),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-        
+                  padding: EdgeInsets.only(
+                    top: 10,
+                    bottom: 10,
+                    left: 8,
+                    right: 0.5,
+                  ),
+
                   decoration: BoxDecoration(
                     color: AppColor.LightActive,
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  height: 199.h,
-        
+                  height: 178,
+
                   child: LayoutBuilder(
                     builder: (context, constraints) {
                       double itemWidth = constraints.maxWidth / 2.3;
@@ -134,7 +157,7 @@ class _HomeState extends State<Home> {
                           return Container(
                             width: itemWidth,
                             margin: EdgeInsets.only(right: 10.w),
-        
+
                             child: Discount(
                               imagePath: 'assets/images/004.jpg',
                               title: 'Chicken shish without...',
@@ -155,7 +178,7 @@ class _HomeState extends State<Home> {
                 const SizedBox(height: 10),
                 CustomTitleSection(title: "Fast food"),
                 const SizedBox(height: 10),
-        
+
                 Stack(
                   clipBehavior: Clip.none, // ضروري حتى يظهر الزر خارج الحاوية
                   children: [
@@ -210,8 +233,8 @@ class _HomeState extends State<Home> {
                         ],
                       ),
                     ),
-                       // الزر في المنتصف ويطفو فوق الحافة
-                       Positioned(
+                    // الزر في المنتصف ويطفو فوق الحافة
+                    Positioned(
                       bottom: 85, // نصف الزر تحت الحافة
                       left: 0,
                       right: 0,
@@ -221,25 +244,22 @@ class _HomeState extends State<Home> {
                           onPressed: () {},
                         ),
                       ),
-                    ), 
-          /// Bottom Navigation عائم
-          Positioned(
-            left: 20,
-            right: 20,
-            bottom: 20,
-            child:Custombottomnav()
-          ),
-                 
-                 
+                    ),
+
+                    /// Bottom Navigation عائم
+                    // Positioned(
+                    //   left: 20,
+                    //   right: 20,
+                    //   bottom: 20,
+                    //   child:Custombottomnav()
+                    // ),
                   ],
                 ),
-                
               ],
             ),
           ),
         ),
       ),
-    
     );
   }
 }

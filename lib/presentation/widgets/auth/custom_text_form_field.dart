@@ -52,13 +52,13 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
         hintText: widget.hintText,
         hintStyle: TextStyle(
-          color: widget.hintColor,
+          color: AppColor.gry,
           fontSize: 14.sp,
           fontFamily: 'Manrope',
          
         ),
         filled: true,
-        fillColor: widget.backgroundColor,
+        fillColor: AppColor.white,
         contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 3.h),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.r),
