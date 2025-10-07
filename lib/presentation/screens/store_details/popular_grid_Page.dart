@@ -1,12 +1,12 @@
+import 'package:breezefood/core/constans/color.dart';
+import 'package:breezefood/presentation/widgets/home/Stores.dart';
+import 'package:breezefood/presentation/widgets/home/most_popular.dart';
+import 'package:breezefood/presentation/widgets/title/custom_appbar_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../core/constans/color.dart';
-import '../widgets/title/custom_appbar_profile.dart';
-import '../widgets/discount_grid_page/discount_details.dart';
-
-class DiscountGridPage extends StatelessWidget {
-  const DiscountGridPage({super.key});
+class PopularGridPage extends StatelessWidget {
+  const PopularGridPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class DiscountGridPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: CustomAppbarProfile(
-            title: "Discount",
+            title: "Most popular",
             icon: Icons.arrow_back_ios,
             ontap: () {
               Navigator.of(
@@ -56,11 +56,11 @@ class DiscountGridPage extends StatelessWidget {
           child: LayoutBuilder(
             builder: (context, constraints) {
               final crossAxisCount = getCrossAxisCount(constraints.maxWidth);
-        
+
               return Container(
                 width: double.infinity,
                 height: double.infinity,
-        
+
                 decoration: BoxDecoration(
                   color: AppColor.LightActive,
                   borderRadius: BorderRadius.circular(15),
@@ -73,19 +73,22 @@ class DiscountGridPage extends StatelessWidget {
                       crossAxisCount: crossAxisCount,
                       mainAxisSpacing: 5.h, // ✅ المسافة الطولية بين الصفوف
                       crossAxisSpacing: 12.w, // ✅ المسافة العرضية بين الأعمدة
-                      childAspectRatio: 0.79, // ✅ نسبة العرض للارتفاع
+                      childAspectRatio: 0.92, // ✅ نسبة العرض للارتفاع
                     ),
                     itemCount: items.length,
                     itemBuilder: (context, index) {
                       final item = items[index];
-                      return DiscountDetails(
+                      return PopularItemCard(
                         imagePath: item["imagePath"]!,
-                        title: item["title"]!,
-                        subtitle: item["subtitle"]!,
-                        price: item["price"]!,
-                        discount: item["discount"]!,
+                        title: item["title"]!, // 
+                        subtitle: item["subtitle"], 
+                        price: item["price"]!, 
+                        oldPrice: item["oldPrice"],
                         onFavoriteToggle: () {
                           debugPrint("Favorite toggled for ${item["title"]}");
+                        },
+                        onTap: () {
+                          // يمكنك وضع هنا التنقل إلى صفحة التفاصيل مثلاً
                         },
                       );
                     },

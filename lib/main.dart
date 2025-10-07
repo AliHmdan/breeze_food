@@ -9,13 +9,16 @@ import 'package:breezefood/presentation/screens/auth/new_passowrd.dart';
 import 'package:breezefood/presentation/screens/auth/phone_number.dart';
 import 'package:breezefood/presentation/screens/auth/signup.dart';
 import 'package:breezefood/presentation/screens/auth/verfiy_code.dart';
+import 'package:breezefood/presentation/screens/discount_grid_Page.dart';
 import 'package:breezefood/presentation/screens/home/home.dart';
 import 'package:breezefood/presentation/screens/profile/profile.dart';
 import 'package:breezefood/presentation/screens/search.dart';
 import 'package:breezefood/presentation/screens/spalsh_screen.dart';
+import 'package:breezefood/presentation/screens/store_details/popular_grid_Page.dart';
 import 'package:breezefood/presentation/screens/store_details/stroe_details.dart';
 import 'package:breezefood/presentation/screens/stores.dart';
 import 'package:breezefood/presentation/screens/successful.dart';
+import 'package:breezefood/presentation/widgets/home/discount.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,7 +37,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return MediaQuery(    
+        return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.2),
           child: MaterialApp(
             title: ' breeze food',
@@ -57,11 +60,13 @@ class MyApp extends StatelessWidget {
               AppRoute.search: (context) => Search(),
               AppRoute.pay: (context) => Pay(),
               AppRoute.Success: (context) => Success(),
-                    AppRoute.profile: (context) => Profile(),
+              AppRoute.profile: (context) => Profile(),
               AppRoute.Stores: (context) => Stores(),
+              AppRoute.PopularGridPage: (context) => PopularGridPage(),
+              AppRoute.discountDetails: (context) => DiscountGridPage(),
+
               AppRoute.StoreDetails: (context) => StoreDetails(
                 categories: ["Burger", "Chrispy", "India food", "Home"],
-             
               ),
             },
           ),
