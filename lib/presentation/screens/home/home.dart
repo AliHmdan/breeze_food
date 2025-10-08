@@ -2,6 +2,7 @@ import 'package:breezefood/core/constans/color.dart';
 import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/presentation/screens/profile/profile.dart';
 import 'package:breezefood/presentation/screens/search.dart';
+import 'package:breezefood/presentation/screens/store_details/popular_grid_Page.dart';
 import 'package:breezefood/presentation/widgets/animated_ad_banner.dart';
 import 'package:breezefood/presentation/widgets/animated_background.dart';
 import 'package:breezefood/presentation/widgets/home/Stores.dart';
@@ -52,9 +53,10 @@ class _HomeState extends State<Home> {
                 const SizedBox(height: 15),
                 InkWell(
                   onTap: () {
-                    Navigator.of(
+                    Navigator.push(
                       context,
-                    ).push(MaterialPageRoute(builder: (context) => Search()));
+                      MaterialPageRoute(builder: (_) => const Search()),
+                    );
                   },
                   child: CustomSearch(hint: "Search"),
                 ),
@@ -77,6 +79,10 @@ class _HomeState extends State<Home> {
                   all: "All",
                   icon: Icons.arrow_forward_ios_outlined,
                   ontap: () {
+                    //                    Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => const PopularGridPage()),
+                    // );
                     Navigator.of(context).pushNamed(AppRoute.PopularGridPage);
                   },
                 ),
@@ -190,14 +196,14 @@ class _HomeState extends State<Home> {
                       ),
                       decoration: BoxDecoration(
                         color: AppColor.LightActive,
-                        borderRadius: BorderRadius.circular(25),
+                        borderRadius: BorderRadius.circular(30),
                       ),
                       child: ListView(
                         shrinkWrap: true,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         children: const [
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            padding: EdgeInsets.symmetric(horizontal: 1),
                             child: RestaurantCard(
                               imageUrl: "assets/images/004.jpg",
                               name: "Chicken King_Alhamra",
@@ -208,7 +214,7 @@ class _HomeState extends State<Home> {
                           ),
                           SizedBox(height: 12),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            padding: EdgeInsets.symmetric(horizontal: 1),
                             child: RestaurantCard(
                               imageUrl: "assets/images/002.jpg",
                               name: "Chicken King_Alhamra",
@@ -221,7 +227,7 @@ class _HomeState extends State<Home> {
                           ),
                           SizedBox(height: 12),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            padding: EdgeInsets.symmetric(horizontal: 1),
                             child: RestaurantCard(
                               imageUrl: "assets/images/003.jpg",
                               name: "Chicken King_Alhamra",

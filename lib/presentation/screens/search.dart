@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class Search extends StatefulWidget {
+  const Search({Key? key}) : super(key: key);
+
   @override
   _SearchState createState() => _SearchState();
 }
@@ -12,7 +14,6 @@ class _SearchState extends State<Search> {
   final TextEditingController _controller = TextEditingController();
   List<String> searchTags = [];
 
-  // قائمة الاقتراحات الأساسية
   final List<String> allSuggestions = [
     "Burger",
     "India foods",
@@ -30,7 +31,7 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     super.initState();
-    filteredSuggestions = []; // بالبداية ما تظهر أي قائمة
+    filteredSuggestions = [];
   }
 
   void _addTag(String text) {
@@ -72,15 +73,15 @@ class _SearchState extends State<Search> {
   }
 
   final Color suggestionTextColor = AppColor.gry;
-  // لون Divider
   final Color dividerColor = AppColor.gry;
   final double dividerThickness = 1.0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.Dark,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
+        preferredSize: Size.fromHeight(60.h),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
           child: Row(
@@ -157,45 +158,49 @@ class _SearchState extends State<Search> {
           ),
         ),
       ),
-      body:
-      Padding(
+      body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child:
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              if (showSuggestions && filteredSuggestions.isNotEmpty)
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12), // هنا تحدد قيمة الزوايا
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: filteredSuggestions.length,
-                      separatorBuilder: (context, index) => Divider(
-                        color: dividerColor,
-                        thickness: dividerThickness,
-                        height: 1,
-                      ),
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(
-                            filteredSuggestions[index],
-                            style: TextStyle(
-                              color: suggestionTextColor,
-                              fontSize: 14.sp,
-                            ),
-                          ),
-                          onTap: () => _addTag(filteredSuggestions[index]),
-                        );
-                      },
+        child: Column(
+          children: [
+            // suggestions (fixed height content, ListView shrinkWrapped)
+            if (showSuggestions && filteredSuggestions.isNotEmpty)
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: filteredSuggestions.length,
+                    separatorBuilder: (context, index) => Divider(
+                      color: dividerColor,
+                      thickness: dividerThickness,
+                      height: 1,
                     ),
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(
+                          filteredSuggestions[index],
+                          style: TextStyle(
+                            color: suggestionTextColor,
+                            fontSize: 14.sp,
+                          ),
+                        ),
+                        onTap: () => _addTag(filteredSuggestions[index]),
+                      );
+                    },
                   ),
                 ),
-              Expanded(
+              ),
+
+            const SizedBox(height: 8),
+
+            // area with chips — allow it to fill remaining space and scroll if necessary
+            Expanded(
+              child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Wrap(
@@ -217,9 +222,8 @@ class _SearchState extends State<Search> {
                   ),
                 ),
               ),
-          
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
