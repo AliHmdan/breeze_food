@@ -11,7 +11,7 @@ class AppRoute {
   static const String information = "/information";
 // ========================= AUTH ========================
   static const String home = "/home";
-  static const String search = "/search";
+ static const String search = "/search";
   static const String pay = "/pay";
   static const String Success = "/success";
 // ========================= AUTH ========================

@@ -20,7 +20,7 @@ class CustomSearch extends StatelessWidget {
     this.boxicon,
     this.onTap,
     this.readOnly = true,
-    this.height = 50, // قيمة افتراضية
+    this.height = 40, // قيمة افتراضية
     this.borderRadius = 30, // قيمة افتراضية
   });
 
@@ -48,12 +48,13 @@ class CustomSearch extends StatelessWidget {
         SizedBox(width: 8.w),
         Expanded(
           child: SizedBox(
-            height: height.h, // ✅ تحكم بالارتفاع
+            height: height.h,
             child: TextFormField(
               readOnly: readOnly,
               onTap: onTap,
               style: TextStyle(
                 fontSize: 14.sp,
+                height: 1.2, // ✅ توازن النص داخل الحقل
               ),
               decoration: InputDecoration(
                 hintText: hint,
@@ -61,10 +62,9 @@ class CustomSearch extends StatelessWidget {
                   color: AppColor.LightActive,
                   fontSize: 14.sp,
                   fontFamily: "Manrope",
-                  // fontWeight: FontWeight.w400,
                 ),
                 prefixIcon: Padding(
-                  padding: EdgeInsets.all(12.w), // ✅ متجاوب
+                  padding: EdgeInsets.all(10.w), //تحكم بحجم الأيقونة
                   child: SvgPicture.asset(
                     'assets/icons/search.svg',
                     color: AppColor.LightActive,
@@ -72,9 +72,10 @@ class CustomSearch extends StatelessWidget {
                     height: 8.w,
                   ),
                 ),
+                // ✅ هذه أهم نقطة لضبط الارتفاع
                 contentPadding: EdgeInsets.symmetric(
+                  vertical: (height / 2.8).h, // تناسب ديناميكي
                   horizontal: 12.w,
-                  vertical: 10.h,
                 ),
                 filled: true,
                 fillColor: AppColor.white,
@@ -98,17 +99,13 @@ class CustomSearch extends StatelessWidget {
         if (boxicon != null)
           Container(
             width: 40.w,
-            height: 40.w,
+            height: 50.w,
             padding: EdgeInsets.all(4.w),
             decoration: BoxDecoration(
               color: AppColor.white,
               borderRadius: BorderRadius.circular(50.r),
             ),
-            child: SvgPicture.asset(
-              boxicon!,
-              width: 40.w,
-              height: 40.w,
-            ),
+            child: SvgPicture.asset(boxicon!, width: 40.w, height: 40.w),
           ),
       ],
     );
