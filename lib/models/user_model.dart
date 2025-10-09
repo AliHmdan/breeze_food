@@ -1,31 +1,22 @@
-/// ✅ موديل تسجيل مستخدم
-class RegisterResponse {
-  final String message;
-
-  RegisterResponse({required this.message});
-
-  factory RegisterResponse.fromJson(Map<String, dynamic> json) {
-    return RegisterResponse(message: json['message']);
-  }
-}
-
-
-/// ✅ موديل المستخدم
 class UserModel {
   final int id;
-  final String name;
-  final String email;
+  final String? name;
+  final String? email;
   final String phone;
-  final String type;
-  final String status;
+  final String? type;
+  final String? status;
+  final String? profileImage;
+  final String? referralCode;
 
   UserModel({
     required this.id,
-    required this.name,
-    required this.email,
+    this.name,
+    this.email,
     required this.phone,
-    required this.type,
-    required this.status,
+    this.type,
+    this.status,
+    this.profileImage,
+    this.referralCode,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -36,6 +27,8 @@ class UserModel {
       phone: json['phone'],
       type: json['type'],
       status: json['status'],
+      profileImage: json['profile_image'],
+      referralCode: json['referral_code'],
     );
   }
 
@@ -46,23 +39,7 @@ class UserModel {
     "phone": phone,
     "type": type,
     "status": status,
+    "profile_image": profileImage,
+    "referral_code": referralCode,
   };
-}
-
-/// ✅ موديل تسجيل الدخول
-class LoginResponse {
-  final String token;
-  final UserModel user;
-
-  LoginResponse({
-    required this.token,
-    required this.user,
-  });
-
-  factory LoginResponse.fromJson(Map<String, dynamic> json) {
-    return LoginResponse(
-      token: json['token'],
-      user: UserModel.fromJson(json['user']),
-    );
-  }
 }
