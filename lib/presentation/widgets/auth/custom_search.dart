@@ -42,7 +42,7 @@ class CustomSearch extends StatelessWidget {
                 color: AppColor.black,
                 size: 18.sp, // ✅ متجاوب
               ),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(context)
             ),
           ),
         SizedBox(width: 8.w),
@@ -63,6 +63,7 @@ class CustomSearch extends StatelessWidget {
                   fontSize: 14.sp,
                   fontFamily: "Manrope",
                 ),
+                
                 prefixIcon: Padding(
                   padding: EdgeInsets.all(10.w), //تحكم بحجم الأيقونة
                   child: SvgPicture.asset(

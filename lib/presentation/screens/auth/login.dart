@@ -3,6 +3,7 @@ import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/presentation/screens/auth/new_passowrd.dart';
 import 'package:breezefood/presentation/widgets/auth/custom_text_form_field.dart';
 import 'package:breezefood/presentation/widgets/button/custom_button.dart';
+import 'package:breezefood/presentation/widgets/main_shell.dart';
 import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
 import 'package:breezefood/presentation/widgets/title/custom_title.dart';
 import 'package:flutter/gestures.dart';
@@ -174,8 +175,15 @@ class _LoginState extends State<Login> {
                             CustomButton(
                               title: "Continue",
                               onPressed: () {
-                                Navigator.of(context)
-                                    .pushNamed(AppRoute.home);
+                                // Navigator.of(context)
+                                //     .pushNamed(AppRoute.home);
+    //                              Navigator.of(context).pushReplacement(
+    //   MaterialPageRoute(
+    //     builder: (context) => const MainShell(),
+    //   ),
+    // );
+    Navigator.of(context).pushReplacementNamed(AppRoute.mainShell);
+
                               },
                             ),
                           ],

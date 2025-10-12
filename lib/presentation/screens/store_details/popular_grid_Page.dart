@@ -43,9 +43,7 @@ class PopularGridPage extends StatelessWidget {
             title: "Most popular",
             icon: Icons.arrow_back_ios,
             ontap: () {
-              Navigator.of(
-                context,
-              ).pushNamedAndRemoveUntil("/home", (route) => false);
+          Navigator.of(context).pop();
             },
           ),
         ),

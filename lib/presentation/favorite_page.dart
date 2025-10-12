@@ -180,12 +180,7 @@ class _FavoritePageState extends State<FavoritePage> {
                   const SizedBox(height: 40),
                 ],
               ),
-              Positioned(
-                left: 20,
-                right: 20,
-                bottom: 20,
-                child: Custombottomnav(),
-              ),
+           
             ],
           ),
         ),

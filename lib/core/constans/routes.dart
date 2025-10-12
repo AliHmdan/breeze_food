@@ -9,19 +9,21 @@ class AppRoute {
   static const String successful = "/successful";
   static const String phoneNumber = "/phone_number";
   static const String information = "/information";
-// ========================= AUTH ========================
+// ========================= Home ========================
   static const String home = "/home";
  static const String search = "/search";
   static const String pay = "/pay";
   static const String Success = "/success";
-// ========================= AUTH ========================
-  static const String Stores = "/stores";
+// ========================= Stores ========================
+  static const String stores_nav_tab = "/stores_nav_tab";
   static const String StoreDetails = "/store_details";
-// ========================= AUTH ========================
+// ========================= discountDetails ========================
 
   static const String discountDetails = "/discount_grid_Page";
-// ========================= AUTH ========================
+// ========================= popular_grid_Page ========================
   static const String PopularGridPage = "/popular_grid_Page";
-// ========================= AUTH ========================
+// ========================= Profile ========================
   static const String profile = "/profile";
+  // ========================= Profile ========================
+  static const String mainShell = "/main_shell";
 }

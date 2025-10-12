@@ -16,9 +16,10 @@ import 'package:breezefood/presentation/screens/search.dart';
 import 'package:breezefood/presentation/screens/spalsh_screen.dart';
 import 'package:breezefood/presentation/screens/store_details/popular_grid_Page.dart';
 import 'package:breezefood/presentation/screens/store_details/stroe_details.dart';
-import 'package:breezefood/presentation/screens/stores.dart';
+import 'package:breezefood/presentation/screens/stores_nav_tab.dart';
 import 'package:breezefood/presentation/screens/successful.dart';
 import 'package:breezefood/presentation/widgets/home/discount.dart';
+import 'package:breezefood/presentation/widgets/main_shell.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
           child: MaterialApp(
             title: ' breeze food',
             debugShowCheckedModeBanner: false,
-            // home:Home()
+            // home:StoresNavTab()
             // Stores()
             // StoreDetails( categories: ["Burger", "Chrispy", "India food", "Home"])
             // DetailsCategoris(),
@@ -61,13 +62,14 @@ class MyApp extends StatelessWidget {
               AppRoute.pay: (context) => Pay(),
               AppRoute.Success: (context) => Success(),
               AppRoute.profile: (context) => Profile(),
-              AppRoute.Stores: (context) => Stores(),
+              AppRoute.stores_nav_tab: (context) => StoresNavTab(),
               AppRoute.PopularGridPage: (context) => PopularGridPage(),
               AppRoute.discountDetails: (context) => DiscountGridPage(),
 
               AppRoute.StoreDetails: (context) => StoreDetails(
                 categories: ["Burger", "Chrispy", "India food", "Home"],
               ),
+              AppRoute.mainShell: (context) => MainShell(),
             },
           ),
         );

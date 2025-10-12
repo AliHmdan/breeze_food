@@ -10,8 +10,8 @@ import '../widgets/location_chip.dart';
 import '../widgets/CustomBottomNav.dart';
 import '../widgets/title/custom_title.dart';
 
-class Stores extends StatelessWidget {
-  const Stores({super.key});
+class StoresNavTab extends StatelessWidget {
+  const StoresNavTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +51,10 @@ class Stores extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         children: [
-          const CustomAppbarHome(title: "Stores"),
+          const CustomAppbarHome(title: "StoresNavTab"),
           SizedBox(height: 40.h),
           const CustomSearch(
-            hint: "Search food ,stores,restaurants",
+            hint: "Search food ,StoresNavTab,restaurants",
             boxicon: 'assets/icons/boxsearch.svg',
           ),
           LocationChip(
