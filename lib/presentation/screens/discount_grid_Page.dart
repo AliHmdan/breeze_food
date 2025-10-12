@@ -43,9 +43,7 @@ class DiscountGridPage extends StatelessWidget {
             title: "Discount",
             icon: Icons.arrow_back_ios,
             ontap: () {
-              Navigator.of(
-                context,
-              ).pushNamedAndRemoveUntil("/home", (route) => false);
+           Navigator.of(context).pop();
             },
           ),
         ),
