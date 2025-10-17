@@ -8,16 +8,18 @@ class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
 
   @override
-  _SearchState createState() => _SearchState();
+  State<Search> createState() => _SearchState();
 }
 
 class _SearchState extends State<Search> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
+  final GlobalKey _searchFieldKey = GlobalKey(); // لتحديد موضع الحقل
+
   List<String> searchTags = [];
 
-  final List<String> allSuggestions = [
+  final List<String> allSuggestions = const [
     "Burger",
     "Shawarma King",
     "KFC",
@@ -25,24 +27,28 @@ class _SearchState extends State<Search> {
     "Tacos",
     "McDonald's",
     "Shish",
-    "Parise"
+    "Parise",
   ];
 
   List<String> filteredSuggestions = [];
   bool showSuggestions = false;
-  final GlobalKey _searchFieldKey = GlobalKey(); // 🔹 لتحديد موقع حقل البحث على الشاشة
 
   @override
   void initState() {
     super.initState();
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        _filterSuggestions('');
-        setState(() {
-          showSuggestions = true;
-        });
+        _filterSuggestions(_controller.text);
+        setState(() => showSuggestions = true);
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
   }
 
   void _filterSuggestions(String input) {
@@ -51,30 +57,24 @@ class _SearchState extends State<Search> {
       showSuggestions = true;
       filteredSuggestions = allSuggestions
           .where((item) =>
-              item.toLowerCase().contains(query) &&
-              !searchTags.contains(item))
+              item.toLowerCase().contains(query) && !searchTags.contains(item))
           .toList();
     });
   }
 
   void _addTag(String text) {
-    if (text.trim().isEmpty) return;
-    if (!searchTags.contains(text)) {
-      setState(() {
-        searchTags.add(text);
-      });
+    final t = text.trim();
+    if (t.isEmpty) return;
+    if (!searchTags.contains(t)) {
+      setState(() => searchTags.add(t));
     }
     _controller.clear();
-    setState(() {
-      showSuggestions = false;
-    });
+    setState(() => showSuggestions = false);
     _focusNode.unfocus();
   }
 
   void _removeTag(String tag) {
-    setState(() {
-      searchTags.remove(tag);
-    });
+    setState(() => searchTags.remove(tag));
   }
 
   Widget _buildTagChip(String tag) {
@@ -85,11 +85,7 @@ class _SearchState extends State<Search> {
         children: [
           GestureDetector(
             onTap: () => _removeTag(tag),
-            child: Icon(
-              Icons.close,
-              size: 18.sp,
-              color: AppColor.white,
-            ),
+            child: Icon(Icons.close, size: 18.sp, color: AppColor.white),
           ),
           SizedBox(width: 8.w),
           Container(
@@ -118,14 +114,12 @@ class _SearchState extends State<Search> {
       backgroundColor: AppColor.Dark,
       body: Stack(
         children: [
-          /// 🔹 المحتوى الرئيسي
+          // المحتوى الرئيسي
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
               FocusScope.of(context).unfocus();
-              setState(() {
-                showSuggestions = false;
-              });
+              setState(() => showSuggestions = false);
             },
             child: SafeArea(
               child: Padding(
@@ -133,26 +127,26 @@ class _SearchState extends State<Search> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /// ✅ شريط البحث
+                    // شريط البحث
                     Row(
                       children: [
                         CustomArrow(
-                          onTap: () {},
+                          onTap: () => Navigator.pop(context),
                           color: AppColor.black,
                           background: AppColor.white,
                         ),
                         SizedBox(width: 8.w),
                         Expanded(
                           child: Container(
-                            key: _searchFieldKey, // 📍 حفظ موقعه
+                            key: _searchFieldKey,
                             height: 40.h,
                             padding: EdgeInsets.symmetric(horizontal: 10.w),
                             child: TextField(
                               focusNode: _focusNode,
                               controller: _controller,
                               onTap: () => _filterSuggestions(_controller.text),
-                              onChanged: (val) => _filterSuggestions(val),
-                              onSubmitted: (val) => _addTag(val),
+                              onChanged: _filterSuggestions,
+                              onSubmitted: _addTag,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.all(10.w),
                                 filled: true,
@@ -197,7 +191,7 @@ class _SearchState extends State<Search> {
                       ],
                     ),
 
-                    /// ✅ التاغات
+                    // التاغات
                     if (searchTags.isNotEmpty)
                       Padding(
                         padding: EdgeInsets.only(top: 20.h),
@@ -212,25 +206,29 @@ class _SearchState extends State<Search> {
             ),
           ),
 
-          /// 🔹 القائمة المنسدلة فوق المحتوى
+          // القائمة المنسدلة فوق المحتوى
           if (showSuggestions)
             Builder(
               builder: (context) {
-                // الحصول على موقع مربع البحث
+                // تحديد موقع حقل البحث على الشاشة
                 final renderBox = _searchFieldKey.currentContext?.findRenderObject() as RenderBox?;
                 final offset = renderBox?.localToGlobal(Offset.zero);
-                final topPosition = offset?.dy ?? 110.0; // fallback في حال null
+                final topPosition = offset?.dy ?? 110.0; // Fallback
+
+                // احسب أقصى ارتفاع منطقي للقائمة
+                final double computed = (filteredSuggestions.length * 48.0.h);
+                final double maxHeight =
+                    computed > 300.0.h ? 300.0.h : computed; // cap عند 300.h
 
                 return Positioned(
-                  top: topPosition + 45.h, // مباشرة تحت مربع البحث
+                  top: topPosition + 45.h, // تحت مربع البحث مباشرة
                   left: 24.w,
                   right: 24.w,
                   child: Material(
                     color: Colors.transparent,
                     child: Container(
                       constraints: BoxConstraints(
-                        maxHeight:
-                            (filteredSuggestions.length * 500.0).h.clamp(0, 500.h),
+                        maxHeight: maxHeight, // double صحيح
                       ),
                       decoration: BoxDecoration(
                         color: AppColor.white,
@@ -264,21 +262,19 @@ class _SearchState extends State<Search> {
                                 height: 1.h,
                               ),
                               itemBuilder: (context, index) {
-                                final suggestion =
-                                    filteredSuggestions[index];
+                                final suggestion = filteredSuggestions[index];
                                 return InkWell(
                                   onTap: () => _addTag(suggestion),
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 12.w, vertical: 14.h),
-                                    child: Expanded(
-                                      child: Text(
-                                        suggestion,
-                                        style: TextStyle(
-                                          color: AppColor.black,
-                                          fontSize: 15.sp,
-                                          fontFamily: "Manrope",
-                                        ),
+                                    // ❗ أزلنا Expanded الذي كان يسبب الخطأ
+                                    child: Text(
+                                      suggestion,
+                                      style: TextStyle(
+                                        color: AppColor.black,
+                                        fontSize: 15.sp,
+                                        fontFamily: "Manrope",
                                       ),
                                     ),
                                   ),

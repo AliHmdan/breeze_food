@@ -21,9 +21,9 @@ class TiemPrice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 6),
-      width: 110.w,
-      height: 35.h,
+      padding: EdgeInsets.symmetric(horizontal: 3),
+      width: 90.w,
+      height: 28.h,
       decoration: BoxDecoration(
         color: AppColor.white,
         borderRadius: BorderRadius.circular(20),
@@ -36,8 +36,8 @@ class TiemPrice extends StatelessWidget {
           else if (svgPath != null)
             SvgPicture.asset(
               svgPath!,
-              width: 24.w,
-              height: 30.h,
+              width: 20.w,
+              height: 20.h,
               color: AppColor.Dark,
             ),
 
@@ -46,7 +46,7 @@ class TiemPrice extends StatelessWidget {
               CustomSubTitle(
                 subtitle: title,
                 color: AppColor.Dark,
-                fontsize: 12.sp,
+                fontsize: 11.sp,
               ),
               CustomSubTitle(
                 subtitle: subtitle,

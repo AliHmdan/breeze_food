@@ -4,31 +4,32 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constans/color.dart';
 import '../title/custom_sub_title.dart';
 
-class CustomAdd extends StatefulWidget {
-  const CustomAdd({super.key});
+class CustomHot extends StatefulWidget {
+  const CustomHot({super.key});
 
   @override
-  State<CustomAdd> createState() => _CustomAddState();
+  State<CustomHot> createState() => _CustomHotState();
 }
 
-class _CustomAddState extends State<CustomAdd> {
+class _CustomHotState extends State<CustomHot> {
   String? _selectedAddon;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // ✅ العنصر الأول
+        // ✅ الخيار الأول
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 3.h), // 👈 يتحكم بالمسافة الرأسية
+          padding: EdgeInsets.symmetric(vertical: 3.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
                   Checkbox(
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, // 👈 يقلل المساحة التفاعلية
-                    visualDensity: const VisualDensity(horizontal: -4, vertical: -4), // 👈 يقلل الحجم العام
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    visualDensity:
+                        const VisualDensity(horizontal: -4, vertical: -4),
                     activeColor: AppColor.primaryColor,
                     side: BorderSide(
                       color: AppColor.white,
@@ -37,15 +38,15 @@ class _CustomAddState extends State<CustomAdd> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    value: _selectedAddon == "chips",
+                    value: _selectedAddon == "Hot",
                     onChanged: (val) {
                       setState(() {
-                        _selectedAddon = val! ? "chips" : null;
+                        _selectedAddon = val! ? "Hot" : null;
                       });
                     },
                   ),
                   CustomSubTitle(
-                    subtitle: "Regular chips",
+                    subtitle: "Hot",
                     color: AppColor.white,
                     fontsize: 14.sp,
                   ),
@@ -60,9 +61,9 @@ class _CustomAddState extends State<CustomAdd> {
           ),
         ),
 
-        // ✅ العنصر الثاني
+        // ✅ الخيار الثاني
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 3.h), // 👈 نفس الشي
+          padding: EdgeInsets.symmetric(vertical: 3.h),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -70,7 +71,8 @@ class _CustomAddState extends State<CustomAdd> {
                 children: [
                   Checkbox(
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                    visualDensity:
+                        const VisualDensity(horizontal: -4, vertical: -4),
                     activeColor: AppColor.primaryColor,
                     side: BorderSide(
                       color: AppColor.white,
@@ -79,15 +81,15 @@ class _CustomAddState extends State<CustomAdd> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    value: _selectedAddon == "rice",
+                    value: _selectedAddon == "No Hot",
                     onChanged: (val) {
                       setState(() {
-                        _selectedAddon = val! ? "rice" : null;
+                        _selectedAddon = val! ? "No Hot" : null;
                       });
                     },
                   ),
                   CustomSubTitle(
-                    subtitle: "Spicy Rice",
+                    subtitle: "No Hot",
                     color: AppColor.white,
                     fontsize: 14.sp,
                   ),
