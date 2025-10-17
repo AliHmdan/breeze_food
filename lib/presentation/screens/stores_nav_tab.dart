@@ -1,169 +1,247 @@
+import 'package:breezefood/core/constans/color.dart';
 import 'package:breezefood/core/constans/routes.dart';
+import 'package:breezefood/data/model/restaurant.dart';
+import 'package:breezefood/presentation/widgets/auth/custom_search.dart';
+import 'package:breezefood/presentation/widgets/custom_appbar_home.dart';
+import 'package:breezefood/presentation/widgets/home/custom_fast_food.dart';
+import 'package:breezefood/presentation/widgets/location_chip.dart';
+import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../core/constans/color.dart';
-import '../widgets/custom_appbar_home.dart';
-import '../widgets/auth/custom_search.dart';
-import '../widgets/title/custom_sub_title.dart';
-import '../widgets/location_chip.dart';
-import '../widgets/CustomBottomNav.dart';
-import '../widgets/title/custom_title.dart';
-
-class StoresNavTab extends StatelessWidget {
+class StoresNavTab extends StatefulWidget {
   const StoresNavTab({super.key});
 
   @override
+  State<StoresNavTab> createState() => _StoresNavTabState();
+}
+
+class _StoresNavTabState extends State<StoresNavTab>
+    with SingleTickerProviderStateMixin {
+  // 👈 هذا هو المطلوب
+  late final TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      if (mounted) setState(() {}); // لتحديث مؤشر التبويب المخصص
+    });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> restaurants = [
-      {
-        "name": "Chicken King_Alhamra",
-        "image": "assets/images/pourple.jpg",
-        "rating": 4.9,
-        "orders": "500+ Order",
-        "time": "30M"
-      },
-      {
-        "name": "Pizza Hut Center",
-        "image": "assets/images/004.jpg",
-        "rating": 4.7,
-        "orders": "300+ Order",
-        "time": "25M"
-      },
-      {
-        "name": "Burger House",
-        "image": "assets/images/003.jpg",
-        "rating": 4.5,
-        "orders": "200+ Order",
-        "time": "20M"
-      },
-      {
-        "name": "Shawarma Spot",
-        "image": "assets/images/001.jpg",
-        "rating": 4.8,
-        "orders": "400+ Order",
-        "time": "35M"
-      },
+    final restaurants = <Restaurant>[
+      Restaurant(
+        imageUrl: "assets/images/004.jpg",
+        name: "Chicken King_Alhamra",
+        rating: 4.9,
+        orders: "500+ Order",
+        time: "20M",
+      ),
+      Restaurant(
+        imageUrl: "assets/images/002.jpg",
+        name: "Burger Master",
+        rating: 4.7,
+        orders: "300+ Order",
+        time: "18M",
+        isClosed: true,
+        closedText: "Open tomorrow at 09:00 AM",
+      ),
+      Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Sushi Roll",
+        rating: 4.8,
+        orders: "220+ Order",
+        time: "25M",
+      ),
     ];
+
+    final supermarkets = <Restaurant>[
+      Restaurant(
+        imageUrl: "assets/images/004.jpg",
+        name: "Fresh Market",
+        rating: 4.6,
+        orders: "1K+ Orders",
+        time: "30M",
+      ),
+      Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Daily Mart",
+        rating: 4.5,
+        orders: "800+ Orders",
+        time: "28M",
+      ),
+    ];
+
+    final titles = ["Restaurant", "Super Market"];
 
     return Scaffold(
       backgroundColor: AppColor.Dark,
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        children: [
-          const CustomAppbarHome(title: "StoresNavTab"),
-          SizedBox(height: 40.h),
-          const CustomSearch(
-            hint: "Search food ,StoresNavTab,restaurants",
-            boxicon: 'assets/icons/boxsearch.svg',
-          ),
-          LocationChip(
-            text: "LocationChip",
-            iconPath: "assets/icons/telegram.svg",
-            onTap: () {},
-          ),
-          SizedBox(height: 20.h),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Column(
+            children: [
+              const CustomAppbarHome(title: "Stores"),
 
-          // 🔽 هنا نستخدم ListView.builder
-        Container(
-  decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(50.r),
-    color: AppColor.LightActive,
-  ),
-  child: ListView.builder(
-    scrollDirection: Axis.vertical,
-    itemCount: restaurants.length,
-    shrinkWrap: true, 
-    physics: const NeverScrollableScrollPhysics(),
-    itemBuilder: (context, index) {
-      final restaurant = restaurants[index];
-      return GestureDetector(
-        onTap: () {
-          Navigator.of(context).pushNamed(AppRoute.StoreDetails);
-        },
-        child: Container(
-          height: 120.h,
-          margin: EdgeInsets.only(
-            top: index == 0 ? 0 : 8.h, // ✅ أول عنصر بدون فراغ
-            left: 8.w,
-            right: 8.w,
-            bottom: 8.h,
-          ), // ✅ بدل الـ padding
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(60.r),
-            image: DecorationImage(
-              image: AssetImage(restaurant["image"]),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(60.r),
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: Container(
-                    color: Colors.black.withOpacity(0.4),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // الصف الأول (التقييم + الطلبات + الوقت)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              const Icon(Icons.star,
-                                  color: Colors.yellow, size: 16),
-                              const SizedBox(width: 4),
-                              CustomSubTitle(
-                                subtitle:
-                                    "${restaurant["rating"]} | ${restaurant["orders"]}",
-                                color: AppColor.white,
-                                fontsize: 10.sp,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              const Icon(Icons.timer,
-                                  color: Colors.white, size: 16),
-                              const SizedBox(width: 4),
-                              CustomSubTitle(
-                                subtitle: restaurant["time"],
-                                color: AppColor.white,
-                                fontsize: 10.sp,
-                              ),
-                            ],
-                          ),
-                        ],
+              // تبويبك المخصص المعتمد على _tabController.index
+              Row(
+                children: List.generate(2, (index) {
+                  final isSelected = _tabController.index == index;
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () => _tabController.animateTo(
+                        index,
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeInOutCubic,
                       ),
-                      SizedBox(height: 20.h),
-                      Center(
-                        child: CustomTitle(
-                          title: restaurant["name"],
-                          color: AppColor.white,
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CustomSubTitle(
+                              subtitle: titles[index],
+                              color: isSelected
+                                  ? AppColor.primaryColor
+                                  : AppColor.white,
+                              fontsize: 14.sp,
+                            ),
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                              margin: EdgeInsets.only(top: 4.h),
+                              height: 3,
+                              width: isSelected ? 130.w : 0,
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? AppColor.primaryColor
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(2.r),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
+                  );
+                }),
+              ),
+
+              SizedBox(height: 24.h),
+
+              const CustomSearch(
+                hint: "Search food, stores, restaurants",
+                boxicon: 'assets/icons/boxsearch.svg',
+              ),
+              SizedBox(height: 8.h),
+
+              LocationChip(
+                text: "Your location",
+                iconPath: "assets/icons/telegram.svg",
+                onTap: () {},
+              ),
+              SizedBox(height: 16.h),
+
+              // المحتوى مع نفس الستايل
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15.r),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppColor.LightActive,
+                      borderRadius: BorderRadius.circular(15.r),
+                      border: Border.all(
+                        color: Colors.white.withOpacity(0.08),
+                        width: 1,
+                      ),
+                    ),
+                    child: TabBarView(
+                      controller: _tabController, // 👈 مهم
+                      children: [
+                        ListView.builder(
+                          key: const PageStorageKey('tab_restaurants'),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 6,
+                            horizontal: 5,
+                          ),
+                          physics: const ClampingScrollPhysics(),
+                          itemCount: restaurants.length,
+                          itemBuilder: (context, index) {
+                            final r = restaurants[index];
+                            return Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () => Navigator.of(
+                                    context,
+                                  ).pushNamed(AppRoute.StoreDetails),
+                                  child: RestaurantCard(
+                                    imageUrl: r.imageUrl,
+                                    name: r.name,
+                                    rating: r.rating,
+                                    orders: r.orders,
+                                    time: r.time,
+                                    isClosed: r.isClosed,
+                                    closedText: r.closedText,
+                                  ),
+                                ),
+                                if (index != restaurants.length - 1)
+                                  const SizedBox(
+                                    height: 12,
+                                  ), // فاصل بين العناصر فقط
+                              ],
+                            );
+                          },
+                        ),
+                        ListView.builder(
+                          key: const PageStorageKey('tab_supermarket'),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 6,
+                            horizontal: 5,
+                          ),
+                          physics: const ClampingScrollPhysics(),
+                          itemCount: supermarkets.length,
+                          itemBuilder: (context, index) {
+                            final s = supermarkets[index];
+                            return Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () => Navigator.of(
+                                    context,
+                                  ).pushNamed(AppRoute.StoreDetails),
+                                  child: RestaurantCard(
+                                    imageUrl: s.imageUrl,
+                                    name: s.name,
+                                    rating: s.rating,
+                                    orders: s.orders,
+                                    time: s.time,
+                                    isClosed: s.isClosed,
+                                    closedText: s.closedText,
+                                  ),
+                                ),
+                                // 🔹 نضيف مسافة بين العناصر فقط إذا لم يكن العنصر الأخير
+                                if (index != supermarkets.length - 1)
+                                  const SizedBox(height: 12),
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-      );
-    },
-  ),
-)
-
-        ],
       ),
-      // bottomNavigationBar: const CustomBottomNav(currentIndex: 1),
     );
   }
 }

@@ -159,16 +159,12 @@ class AddNewMeal extends StatelessWidget {
                   // ✅ عنصر واحد
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      showAddOrderDialog(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => AddOrder(
-                            title: "Chicken",
-                            price: "5.00\$",
-                            oldPrice: "5.00\$",
-                            imagePath: "assets/images/004.jpg",
-                          ),
-                        ),
+                        title: "Chicken",
+                        price: "5.00\$",
+                        oldPrice: "5.00\$",
+                        imagePath: "assets/images/004.jpg",
                       );
                     },
                     child: Container(
@@ -216,16 +212,12 @@ class AddNewMeal extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 15),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.push(
+                              showAddOrderDialog(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => AddOrder(
-                                    title: "Chicken",
-                                    price: "5.00\$",
-                                    oldPrice: "5.00\$",
-                                    imagePath: "assets/images/004.jpg",
-                                  ),
-                                ),
+                                title: "Chicken",
+                                price: "5.00\$",
+                                oldPrice: "5.00\$",
+                                imagePath: "assets/images/004.jpg",
                               );
                             },
                             child: PopularItemCard(

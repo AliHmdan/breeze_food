@@ -1,15 +1,12 @@
 import 'dart:ui';
-
 import 'package:breezefood/core/constans/color.dart';
 import 'package:breezefood/presentation/favorite_page.dart';
 import 'package:breezefood/presentation/screens/home/home.dart';
 import 'package:breezefood/presentation/screens/orders.dart';
 import 'package:breezefood/presentation/screens/stores_nav_tab.dart';
-import 'package:breezefood/presentation/widgets/home/Stores.dart';
-import 'package:breezefood/presentation/widgets/restaurant_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart'; // <-- مهم لاستخدام SVG
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Custombottomnav extends StatefulWidget {
   const Custombottomnav({super.key});
@@ -21,7 +18,6 @@ class Custombottomnav extends StatefulWidget {
 class _CustombottomnavState extends State<Custombottomnav> {
   int selectedIndex = 0;
 
-
   final List<String> svgIcons = const [
     'assets/icons/home-linear.svg',
     'assets/icons/stores.svg',
@@ -31,8 +27,7 @@ class _CustombottomnavState extends State<Custombottomnav> {
 
   final List<String> labels = const ["Home", "Stores", "Favorites", "Orders"];
 
-
-  final List<Widget> pages =  [
+  final List<Widget> pages = const [
     Home(),
     StoresNavTab(),
     FavoritePage(),
@@ -41,7 +36,6 @@ class _CustombottomnavState extends State<Custombottomnav> {
 
   static const double _barHeight = 60;
 
-  // ويدجت مساعدة لعرض SVG مع لون
   Widget _buildSvgIcon(String path, {required bool selected, double size = 22}) {
     return SvgPicture.asset(
       path,
@@ -56,96 +50,102 @@ class _CustombottomnavState extends State<Custombottomnav> {
 
   @override
   Widget build(BuildContext context) {
-    // حماية في حال تغيّر الأطوال (يفترض تكون كلها 4)
-    final int itemCount = [
+    final itemCount = [
       svgIcons.length,
       labels.length,
       pages.length,
     ].reduce((a, b) => a < b ? a : b);
 
     return Scaffold(
-      backgroundColor: Colors.transparent, // لا خلفية للـ Scaffold
-      extendBody: true, // يسمح للمحتوى بالتمدد خلف البار
-      body: Stack(
-        children: [
-          /// ====== المحتوى ======
-          IndexedStack(
-            index: selectedIndex.clamp(0, itemCount - 1),
-            children: pages.take(itemCount).toList(),
-          ),
+      backgroundColor: Colors.transparent,
 
-          /// ====== البار العائم فوق كل العناصر ======
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 16,
-            child: SafeArea(
-              top: false,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(40),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10), // تأثير زجاجي خفيف
-                  child: Container(
-                    height: _barHeight,
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.4), // ضع 0.0 لشفافية كاملة
-                      borderRadius: BorderRadius.circular(40),
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.2),
-                        width: 1,
+      body: IndexedStack(
+        index: selectedIndex.clamp(0, itemCount - 1),
+        children: pages.take(itemCount).toList(),
+      ),
+
+      bottomNavigationBar: SafeArea(
+        top: false,
+        // minimum: const EdgeInsets.only(bottom: 8,),
+        child: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(
+              height: _barHeight,
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.4),
+                border: Border(
+                  top: BorderSide(color: Colors.white.withOpacity(0.15), width: 0.8),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: List.generate(itemCount, (index) {
+                  final bool isSelected = selectedIndex == index;
+
+                  return GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => setState(() => selectedIndex = index),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 350),
+                      curve: Curves.easeOutCubic,
+                      // 👇 عرض متغير عند التحديد
+                      width: isSelected ? 113.w : 50.w,
+                      height: 40.h,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isSelected ? 12.w : 0,
+                        vertical: 8.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? AppColor.primaryColor
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(25), // 👈 radius الخلفية
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildSvgIcon(
+                            svgIcons[index],
+                            selected: isSelected,
+                            size: 22.sp,
+                          ),
+                          // 👇 النص يظهر فقط وقت التحديد
+                          AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 200),
+                            transitionBuilder: (child, anim) => FadeTransition(
+                              opacity: anim,
+                              child: SizeTransition(
+                                sizeFactor: anim,
+                                axis: Axis.horizontal,
+                                child: child,
+                              ),
+                            ),
+                            child: isSelected
+                                ? Padding(
+                                    key: ValueKey(index),
+                                    padding: EdgeInsets.only(left: 4.w),
+                                    child: Text(
+                                      labels[index],
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: "Manrope",
+                                      ),
+                                    ),
+                                  )
+                                : const SizedBox.shrink(),
+                          ),
+                        ],
                       ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: List.generate(itemCount, (index) {
-                        final bool isSelected = selectedIndex == index;
-                        return GestureDetector(
-                          onTap: () => setState(() => selectedIndex = index),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: isSelected ? 16 : 0,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? AppColor.primaryColor.withOpacity(0.9)
-                                  : Colors.transparent,
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: Row(
-                              children: [
-                                // الأيقونة بصيغة SVG
-                                _buildSvgIcon(
-                                  svgIcons[index],
-                                  selected: isSelected,
-                                  size: 22.sp,
-                                ),
-                                if (isSelected) ...[
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    labels[index],
-                                    style: const TextStyle(
-                                      color: AppColor.white,
-                                      fontSize: 14,
-                                      fontFamily: "Manrope",
-                                    ),
-                                  ),
-                                ],
-                              ],
-                            ),
-                          ),
-                        );
-                      }),
-                    ),
-                  ),
-                ),
+                  );
+                }),
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

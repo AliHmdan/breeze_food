@@ -15,7 +15,7 @@ import 'package:breezefood/presentation/screens/profile/profile.dart';
 import 'package:breezefood/presentation/screens/search.dart';
 import 'package:breezefood/presentation/screens/spalsh_screen.dart';
 import 'package:breezefood/presentation/screens/store_details/popular_grid_Page.dart';
-import 'package:breezefood/presentation/screens/store_details/stroe_details.dart';
+import 'package:breezefood/presentation/screens/store_details/store_details.dart';
 import 'package:breezefood/presentation/screens/stores_nav_tab.dart';
 import 'package:breezefood/presentation/screens/successful.dart';
 import 'package:breezefood/presentation/widgets/home/discount.dart';
