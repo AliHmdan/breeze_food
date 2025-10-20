@@ -1,6 +1,12 @@
 import 'package:freeza_food/core/constans/color.dart';
 import 'package:freeza_food/presentation/widgets/custom_arrow.dart';
+import 'package:freeza_food/blocs/search/search_cubit.dart';
+import 'package:freeza_food/blocs/search/search_state.dart';
+import 'package:freeza_food/data/repositories/search_repository.dart';
+import 'package:freeza_food/models/search_history_model.dart';
+import 'package:freeza_food/models/search_result_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -18,28 +24,25 @@ class _SearchState extends State<Search> {
   final GlobalKey _searchFieldKey = GlobalKey(); // لتحديد موضع الحقل
 
   List<String> searchTags = [];
+  List<SearchHistoryModel> searchHistory = [];
+  List<dynamic> searchResults = [];
 
   final List<String> allSuggestions = const [
-    "Burger",
-    "Shawarma King",
-    "KFC",
-    "Pizza Hut",
-    "Tacos",
-    "McDonald's",
-    "Shish",
-    "Parise",
   ];
 
   List<String> filteredSuggestions = [];
   bool showSuggestions = false;
+  bool showHistory = true;
 
   @override
   void initState() {
     super.initState();
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
-        _filterSuggestions(_controller.text);
         setState(() => showSuggestions = true);
+        if (_controller.text.isEmpty) {
+          setState(() => showHistory = true);
+        }
       }
     });
   }
@@ -55,6 +58,7 @@ class _SearchState extends State<Search> {
     final query = input.trim().toLowerCase();
     setState(() {
       showSuggestions = true;
+      showHistory = false;
       filteredSuggestions = allSuggestions
           .where((item) =>
               item.toLowerCase().contains(query) && !searchTags.contains(item))
@@ -75,6 +79,18 @@ class _SearchState extends State<Search> {
 
   void _removeTag(String tag) {
     setState(() => searchTags.remove(tag));
+  }
+
+  void _performSearch(String query) {
+    if (query.trim().isNotEmpty) {
+      context.read<SearchCubit>().performSearch(query.trim());
+      _addTag(query.trim());
+    }
+  }
+
+  void _onHistoryItemTap(String query) {
+    _controller.text = query;
+    _performSearch(query);
   }
 
   Widget _buildTagChip(String tag) {
@@ -114,12 +130,12 @@ class _SearchState extends State<Search> {
       backgroundColor: AppColor.Dark,
       body: Stack(
         children: [
-          // المحتوى الرئيسي
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
               FocusScope.of(context).unfocus();
               setState(() => showSuggestions = false);
+              setState(() => showHistory = false);
             },
             child: SafeArea(
               child: Padding(
@@ -144,9 +160,14 @@ class _SearchState extends State<Search> {
                             child: TextField(
                               focusNode: _focusNode,
                               controller: _controller,
-                              onTap: () => _filterSuggestions(_controller.text),
+                              onTap: () {
+                                if (_controller.text.isEmpty) {
+                                  setState(() => showHistory = true);
+                                }
+                                _filterSuggestions(_controller.text);
+                              },
                               onChanged: _filterSuggestions,
-                              onSubmitted: _addTag,
+                              onSubmitted: _performSearch,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.all(10.w),
                                 filled: true,
@@ -194,100 +215,208 @@ class _SearchState extends State<Search> {
                     // التاغات
                     if (searchTags.isNotEmpty)
                       Padding(
-                        padding: EdgeInsets.only(top: 20.h),
+                        padding: EdgeInsets.only(top: 100.h),
                         child: Wrap(
                           children:
                               searchTags.map((t) => _buildTagChip(t)).toList(),
                         ),
                       ),
+
+                    // نتائج البحث
+                    BlocBuilder<SearchCubit, SearchState>(
+                      builder: (context, state) {
+                        if (state is SearchResultLoaded) {
+                          return Expanded(
+                            child: ListView.builder(
+                              itemCount: state.result.data.length,
+                              itemBuilder: (context, index) {
+                                final item = state.result.data[index];
+                                return Container(
+                                  margin: EdgeInsets.symmetric(vertical: 4.h),
+                                  padding: EdgeInsets.all(12.w),
+                                  decoration: BoxDecoration(
+                                    color: AppColor.white,
+                                    borderRadius: BorderRadius.circular(8.r),
+                                  ),
+                                  child: Text(
+                                    item.toString(),
+                                    style: TextStyle(
+                                      color: AppColor.black,
+                                      fontSize: 14.sp,
+                                      fontFamily: "Manrope",
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        } else if (state is SearchFailure) {
+                          return Expanded(
+                            child: Center(
+                              child: Text(
+                                state.error,
+                                style: TextStyle(
+                                  color: AppColor.white,
+                                  fontSize: 14.sp,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
                   ],
                 ),
               ),
             ),
           ),
 
-          // القائمة المنسدلة فوق المحتوى
-          if (showSuggestions)
-            Builder(
-              builder: (context) {
-                // تحديد موقع حقل البحث على الشاشة
-                final renderBox = _searchFieldKey.currentContext?.findRenderObject() as RenderBox?;
-                final offset = renderBox?.localToGlobal(Offset.zero);
-                final topPosition = offset?.dy ?? 110.0; // Fallback
+        if (showSuggestions || showHistory)
+          Builder(
+            builder: (context) {
+              final renderBox = _searchFieldKey.currentContext?.findRenderObject() as RenderBox?;
+              final offset = renderBox?.localToGlobal(Offset.zero);
+              final topPosition = offset?.dy ?? 110.0; // Fallback
 
-                // احسب أقصى ارتفاع منطقي للقائمة
-                final double computed = (filteredSuggestions.length * 48.0.h);
-                final double maxHeight =
-                    computed > 300.0.h ? 300.0.h : computed; // cap عند 300.h
-
-                return Positioned(
-                  top: topPosition + 45.h, // تحت مربع البحث مباشرة
-                  left: 24.w,
-                  right: 24.w,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Container(
-                      constraints: BoxConstraints(
-                        maxHeight: maxHeight, // double صحيح
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColor.white,
-                        borderRadius: BorderRadius.circular(12.r),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.15),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: filteredSuggestions.isEmpty
-                          ? Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(10.w),
-                                child: Text(
-                                  'No suggestions found',
-                                  style: TextStyle(
-                                    color: AppColor.black,
-                                    fontSize: 14.sp,
-                                  ),
-                                ),
-                              ),
-                            )
-                          : ListView.separated(
-                              padding: EdgeInsets.all(10.w),
-                              itemCount: filteredSuggestions.length,
-                              separatorBuilder: (_, __) => Divider(
-                                color: AppColor.black,
-                                height: 1.h,
-                              ),
-                              itemBuilder: (context, index) {
-                                final suggestion = filteredSuggestions[index];
-                                return InkWell(
-                                  onTap: () => _addTag(suggestion),
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 12.w, vertical: 14.h),
-                                    // ❗ أزلنا Expanded الذي كان يسبب الخطأ
-                                    child: Text(
-                                      suggestion,
-                                      style: TextStyle(
-                                        color: AppColor.black,
-                                        fontSize: 15.sp,
-                                        fontFamily: "Manrope",
+              return Positioned(
+                top: topPosition + 45.h, // تحت مربع البحث مباشرة
+                left: 24.w,
+                right: 24.w,
+                child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    constraints: BoxConstraints(
+                      maxHeight: 300.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColor.white,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.15),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: showHistory
+                        ? BlocBuilder<SearchCubit, SearchState>(
+                            builder: (context, state) {
+                              if (state is SearchHistoryLoaded) {
+                                if (state.history.isEmpty) {
+                                  return Center(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(10.w),
+                                      child: Text(
+                                        'No search history',
+                                        style: TextStyle(
+                                          color: AppColor.black,
+                                          fontSize: 14.sp,
+                                        ),
                                       ),
+                                    ),
+                                  );
+                                }
+
+                                return ListView.separated(
+                                  padding: EdgeInsets.all(10.w),
+                                  itemCount: state.history.length,
+                                  separatorBuilder: (_, __) => Divider(
+                                    color: AppColor.black,
+                                    height: 1.h,
+                                  ),
+                                  itemBuilder: (context, index) {
+                                    final historyItem = state.history[index];
+                                    return InkWell(
+                                      onTap: () => _onHistoryItemTap(historyItem.query),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 12.w, vertical: 14.h),
+                                        child: Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              'assets/icons/time.svg',
+                                              width: 16.w,
+                                              height: 16.h,
+                                              color: AppColor.gry,
+                                            ),
+                                            SizedBox(width: 8.w),
+                                            Expanded(
+                                              child: Text(
+                                                historyItem.query,
+                                                style: TextStyle(
+                                                  color: AppColor.black,
+                                                  fontSize: 15.sp,
+                                                  fontFamily: "Manrope",
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              } else if (state is SearchLoading) {
+                                return Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(20.w),
+                                    child: CircularProgressIndicator(
+                                      color: AppColor.primaryColor,
                                     ),
                                   ),
                                 );
-                              },
-                            ),
-                    ),
+                              }
+                              return const SizedBox.shrink();
+                            },
+                          )
+                        : filteredSuggestions.isEmpty
+                            ? Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(10.w),
+                                  child: Text(
+                                    'No suggestions found',
+                                    style: TextStyle(
+                                      color: AppColor.black,
+                                      fontSize: 14.sp,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : ListView.separated(
+                                padding: EdgeInsets.all(10.w),
+                                itemCount: filteredSuggestions.length,
+                                separatorBuilder: (_, __) => Divider(
+                                  color: AppColor.black,
+                                  height: 1.h,
+                                ),
+                                itemBuilder: (context, index) {
+                                  final suggestion = filteredSuggestions[index];
+                                  return InkWell(
+                                    onTap: () => _addTag(suggestion),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12.w, vertical: 14.h),
+                                      child: Text(
+                                        suggestion,
+                                        style: TextStyle(
+                                          color: AppColor.black,
+                                          fontSize: 15.sp,
+                                          fontFamily: "Manrope",
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                   ),
-                );
-              },
-            ),
-        ],
-      ),
+                ),
+              );
+            },
+          ),
+      ],
+    ),
     );
   }
 }

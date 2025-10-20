@@ -10,4 +10,9 @@ class AppLink {
   static const String verifyPhone = "$server/verify-phone";
   static const String logout = "$server/logout";
 
+// ================================= Search ========================== //
+
+  static const String searchHistory = "$server/history-search";
+  static const String search = "$server/search";
+
 }
