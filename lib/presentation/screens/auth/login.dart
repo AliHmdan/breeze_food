@@ -1,9 +1,9 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freeza_food/blocs/auth/login/login_bloc.dart';
 import 'package:freeza_food/blocs/auth/login/login_event.dart';
 import 'package:freeza_food/blocs/auth/login/login_state.dart';
 import 'package:freeza_food/core/constans/color.dart';
 import 'package:freeza_food/core/constans/routes.dart';
-import 'package:freeza_food/data/repositories/auth_repository.dart';
 import 'package:freeza_food/presentation/screens/auth/new_passowrd.dart';
 import 'package:freeza_food/presentation/widgets/auth/custom_text_form_field.dart';
 import 'package:freeza_food/presentation/widgets/button/custom_button.dart';
@@ -11,9 +11,10 @@ import 'package:freeza_food/presentation/widgets/title/custom_sub_title.dart';
 import 'package:freeza_food/presentation/widgets/title/custom_title.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../../data/repositories/auth_repository.dart' show AuthRepository;
 
 class Login extends StatefulWidget {
   Login({super.key});

@@ -1,10 +1,9 @@
-
+import 'package:freeza_food/core/constans/color.dart';
 import 'package:freeza_food/presentation/widgets/share_dialoh.dart';
 import 'package:freeza_food/presentation/widgets/title/custom_appbar_profile.dart';
 import 'package:freeza_food/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:freeza_food/core/constans/color.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 // استدعاء دالة الـ Dialog (انسخها من الملف السابق أو ضعها بملف خارجي)

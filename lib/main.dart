@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
               AppRoute.pay: (context) => Pay(),
               AppRoute.Success: (context) => Success(),
                     AppRoute.profile: (context) => Profile(),
-              AppRoute.Stores: (context) => Stores(),
+              AppRoute.stores_nav_tab: (context) => Stores(),
               AppRoute.StoreDetails: (context) => StoreDetails(
                 categories: ["Burger", "Chrispy", "India food", "Home"],
              

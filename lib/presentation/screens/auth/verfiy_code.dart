@@ -14,11 +14,16 @@ import '../../widgets/title/custom_title.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
-class VerfiyCode extends StatelessWidget {
+class VerfiyCode  extends StatefulWidget {
   final String phone;
 
   const VerfiyCode({super.key, required this.phone});
 
+  @override
+  State<VerfiyCode> createState() => _VerfiyCodeState();
+}
+
+class _VerfiyCodeState extends State<VerfiyCode> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -63,7 +68,7 @@ class VerfiyCode extends StatelessWidget {
                       CustomTitle(title: "Enter the Code", color: AppColor.white),
                       SizedBox(height: 8.h),
                       CustomSubTitle(
-                        subtitle: "Enter the verification code we just sent to $phone",
+                        subtitle: "Enter the verification code we just sent to ${widget.phone}",
                         color: AppColor.gry,
                         fontsize: 14.sp,
                       ),
@@ -93,7 +98,7 @@ class VerfiyCode extends StatelessWidget {
                           animationDuration: const Duration(milliseconds: 300),
                           enableActiveFill: true,
                           onCompleted: (v) {
-                            cubit.verifyCode(phone: phone, code: v);
+                            cubit.verifyCode(phone: widget.phone, code: v);
                           },
                           onChanged: (value) {},
                         ),
@@ -103,7 +108,7 @@ class VerfiyCode extends StatelessWidget {
                         onTap: state is ResendCodeLoading
                             ? null
                             : () {
-                          cubit.resendCode(phone);
+                          cubit.resendCode(widget.phone);
                         },
                         child: CustomSubTitle(
                           subtitle: state is ResendCodeLoading

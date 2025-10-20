@@ -36,64 +36,62 @@ class DiscountGridPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.Dark,
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60.h), // ارتفاع الـ AppBar
+        preferredSize: Size.fromHeight(50.h), // ارتفاع الـ AppBar
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: CustomAppbarProfile(
             title: "Discount",
             icon: Icons.arrow_back_ios,
             ontap: () {
-             Navigator.of(context).pushNamedAndRemoveUntil(
-                                    "/home",
-                                    (route) => false,
-                                  );
+           Navigator.of(context).pop();
             },
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            final crossAxisCount = getCrossAxisCount(constraints.maxWidth);
-
-            return Container(
-              width: double.infinity,
-              height: double.infinity,
-
-              decoration: BoxDecoration(
-                color: AppColor.LightActive,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: GridView.builder(
-  physics: const BouncingScrollPhysics(),
-  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-    crossAxisCount: crossAxisCount,
-    mainAxisSpacing: 5.h,   // ✅ المسافة الطولية بين الصفوف
-    crossAxisSpacing: 12.w,  // ✅ المسافة العرضية بين الأعمدة
-    childAspectRatio: 1.1,  // ✅ نسبة العرض للارتفاع
-  ),
-  itemCount: items.length,
-  itemBuilder: (context, index) {
-    final item = items[index];
-    return DiscountDetails(
-      imagePath: item["imagePath"]!,
-      title: item["title"]!,
-      subtitle: item["subtitle"]!,
-      price: item["price"]!,
-      discount: item["discount"]!,
-      onFavoriteToggle: () {
-        debugPrint("Favorite toggled for ${item["title"]}");
-      },
-    );
-  },
-)
-
-              ),
-            );
-          },
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final crossAxisCount = getCrossAxisCount(constraints.maxWidth);
+        
+              return Container(
+                width: double.infinity,
+                height: double.infinity,
+        
+                decoration: BoxDecoration(
+                  color: AppColor.LightActive,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: GridView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      mainAxisSpacing: 5.h, // ✅ المسافة الطولية بين الصفوف
+                      crossAxisSpacing: 12.w, // ✅ المسافة العرضية بين الأعمدة
+                      childAspectRatio: 0.79, // ✅ نسبة العرض للارتفاع
+                    ),
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      final item = items[index];
+                      return DiscountDetails(
+                        imagePath: item["imagePath"]!,
+                        title: item["title"]!,
+                        subtitle: item["subtitle"]!,
+                        price: item["price"]!,
+                        discount: item["discount"]!,
+                        onFavoriteToggle: () {
+                          debugPrint("Favorite toggled for ${item["title"]}");
+                        },
+                      );
+                    },
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

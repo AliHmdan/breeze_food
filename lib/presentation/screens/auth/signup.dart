@@ -9,7 +9,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../blocs/auth/sign_up/sign_up_bloc.dart';
+import '../../../blocs/auth/sign_up/sign_up_bloc.dart' show SignupCubit;
 import '../../../blocs/auth/sign_up/sign_up_state.dart';
 import '../../../data/repositories/auth_repository.dart';
 
@@ -27,7 +27,7 @@ class _SignupState extends State<Signup> {
 
   final TextEditingController confirmPasswordController =
       TextEditingController();
-
+  final TextEditingController referralLinkController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,7 +156,18 @@ class _SignupState extends State<Signup> {
                                   isPassword: true,
                                   obscureInitially: true,
                                 ),
+                                SizedBox(height: 16.h),
+                                // ✅ Confirm Password
+                                CustomTextFormField(
+                                  controller: referralLinkController,
+                                  hintText: "Referral Link",
+                                  backgroundColor: AppColor.white,
+                                  hintColor: AppColor.gry,
+                                  isPassword: true,
+                                  obscureInitially: true,
+                                ),
                                 SizedBox(height: 30.h),
+
                                 // ✅ زر Continue
                                 BlocProvider(
                                   create: (context) => SignupCubit(AuthRepository()),
@@ -186,6 +197,7 @@ class _SignupState extends State<Signup> {
                                             phone: phoneController.text.trim(),
                                             password: passwordController.text.trim(),
                                             confirmPassword: confirmPasswordController.text.trim(),
+                                            referralCode: referralLinkController.text.trim()
                                           );
                                         },
                                       );

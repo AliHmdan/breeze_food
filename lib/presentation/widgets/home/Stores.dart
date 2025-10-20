@@ -76,14 +76,14 @@ class Stores extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Text(
-                      //   item["subtitle"]!,
-                      //   style: TextStyle(
-                      //     color: AppColor.white,
-                      //     fontSize: 12.sp,
-                      //     fontWeight: FontWeight.w400,
-                      //   ),
-                      // ),
+                      Text(
+                        item["subtitle"]!,
+                        style: TextStyle(
+                          color: AppColor.white,
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                       SizedBox(height: 3.h),
                       Text(
                         item["title"]!,
@@ -134,7 +134,7 @@ class Stores extends StatelessWidget {
                           ),
                         ),
                       ),
-                      RatingStores(),
+                      // RatingStores(),
                     ],
                   ),
                 ),

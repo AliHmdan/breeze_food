@@ -1,50 +1,74 @@
 import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/presentation/widgets/custom_arrow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class Search extends StatefulWidget {
+  const Search({Key? key}) : super(key: key);
+
   @override
   _SearchState createState() => _SearchState();
 }
 
 class _SearchState extends State<Search> {
   final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+
   List<String> searchTags = [];
 
-  // قائمة الاقتراحات الأساسية
   final List<String> allSuggestions = [
     "Burger",
-    "India foods",
-    "Chrispy",
-    "Japanese Foods",
-    "Noodles",
-    "Drinks",
-    "Hots foods",
-    "Sea foods",
+    "Shawarma King",
+    "KFC",
+    "Pizza Hut",
+    "Tacos",
+    "McDonald's",
+    "Shish",
+    "Parise"
   ];
 
   List<String> filteredSuggestions = [];
   bool showSuggestions = false;
+  final GlobalKey _searchFieldKey = GlobalKey(); // 🔹 لتحديد موقع حقل البحث على الشاشة
 
   @override
   void initState() {
     super.initState();
-    filteredSuggestions = []; // بالبداية ما تظهر أي قائمة
+    _focusNode.addListener(() {
+      if (_focusNode.hasFocus) {
+        _filterSuggestions('');
+        setState(() {
+          showSuggestions = true;
+        });
+      }
+    });
+  }
+
+  void _filterSuggestions(String input) {
+    final query = input.trim().toLowerCase();
+    setState(() {
+      showSuggestions = true;
+      filteredSuggestions = allSuggestions
+          .where((item) =>
+              item.toLowerCase().contains(query) &&
+              !searchTags.contains(item))
+          .toList();
+    });
   }
 
   void _addTag(String text) {
     if (text.trim().isEmpty) return;
-    if (!searchTags.contains(text.trim())) {
+    if (!searchTags.contains(text)) {
       setState(() {
-        searchTags.add(text.trim());
+        searchTags.add(text);
       });
     }
     _controller.clear();
     setState(() {
-      filteredSuggestions.clear();
       showSuggestions = false;
     });
+    _focusNode.unfocus();
   }
 
   void _removeTag(String tag) {
@@ -53,174 +77,220 @@ class _SearchState extends State<Search> {
     });
   }
 
-  void _filterSuggestions(String input) {
-    if (input.isEmpty) {
-      setState(() {
-        filteredSuggestions = List.from(allSuggestions);
-      });
-      return;
-    }
-    setState(() {
-      filteredSuggestions = allSuggestions
-          .where(
-            (item) =>
-                item.toLowerCase().contains(input.toLowerCase()) &&
-                !searchTags.contains(item),
-          )
-          .toList();
-    });
+  Widget _buildTagChip(String tag) {
+    return Container(
+      margin: EdgeInsets.only(right: 8.w, bottom: 8.h),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GestureDetector(
+            onTap: () => _removeTag(tag),
+            child: Icon(
+              Icons.close,
+              size: 18.sp,
+              color: AppColor.white,
+            ),
+          ),
+          SizedBox(width: 8.w),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+            decoration: BoxDecoration(
+              color: const Color(0xFF3A3A3A),
+              borderRadius: BorderRadius.circular(20.r),
+            ),
+            child: Text(
+              tag,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 14.sp,
+                fontFamily: "Manrope",
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
-  final Color suggestionTextColor = AppColor.gry;
-  // لون Divider
-  final Color dividerColor = AppColor.gry;
-  final double dividerThickness = 1.0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.Dark,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-          child: Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColor.white,
-                  borderRadius: BorderRadius.circular(50.0),
-                ),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    color: AppColor.black,
-                    size: 20,
-                  ),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  height: 40.h,
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: TextField(
-                    controller: _controller,
-                    onTap: () {
-                      setState(() {
-                        filteredSuggestions = List.from(allSuggestions);
-                        showSuggestions = true;
-                      });
-                    },
-                    onChanged: _filterSuggestions,
-                    onSubmitted: _addTag,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(10),
-                      filled: true,
-                      fillColor: AppColor.white,
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: SvgPicture.asset(
-                          'assets/icons/search.svg',
-                          color: AppColor.gry,
-                          width: 20.w,
-                          height: 20.h,
+      body: Stack(
+        children: [
+          /// 🔹 المحتوى الرئيسي
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onTap: () {
+              FocusScope.of(context).unfocus();
+              setState(() {
+                showSuggestions = false;
+              });
+            },
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(12.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// ✅ شريط البحث
+                    Row(
+                      children: [
+                        CustomArrow(
+                          onTap: () {},
+                          color: AppColor.black,
+                          background: AppColor.white,
                         ),
-                      ),
-                      hintText: "Search food, stores, restaurants",
-                      hintStyle: TextStyle(
-                        color: AppColor.gry,
-                        fontSize: 14.sp,
-                        fontFamily: "Manrope",
-                        fontWeight: FontWeight.w400,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: AppColor.white,
-                  borderRadius: BorderRadius.circular(50.0),
-                ),
-                child: SvgPicture.asset(
-                  'assets/icons/boxsearch.svg',
-                  width: 20.w,
-                  height: 20.h,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      body:
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child:
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              if (showSuggestions && filteredSuggestions.isNotEmpty)
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12), // هنا تحدد قيمة الزوايا
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: filteredSuggestions.length,
-                      separatorBuilder: (context, index) => Divider(
-                        color: dividerColor,
-                        thickness: dividerThickness,
-                        height: 1,
-                      ),
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(
-                            filteredSuggestions[index],
-                            style: TextStyle(
-                              color: suggestionTextColor,
-                              fontSize: 14.sp,
+                        SizedBox(width: 8.w),
+                        Expanded(
+                          child: Container(
+                            key: _searchFieldKey, // 📍 حفظ موقعه
+                            height: 40.h,
+                            padding: EdgeInsets.symmetric(horizontal: 10.w),
+                            child: TextField(
+                              focusNode: _focusNode,
+                              controller: _controller,
+                              onTap: () => _filterSuggestions(_controller.text),
+                              onChanged: (val) => _filterSuggestions(val),
+                              onSubmitted: (val) => _addTag(val),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.all(10.w),
+                                filled: true,
+                                fillColor: AppColor.white,
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SvgPicture.asset(
+                                    'assets/icons/search.svg',
+                                    color: AppColor.gry,
+                                    width: 20.w,
+                                    height: 20.h,
+                                  ),
+                                ),
+                                hintText: "Search food, stores, restaurants",
+                                hintStyle: TextStyle(
+                                  color: AppColor.gry,
+                                  fontSize: 14.sp,
+                                  fontFamily: "Manrope",
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30.0.r),
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
                             ),
                           ),
-                          onTap: () => _addTag(filteredSuggestions[index]),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Wrap(
-                    spacing: 6,
-                    runSpacing: 6,
-                    children: searchTags.map((tag) {
-                      return Chip(
-                        label: Text(tag),
-                        labelStyle: TextStyle(color: Colors.white),
-                        backgroundColor: Colors.grey[800],
-                        deleteIcon: Icon(
-                          Icons.close,
-                          size: 16,
-                          color: Colors.white,
                         ),
-                        onDeleted: () => _removeTag(tag),
-                      );
-                    }).toList(),
-                  ),
+                        SizedBox(width: 8.w),
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: AppColor.white,
+                            borderRadius: BorderRadius.circular(50.0.r),
+                          ),
+                          child: SvgPicture.asset(
+                            'assets/icons/boxsearch.svg',
+                            width: 20.w,
+                            height: 20.h,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    /// ✅ التاغات
+                    if (searchTags.isNotEmpty)
+                      Padding(
+                        padding: EdgeInsets.only(top: 20.h),
+                        child: Wrap(
+                          children:
+                              searchTags.map((t) => _buildTagChip(t)).toList(),
+                        ),
+                      ),
+                  ],
                 ),
               ),
-          
-            ],
+            ),
           ),
-        ),
+
+          /// 🔹 القائمة المنسدلة فوق المحتوى
+          if (showSuggestions)
+            Builder(
+              builder: (context) {
+                // الحصول على موقع مربع البحث
+                final renderBox = _searchFieldKey.currentContext?.findRenderObject() as RenderBox?;
+                final offset = renderBox?.localToGlobal(Offset.zero);
+                final topPosition = offset?.dy ?? 110.0; // fallback في حال null
+
+                return Positioned(
+                  top: topPosition + 45.h, // مباشرة تحت مربع البحث
+                  left: 24.w,
+                  right: 24.w,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Container(
+                      constraints: BoxConstraints(
+                        maxHeight:
+                            (filteredSuggestions.length * 500.0).h.clamp(0, 500.h),
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColor.white,
+                        borderRadius: BorderRadius.circular(12.r),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.15),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: filteredSuggestions.isEmpty
+                          ? Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(10.w),
+                                child: Text(
+                                  'No suggestions found',
+                                  style: TextStyle(
+                                    color: AppColor.black,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : ListView.separated(
+                              padding: EdgeInsets.all(10.w),
+                              itemCount: filteredSuggestions.length,
+                              separatorBuilder: (_, __) => Divider(
+                                color: AppColor.black,
+                                height: 1.h,
+                              ),
+                              itemBuilder: (context, index) {
+                                final suggestion =
+                                    filteredSuggestions[index];
+                                return InkWell(
+                                  onTap: () => _addTag(suggestion),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12.w, vertical: 14.h),
+                                    child: Expanded(
+                                      child: Text(
+                                        suggestion,
+                                        style: TextStyle(
+                                          color: AppColor.black,
+                                          fontSize: 15.sp,
+                                          fontFamily: "Manrope",
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                    ),
+                  ),
+                );
+              },
+            ),
+        ],
       ),
     );
   }
