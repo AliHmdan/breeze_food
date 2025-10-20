@@ -16,9 +16,9 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   int _index = 0;
 
-  final List<Widget> _pages = const [
-    Home(),     // ✅ المحتوى فقط
-    StoresNavTab(),          // متجرك
+  final _pages = const [
+    Home(),
+    StoresNavTab(),
     FavoritePage(),
     Orders(),
   ];
@@ -27,11 +27,11 @@ class _MainShellState extends State<MainShell> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.Dark,
+      extendBody: true, // مهم مع خلفية شفافة/Blur
       body: IndexedStack(index: _index, children: _pages),
-      bottomNavigationBar: SafeArea(
-        child: Custombottomnav(
-         
-        ),
+      bottomNavigationBar: BottomNavBreeze(
+        currentIndex: _index,
+        onChanged: (i) => setState(() => _index = i),
       ),
     );
   }

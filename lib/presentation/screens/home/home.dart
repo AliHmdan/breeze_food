@@ -1,23 +1,21 @@
-
 import 'package:freeza_food/core/constans/color.dart';
 import 'package:freeza_food/core/constans/routes.dart';
 import 'package:freeza_food/data/model/restaurant.dart';
-
+import 'package:freeza_food/presentation/screens/home/animated_background.dart';
+import 'package:freeza_food/presentation/screens/home/appbar_home.dart';
+import 'package:freeza_food/presentation/screens/home/discount_home.dart';
+import 'package:freeza_food/presentation/screens/home/most_popular.dart';
+import 'package:freeza_food/presentation/screens/home/open_now.dart';
+import 'package:freeza_food/presentation/widgets/CustomBottomNav.dart';
 import 'package:freeza_food/presentation/widgets/animated_background.dart';
-
 import 'package:freeza_food/presentation/widgets/home/Stores.dart';
 import 'package:freeza_food/presentation/widgets/button/custom_button_order.dart';
 import 'package:freeza_food/presentation/widgets/auth/custom_search.dart';
-
 import 'package:freeza_food/presentation/widgets/home/custom_title_section.dart';
+import 'package:freeza_food/presentation/widgets/home/home_filters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../widgets/custom_appbar_home.dart';
-
-import '../../widgets/home/custom_fast_food.dart';
-import '../../widgets/home/discount.dart';
-import '../../widgets/home/most_popular.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -27,301 +25,92 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final _scrollController = ScrollController();
+  final _openNowKey = GlobalKey();
+  final _storesKey = GlobalKey();
+  final _discountsKey = GlobalKey();
+  final _popularKey = GlobalKey();
 
-  final List<Restaurant> restaurants = [
-    Restaurant(
-      imageUrl: "assets/images/004.jpg",
-      name: "Chicken King_Alhamra",
-      rating: 4.9,
-      orders: "500+ Order",
-      time: "20M",
-    ),
-    Restaurant(
-      imageUrl: "assets/images/002.jpg",
-      name: "Chicken King_Alhamra",
-      rating: 4.9,
-      orders: "500+ Order",
-      time: "20M",
-      isClosed: true,
-      closedText: "Open tomorrow at 09:00 AM",
-    ),
-    Restaurant(
-      imageUrl: "assets/images/003.jpg",
-      name: "Chicken King_Alhamra",
-      rating: 4.9,
-      orders: "500+ Order",
-      time: "20M",
-    ),
-    Restaurant(
-      imageUrl: "assets/images/002.jpg",
-      name: "Chicken King_Alhamra",
-      rating: 4.9,
-      orders: "500+ Order",
-      time: "20M",
-      isClosed: true,
-      closedText: "Open tomorrow at 09:00 AM",
-    ),
-      Restaurant(
-      imageUrl: "assets/images/002.jpg",
-      name: "Chicken King_Alhamra",
-      rating: 4.9,
-      orders: "500+ Order",
-      time: "20M",
-      isClosed: true,
-      closedText: "Open tomorrow at 09:00 AM",
-    ),
-  ];
+  Future<void> _scrollToKey(GlobalKey key) async {
+    final ctx = key.currentContext;
+    if (ctx == null) return;
+    await Scrollable.ensureVisible(
+      ctx,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+      alignment: 0.05,
+    );
+  }
+
+  void _onFilterTap(String section) {
+    if (section == "open") _scrollToKey(_openNowKey);
+    if (section == "popular") _scrollToKey(_popularKey);
+    if (section == "stores") _scrollToKey(_storesKey);
+    if (section == "discounts") _scrollToKey(_discountsKey);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.Dark,
-
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.only(
-              bottom: 35 + 32,
-            ),
-            child: Column(
-              children: [
-                CustomAppbarHome(
-                  title: "Deliver to",
-                  subtitle: "Poplar Ave,CA",
-                  image: "assets/icons/location.svg",
-                  onTap: () {
-                    Navigator.of(context).pushNamed(AppRoute.profile);
-                  },
-                  icon: Icons.keyboard_arrow_down,
-                ),
-                const SizedBox(height: 15),
-                CustomSearch(
-                  hint: 'Search',
-                  readOnly: true,
-                  onTap: () {
-                    Navigator.of(context).pushNamed(AppRoute.search);
-                  },
-                ),
+        child: SingleChildScrollView(
+          controller: _scrollController, // 👈 مهم
 
-                SizedBox(height: 20),
-                // BrunchCarousel(),
-                AnimatedBackground(
-                  height: 100.h,
-                  child: Center(
-                    child: Text(
-                      'مرحباً 👋',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
+          child: Column(
+            children: [
+              // AppBar + Search
+              AppbarHome(),
+
+              HomeFilters(onFilterTap: _onFilterTap),
+
+              Animated(),
+              const SizedBox(height: 5),
+              Container(key: _popularKey),
+              // Most Popular
+              MostPopular(),
+
+              const SizedBox(height: 10),
+              // Stores
+              Container(key: _storesKey),
+              Padding(
+                padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
+                child: CustomTitleSection(title: "Stores"),
+              ),
+               const SizedBox(height: 5),
+              Stores(),
+              SizedBox(height: 2.h),
+
+              // Discounts
+              Container(key: _discountsKey), // 👈 مرساة التمرير
+              const SizedBox(height: 10),
+              DiscountHome(),
+
+              const SizedBox(height: 10),
+              Container(key: _openNowKey),
+
+              // const SizedBox(height: 10),
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  OpenNow(),
+                  Positioned(
+                    bottom: 85,
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                      child: CustomButtonOrder(
+                        title: "Your order",
+                        onPressed: () {},
                       ),
                     ),
                   ),
-                  characters: const [
-                    CartoonSvg(
-                      alignment: Alignment.topRight,
-                      width: 56,
-                      assetPath: 'assets/characters/star.svg',
-                      margin: EdgeInsets.only(top: 10, right: 10),
-                      floatAmplitude: 4,
-                      phaseShift: 1.2,
-                    ),
-                    CartoonSvg(
-                      alignment: Alignment.bottomLeft,
-                      width: 90,
-                      assetPath: 'assets/characters/astronaut.svg',
-                      margin: EdgeInsets.only(left: 12, bottom: 8),
-                      rotationDeg: -6,
-                      floatAmplitude: 6,
-                      phaseShift: 0.0,
-                    ),
-                    CartoonSvg(
-                      alignment: Alignment.bottomRight,
-                      width: 110,
-                      assetPath: 'assets/characters/planet.svg',
-                      margin: EdgeInsets.only(right: 14, bottom: 6),
-                      floatAmplitude: 8,
-                      phaseShift: 2.2,
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 15),
-                CustomTitleSection(
-                  title: "Most popular",
-                  all: "All",
-                  icon: Icons.arrow_forward_ios_outlined,
-
-                  ontap: () {
-                    Navigator.of(context).pushNamed(AppRoute.PopularGridPage);
-                  },
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  padding: EdgeInsets.only(
-                    top: 10,
-                    bottom: 10,
-                    left: 8,
-                    right: 0.2,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColor.LightActive,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-
-                  height: 178,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      double itemWidth = constraints.maxWidth / 2.3;
-                      return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            width: itemWidth,
-                            margin: EdgeInsets.only(right: 10.w),
-                            child: PopularItemCard(
-                              imagePath: 'assets/images/004.jpg',
-                              title: 'Chicken shish without...',
-                              subtitle: 'burger king',
-                              price: '2.00\$',
-                              onFavoriteToggle: () {
-                                print('تم الضغط على المفضلة للعنصر رقم $index');
-                              },
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: 10),
-                CustomTitleSection(title: "Stores"),
-                Stores(),
-                SizedBox(height: 2.h),
-                // RatingStores(),
-                const SizedBox(height: 10),
-                CustomTitleSection(
-                  title: "Discounts",
-                  all: "All",
-                  icon: Icons.arrow_forward_ios_outlined,
-                  ontap: () {
-
-                    Navigator.of(context).pushNamed(AppRoute.discountDetails);
-
-                  },
-                ),
-                const SizedBox(height: 10),
-                Container(
-                  padding: EdgeInsets.only(
-                    top: 10,
-                    bottom: 10,
-                    left: 8,
-                    right: 0.5,
-                  ),
-
-
-                  decoration: BoxDecoration(
-                    color: AppColor.LightActive,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-
-                  height: 178,
-
-
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      double itemWidth = constraints.maxWidth / 2.3;
-                      return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            width: itemWidth,
-                            margin: EdgeInsets.only(right: 10.w),
-
-
-
-                            child: Discount(
-                              imagePath: 'assets/images/004.jpg',
-                              title: 'Chicken shish without...',
-                              subtitle: 'burger king',
-                              price: '2.00\$',
-                              onFavoriteToggle: () {
-                                print('تم الضغط على المفضلة للعنصر رقم $index');
-                              },
-                              // icons: Icons.close,
-                              discount: "50",
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: 10),
-                CustomTitleSection(title: "Fast food"),
-                const SizedBox(height: 10),
-
-                Stack(
-                  clipBehavior: Clip.none, // ضروري حتى يظهر الزر خارج الحاوية
-                  children: [
-                    Container(
-                      height: 320.h,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 3,
-                        horizontal: 5,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColor.LightActive,
-                        borderRadius: BorderRadius.circular(15.r),
-                      ),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.symmetric(vertical: 2),
-                        itemCount: restaurants.length,
-                        itemBuilder: (context, index) {
-                          final restaurant = restaurants[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 1,
-                              vertical: 6,
-                            ),
-                            child: RestaurantCard(
-                              imageUrl: restaurant.imageUrl,
-                              name: restaurant.name,
-                              rating: restaurant.rating,
-                              orders: restaurant.orders,
-                              time: restaurant.time,
-                              isClosed: restaurant.isClosed,
-                              closedText: restaurant.closedText,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-
-                    // الزر في المنتصف ويطفو فوق الحافة
-                    Positioned(
-                      bottom: 85, // نصف الزر تحت الحافة
-                      left: 0,
-                      right: 0,
-                      child: Center(
-                        child: CustomButtonOrder(
-                          title: "Your order",
-                          onPressed: () {},
-                        ),
-                      ),
-
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
-
     );
   }
 }

@@ -80,6 +80,7 @@ class _DiscountState extends State<Discount> with SingleTickerProviderStateMixin
                     widget.imagePath,
                     height: 100.h,
                     width: double.infinity,
+                    cacheWidth: 600,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -133,6 +134,7 @@ class _DiscountState extends State<Discount> with SingleTickerProviderStateMixin
                           'assets/icons/nspah.svg',
                           width: 18.w,
                           height: 18.h,
+                          
                           color: AppColor.white,
                         ),
                       ],
@@ -145,7 +147,7 @@ class _DiscountState extends State<Discount> with SingleTickerProviderStateMixin
             // 🧾 النصوص السفلية
             Container(
               decoration: BoxDecoration(
-                color: AppColor.Dark,
+                color: AppColor.black,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(12.r),
                   bottomRight: Radius.circular(12.r),

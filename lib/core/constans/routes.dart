@@ -4,7 +4,7 @@ class AppRoute {
   static const String login = "/login";
   static const String signUp = "/signup";
   static const String newPassword = "/new_password";
-  static const String verifyCode = "/verify_code";
+  static const verifyCode = '/verify_code'; // ✅ تهجئة صحيحة
   static const String resetPassword = "/reset_password";
   static const String successful = "/successful";
   static const String phoneNumber = "/phone_number";

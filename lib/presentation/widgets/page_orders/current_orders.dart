@@ -8,7 +8,6 @@ class CurrentOrders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final orders = [
       {
         "restaurant": "Chicken House",
@@ -34,7 +33,7 @@ class CurrentOrders extends StatelessWidget {
         return Container(
           height: 110.h,
           margin: const EdgeInsets.only(bottom: 12),
-          padding: const EdgeInsets.all(8),
+          // padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: AppColor.black,
             borderRadius: BorderRadius.circular(12),
@@ -42,65 +41,136 @@ class CurrentOrders extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // صورة المطعم
-              ClipOval(
-                child: Image.asset(
-                  order["image"]!,
-                  width: 70.w,
-                  height: 90.h,
-                  fit: BoxFit.cover,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(
+                    // ممكن تغير القيمة حسب اللي يعجبك
+                    50,
+                  ),
+                  child: Image.asset(
+                    order["image"]!,
+                    width: 80.w,
+                    height: 80.h,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
               // تفاصيل الطلب
+              // Expanded(
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       CustomSubTitle(
+              //         subtitle: order["restaurant"]!,
+              //         color: AppColor.white,
+              //         fontsize: 14.sp,
+              //       ),
+
+              //       CustomSubTitle(
+              //         subtitle: order["items"]!,
+              //         color: AppColor.white,
+              //         fontsize: 10.sp,
+              //       ),
+
+              //       // SizedBox(height:15.h),
+              //       Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //           RichText(
+              //             text: TextSpan(
+              //               children: [
+              //                 TextSpan(
+              //                   text: "Total: ",
+              //                   style: TextStyle(
+              //                     color: AppColor.white,
+              //                     fontSize: 14.sp,
+              //                     fontFamily: "Manrope",
+              //                   ),
+              //                 ),
+              //                 TextSpan(
+              //                   text: "${order["total"]}",
+              //                   style: TextStyle(
+              //                     color: Colors.yellow, // السعر باللون الأصفر
+              //                     fontSize: 12.sp,
+              //                     fontWeight: FontWeight.w400,
+              //                     fontFamily: "Manrope",
+              //                   ),
+              //                 ),
+              //               ],
+              //             ),
+              //           ),
+
+              //           CustomSubTitle(
+              //             subtitle: order["date"]!,
+              //             color: AppColor.white,
+              //             fontsize: 10.sp,
+              //           ),
+              //         ],
+              //       ),
+              //     ],
+              //   ),
+              // ),
+
+              // التاريخ والوقت
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-
-                    CustomSubTitle(subtitle:   order["restaurant"]!, color: AppColor.white, fontsize: 14.sp),
-
-                    CustomSubTitle(subtitle:order["items"]!, color: AppColor.white, fontsize: 10.sp),
-
-// SizedBox(height:15.h),
-                  Spacer(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "Total: ",
-                                style: TextStyle(
-                                  color: AppColor.white,
-                                  fontSize: 14.sp,
-                                  fontFamily: "Manrope",
-                                ),
-                              ),
-                              TextSpan(
-                                text: "${order["total"]}",
-                                style: TextStyle(
-                                  color: Colors.yellow, // السعر باللون الأصفر
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "Manrope",
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        CustomSubTitle(subtitle: order["date"]!, color: AppColor.white, fontsize: 10.sp)
-                      ],
+                    CustomSubTitle(
+                      subtitle: order["restaurant"]!,
+                      color: AppColor.white,
+                      fontsize: 14.sp,
                     ),
+
+                    const SizedBox(height: 4),
+                  CustomSubTitle(
+                      subtitle: order["items"]!,
+                      color: AppColor.white,
+                      fontsize: 10.sp,
+                    ),
+
+                    const SizedBox(height: 4),
+                      Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: "Total: ",
+                                    style: TextStyle(
+                                      color: AppColor.white,
+                                      fontSize: 14.sp,
+                                      fontFamily: "Manrope",
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: "${order["total"]}",
+                                    style: TextStyle(
+                                      color: Colors.yellow, // السعر باللون الأصفر
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: "Manrope",
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                              CustomSubTitle(
+                          subtitle: order["date"]!,
+                          color: AppColor.white,
+                          fontsize: 10.sp,
+                        ),
+                        ],
+                      ),
 
                   ],
                 ),
               ),
-
-              // التاريخ والوقت
-
+              
             ],
           ),
         );

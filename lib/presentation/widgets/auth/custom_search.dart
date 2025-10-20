@@ -96,17 +96,17 @@ class CustomSearch extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 3.w),
+        SizedBox(width: 5.w),
         if (boxicon != null)
           Container(
             width: 40.w,
-            height: 50.w,
-            padding: EdgeInsets.all(4.w),
+            height: 40.h,
+            padding: EdgeInsets.all(8.w),
             decoration: BoxDecoration(
               color: AppColor.white,
-              borderRadius: BorderRadius.circular(50.r),
+              borderRadius: BorderRadius.circular(40.r),
             ),
-            child: SvgPicture.asset(boxicon!, width: 40.w, height: 40.w),
+            child: SvgPicture.asset(boxicon!, width: 20.w, height: 20.w),
           ),
       ],
     );

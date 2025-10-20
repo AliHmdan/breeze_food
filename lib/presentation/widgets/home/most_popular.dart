@@ -79,6 +79,7 @@ class _PopularItemCardState extends State<PopularItemCard>
                     widget.imagePath,
                     height: 100.h,
                     width: double.infinity, 
+                    cacheWidth: 600,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -108,7 +109,7 @@ class _PopularItemCardState extends State<PopularItemCard>
             ),
             Container(
               decoration: BoxDecoration(
-                color: AppColor.Dark,
+                color: AppColor.black,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(12.r),
                   bottomRight: Radius.circular(12.r),

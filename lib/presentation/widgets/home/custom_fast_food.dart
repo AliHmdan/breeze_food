@@ -38,6 +38,7 @@ class RestaurantCard extends StatelessWidget {
               imageUrl,
               height: 110.h,
               width: double.infinity,
+              cacheWidth: 600,
               fit: BoxFit.cover,
             ),
           ),

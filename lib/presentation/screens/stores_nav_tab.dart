@@ -1,169 +1,317 @@
+import 'package:freeza_food/core/constans/color.dart';
 import 'package:freeza_food/core/constans/routes.dart';
+import 'package:freeza_food/data/model/restaurant.dart';
+import 'package:freeza_food/presentation/widgets/auth/custom_search.dart';
+import 'package:freeza_food/presentation/widgets/custom_appbar_home.dart';
+import 'package:freeza_food/presentation/widgets/home/custom_fast_food.dart';
+import 'package:freeza_food/presentation/widgets/location_chip.dart';
+import 'package:freeza_food/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../core/constans/color.dart';
-import '../widgets/custom_appbar_home.dart';
-import '../widgets/auth/custom_search.dart';
-import '../widgets/title/custom_sub_title.dart';
-import '../widgets/location_chip.dart';
-import '../widgets/CustomBottomNav.dart';
-import '../widgets/title/custom_title.dart';
-
-class StoresNavTab extends StatelessWidget {
+class StoresNavTab extends StatefulWidget {
   const StoresNavTab({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> restaurants = [
-      {
-        "name": "Chicken King_Alhamra",
-        "image": "assets/images/pourple.jpg",
-        "rating": 4.9,
-        "orders": "500+ Order",
-        "time": "30M"
-      },
-      {
-        "name": "Pizza Hut Center",
-        "image": "assets/images/004.jpg",
-        "rating": 4.7,
-        "orders": "300+ Order",
-        "time": "25M"
-      },
-      {
-        "name": "Burger House",
-        "image": "assets/images/003.jpg",
-        "rating": 4.5,
-        "orders": "200+ Order",
-        "time": "20M"
-      },
-      {
-        "name": "Shawarma Spot",
-        "image": "assets/images/001.jpg",
-        "rating": 4.8,
-        "orders": "400+ Order",
-        "time": "35M"
-      },
+  State<StoresNavTab> createState() => _StoresNavTabState();
+}
+
+class _StoresNavTabState extends State<StoresNavTab>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabController;
+
+  // Keep data outside build() to avoid re-creating on every rebuild
+  late final List<Restaurant> _restaurants;
+  late final List<Restaurant> _supermarkets;
+  final List<String> _titles = const ["Restaurant", "Super Market"];
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: _titles.length, vsync: this)
+      ..addListener(() {
+        if (mounted) setState(() {}); // refresh custom tab indicator
+      });
+
+    _restaurants = <Restaurant>[
+      Restaurant(
+        imageUrl: "assets/images/004.jpg",
+        name: "Chicken King_Alhamra",
+        rating: 4.9,
+        orders: "500+ Order",
+        time: "20M",
+      ),
+      Restaurant(
+        imageUrl: "assets/images/002.jpg",
+        name: "Burger Master",
+        rating: 4.7,
+        orders: "300+ Order",
+        time: "18M",
+        isClosed: true,
+        closedText: "Open tomorrow at 09:00 AM",
+      ),
+      Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Sushi Roll",
+        rating: 4.8,
+        orders: "220+ Order",
+        time: "25M",
+      ),
+        Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Sushi Roll",
+        rating: 4.8,
+        orders: "220+ Order",
+        time: "25M",
+      ),
+        Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Sushi Roll",
+        rating: 4.8,
+        orders: "220+ Order",
+        time: "25M",
+      ),
+        Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Sushi Roll",
+        rating: 4.8,
+        orders: "220+ Order",
+        time: "25M",
+      ),
+        Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Sushi Roll",
+        rating: 4.8,
+        orders: "220+ Order",
+        time: "25M",
+      ),
     ];
 
+    _supermarkets = <Restaurant>[
+      Restaurant(
+        imageUrl: "assets/images/004.jpg",
+        name: "Fresh Market",
+        rating: 4.6,
+        orders: "1K+ Orders",
+        time: "30M",
+      ),
+      Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Daily Mart",
+        rating: 4.5,
+        orders: "800+ Orders",
+        time: "28M",
+      ),
+         Restaurant(
+        imageUrl: "assets/images/004.jpg",
+        name: "Fresh Market",
+        rating: 4.6,
+        orders: "1K+ Orders",
+        time: "30M",
+      ),
+      Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Daily Mart",
+        rating: 4.5,
+        orders: "800+ Orders",
+        time: "28M",
+      ),
+         Restaurant(
+        imageUrl: "assets/images/004.jpg",
+        name: "Fresh Market",
+        rating: 4.6,
+        orders: "1K+ Orders",
+        time: "30M",
+      ),
+      Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Daily Mart",
+        rating: 4.5,
+        orders: "800+ Orders",
+        time: "28M",
+      ),
+         Restaurant(
+        imageUrl: "assets/images/004.jpg",
+        name: "Fresh Market",
+        rating: 4.6,
+        orders: "1K+ Orders",
+        time: "30M",
+      ),
+      Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Daily Mart",
+        rating: 4.5,
+        orders: "800+ Orders",
+        time: "28M",
+      ),
+    ];
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.Dark,
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        children: [
-          const CustomAppbarHome(title: "StoresNavTab"),
-          SizedBox(height: 40.h),
-          const CustomSearch(
-            hint: "Search food ,StoresNavTab,restaurants",
-            boxicon: 'assets/icons/boxsearch.svg',
-          ),
-          LocationChip(
-            text: "LocationChip",
-            iconPath: "assets/icons/telegram.svg",
-            onTap: () {},
-          ),
-          SizedBox(height: 20.h),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Column(
+            children: [
+              const CustomAppbarHome(title: "Stores"),
 
-          // 🔽 هنا نستخدم ListView.builder
-        Container(
-  decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(50.r),
-    color: AppColor.LightActive,
-  ),
-  child: ListView.builder(
-    scrollDirection: Axis.vertical,
-    itemCount: restaurants.length,
-    shrinkWrap: true, 
-    physics: const NeverScrollableScrollPhysics(),
-    itemBuilder: (context, index) {
-      final restaurant = restaurants[index];
-      return GestureDetector(
-        onTap: () {
-          Navigator.of(context).pushNamed(AppRoute.StoreDetails);
-        },
-        child: Container(
-          height: 120.h,
-          margin: EdgeInsets.only(
-            top: index == 0 ? 0 : 8.h, // ✅ أول عنصر بدون فراغ
-            left: 8.w,
-            right: 8.w,
-            bottom: 8.h,
-          ), // ✅ بدل الـ padding
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(60.r),
-            image: DecorationImage(
-              image: AssetImage(restaurant["image"]),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(60.r),
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: Container(
-                    color: Colors.black.withOpacity(0.4),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // الصف الأول (التقييم + الطلبات + الوقت)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              const Icon(Icons.star,
-                                  color: Colors.yellow, size: 16),
-                              const SizedBox(width: 4),
-                              CustomSubTitle(
-                                subtitle:
-                                    "${restaurant["rating"]} | ${restaurant["orders"]}",
-                                color: AppColor.white,
-                                fontsize: 10.sp,
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              const Icon(Icons.timer,
-                                  color: Colors.white, size: 16),
-                              const SizedBox(width: 4),
-                              CustomSubTitle(
-                                subtitle: restaurant["time"],
-                                color: AppColor.white,
-                                fontsize: 10.sp,
-                              ),
-                            ],
-                          ),
-                        ],
+              // Custom tabs header using TabController index
+              Row(
+                children: List.generate(_titles.length, (index) {
+                  final bool isSelected = _tabController.index == index;
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () => _tabController.animateTo(
+                        index,
+                        duration: const Duration(milliseconds: 320),
+                        curve: Curves.easeInOutCubic,
                       ),
-                      SizedBox(height: 20.h),
-                      Center(
-                        child: CustomTitle(
-                          title: restaurant["name"],
-                          color: AppColor.white,
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CustomSubTitle(
+                              subtitle: _titles[index],
+                              color:
+                                  isSelected ? AppColor.primaryColor : AppColor.white,
+                              fontsize: 14.sp,
+                            ),
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 220),
+                              curve: Curves.easeInOut,
+                              margin: EdgeInsets.only(top: 4.h),
+                              height: 3,
+                              width: isSelected ? 130.w : 0,
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? AppColor.primaryColor
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(2.r),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
+                  );
+                }),
+              ),
+
+              SizedBox(height: 24.h),
+
+              const CustomSearch(
+                hint: "Search food, stores, restaurants",
+                boxicon: 'assets/icons/boxsearch.svg',
+              ),
+              SizedBox(height: 8.h),
+
+              LocationChip(
+                text: "Your location",
+                iconPath: "assets/icons/telegram.svg",
+                onTap: () {},
+              ),
+              SizedBox(height: 16.h),
+
+              // Content
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15.r),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppColor.LightActive,
+                      borderRadius: BorderRadius.circular(15.r),
+                      border: Border.all(
+                        color: Colors.white.withOpacity(0.08),
+                        width: 1,
+                      ),
+                    ),
+                    child: TabBarView(
+                      controller: _tabController,
+                      physics: const BouncingScrollPhysics(),
+                      children: [
+                        _StoresTabList(
+                          key: const PageStorageKey('tab_restaurants'),
+                          items: _restaurants,
+                        ),
+                        _StoresTabList(
+                          key: const PageStorageKey('tab_supermarket'),
+                          items: _supermarkets,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-      );
-    },
-  ),
-)
-
-        ],
       ),
-      // bottomNavigationBar: const CustomBottomNav(currentIndex: 1),
     );
+  }
+}
+
+/// A performant list for a stores tab, keeps scroll position alive per tab.
+class _StoresTabList extends StatefulWidget {
+  final List<Restaurant> items;
+  const _StoresTabList({super.key, required this.items});
+
+  @override
+  State<_StoresTabList> createState() => _StoresTabListState();
+}
+
+class _StoresTabListState extends State<_StoresTabList>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
+    return ScrollConfiguration(
+      behavior: const _NoGlowBehavior(),
+      child: ListView.separated(
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 5),
+        physics: const ClampingScrollPhysics(),
+        itemCount: widget.items.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 12),
+        itemBuilder: (context, index) {
+          final r = widget.items[index];
+          return GestureDetector(
+            onTap: () => Navigator.of(context).pushNamed(AppRoute.StoreDetails),
+            child: RestaurantCard(
+              imageUrl: r.imageUrl,
+              name: r.name,
+              rating: r.rating,
+              orders: r.orders,
+              time: r.time,
+              isClosed: r.isClosed,
+              closedText: r.closedText,
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _NoGlowBehavior extends ScrollBehavior {
+  const _NoGlowBehavior();
+  @override
+  Widget buildOverscrollIndicator(
+    BuildContext context,
+    Widget child,
+    ScrollableDetails details,
+  ) {
+    return child; // remove default glow effect
   }
 }

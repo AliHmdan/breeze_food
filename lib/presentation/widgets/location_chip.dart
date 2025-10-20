@@ -22,13 +22,13 @@ class LocationChip extends StatelessWidget {
     return Align(
       alignment: Alignment.topLeft, // <-- يضعه في البداية
       child: InkWell(
-        borderRadius: BorderRadius.circular(30.r), // تأثير الموجة
+        borderRadius: BorderRadius.circular(30.r), 
         onTap: onTap, // عند الضغط
         child: Container(
           margin: EdgeInsets.only( top: 12.h), // مسافة من الأعلى واليسار
           padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 8.h),
           decoration: BoxDecoration(
-            color: const Color(0xFF2C2C2C), // الخلفية الداكنة
+            color: AppColor.black, 
             borderRadius: BorderRadius.circular(30.r),
           ),
           child: Row(

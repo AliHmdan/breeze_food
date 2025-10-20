@@ -1,161 +1,177 @@
 import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/presentation/widgets/CustomBottomNav.dart';
+import 'package:freeza_food/presentation/widgets/custom_appbar_home.dart';
 import 'package:freeza_food/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_svg/svg.dart';
 
-class OrdersHistory extends StatelessWidget {
+class OrdersHistory extends StatefulWidget {
   const OrdersHistory({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final orders = [
-      {
-        "restaurant": "Chicken House",
-        "items": "2 items",
-        "total": "25.00\$",
-        "date": "25/5/2025 09:00 PM",
-        "image": "assets/images/003.jpg",
-      },
-      {
-        "restaurant": "Pizza Point",
-        "items": "3 items",
-        "total": "40.00\$",
-        "date": "24/5/2025 08:30 PM",
-        "image": "assets/images/004.jpg",
-      },
-    ];
+  State<OrdersHistory> createState() => _OrdersHistoryState();
+}
 
-    final isRTL = Directionality.of(context) == TextDirection.rtl;
+class _OrdersHistoryState extends State<OrdersHistory> {
+  int _selectedTab = 0; // 0 = Current orders, 1 = Orders history
 
-    return ListView.builder(
-      itemCount: orders.length,
-      itemBuilder: (context, index) {
-        final order = orders[index];
+  Future<void> _refreshedOrders() async {
+    await Future.delayed(const Duration(seconds: 1));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text(" refreshed Orders")));
+  }
 
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 12),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final tileWidth = constraints.maxWidth; // عرض عنصر القائمة
-              final actionTargetWidth = 80.w; // عرض زر Refresh
-              final paneRatio = (actionTargetWidth / tileWidth).clamp(
-                0.12,
-                0.6,
-              );
-
-              final actionPane = ActionPane(
-                motion: const DrawerMotion(),
-                extentRatio: paneRatio,
-                // 👇 المسافة بين الأزرار أو بين الزر والكارد
-                dragDismissible: false,
-                children: [
-                  // فراغ صغير قبل الزر
-                  SizedBox(width: 8.w),
-
-                  CustomSlidableAction(
-                    onPressed: (context) {
-                      debugPrint("Refresh ${order["restaurant"]}");
-                    },
-                    backgroundColor: Colors.grey.shade800,
-                    borderRadius: BorderRadius.circular(12),
-                    flex: 1,
-                    child: const Icon(
-                      Icons.refresh,
-                      color: Colors.white,
-                      size: 28,
-                    ),
+  Widget _buildOrderCard() {
+    return Slidable(
+      key: const ValueKey(1),
+      endActionPane: ActionPane(
+        motion: const DrawerMotion(),
+        extentRatio: 0.25,
+        children: [
+          CustomSlidableAction(
+            onPressed: (context) => _refreshedOrders(),
+            backgroundColor: AppColor.black,
+            borderRadius: BorderRadius.circular(11.r),
+            child: Center(
+              child: SvgPicture.asset(
+                "assets/icons/refresh.svg",
+                color: Colors.white,
+                width: 30.w,
+                height: 30.h,
+              ),
+            ),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(right: 8),
+        child: Container(
+          // margin: const EdgeInsets.all(12),
+          padding: const EdgeInsets.only(left: 1, right: 10),
+          decoration: BoxDecoration(
+            color: AppColor.black,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Row(
+            children: [
+              // صورة الوجبة
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ClipRRect(
+                  borderRadius:  BorderRadius.circular(
+                    // ممكن تغير القيمة حسب اللي يعجبك
+                   50
                   ),
-
-                  // فراغ صغير بعد الزر (اختياري)
-                  SizedBox(width: 8.w),
-                ],
-              );
-
-              return Slidable(
-                key: ValueKey(order["restaurant"]),
-                startActionPane: isRTL ? actionPane : null,
-                endActionPane: !isRTL ? actionPane : null,
-                child: Container(
-                  height: 110.h,
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: AppColor.black,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // صورة
-                      ClipOval(
-                        child: Image.asset(
-                          order["image"]!,
-                          width: 70.w,
-                          height: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      // تفاصيل الطلب
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomSubTitle(
-                              subtitle: order["restaurant"]!,
-                              color: AppColor.white,
-                              fontsize: 14.sp,
-                            ),
-                            CustomSubTitle(
-                              subtitle: order["items"]!,
-                              color: AppColor.white,
-                              fontsize: 10.sp,
-                            ),
-                            const Spacer(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: "Total: ",
-                                        style: TextStyle(
-                                          color: AppColor.white,
-                                          fontSize: 14.sp,
-                                          fontFamily: "Manrope",
-                                        ),
-                                      ),
-                                      TextSpan(
-                                        text: order["total"],
-                                        style: TextStyle(
-                                          color: Colors.yellow,
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: "Manrope",
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                CustomSubTitle(
-                                  subtitle: order["date"]!,
-                                  color: AppColor.white,
-                                  fontsize: 10.sp,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  child: Image.asset(
+                    "assets/images/003.jpg",
+                    width: 80.w,
+                    height: 80.h,
+                    fit: BoxFit.cover,
                   ),
                 ),
-              );
-            },
+              ),
+
+              const SizedBox(width: 12),
+
+              // تفاصيل الوجبة
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomSubTitle(
+                      subtitle: "Chicken shish",
+                      color: AppColor.white,
+                      fontsize: 16.sp,
+                    ),
+                    const SizedBox(height: 4),
+                    CustomSubTitle(
+                      subtitle: "burger king",
+                      color: AppColor.white,
+                      fontsize: 14.sp,
+                    ),
+
+                    const SizedBox(height: 4),
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "Price : ",
+                            style: TextStyle(
+                              color: AppColor.white,
+                              fontFamily: "Manrope",
+                              fontSize: 16.sp,
+                            ),
+                          ),
+
+                          TextSpan(
+                            text: "5.00\$ ",
+                            style: TextStyle(
+                              color: AppColor.yellow,
+                              fontFamily: "Manrope",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTabButton(String text, int index) {
+    final isSelected = _selectedTab == index;
+    return GestureDetector(
+      onTap: () => setState(() => _selectedTab = index),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            text,
+            style: TextStyle(
+              color: !isSelected ? Colors.white : Colors.tealAccent[400],
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
+          if (isSelected)
+            Container(
+              margin: const EdgeInsets.only(
+                top: 4,
+              ), // space between text and line
+              height: 2, // thickness
+              width: 100, // length of the underline
+              color: Colors.tealAccent[400], // line color
+            ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return  RefreshIndicator(
+        onRefresh: _refreshedOrders,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: [
+                   
+        
+            _buildOrderCard(),
+                
+            const SizedBox(height: 40),
+          ],
+        ),
+      
     );
   }
 }
