@@ -1,6 +1,7 @@
 import 'package:breezefood/presentation/screens/add_order/add_order.dart';
 import 'package:breezefood/presentation/screens/add_order/request_order.dart';
 import 'package:breezefood/presentation/widgets/button/custom_button.dart';
+import 'package:breezefood/presentation/widgets/store_details/horizontal_products_section.dart';
 import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
 import 'package:breezefood/presentation/widgets/title/custom_title.dart';
 import 'package:flutter/material.dart';
@@ -20,17 +21,7 @@ class AddNewMeal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.Dark,
-      // appBar: AppBar(
-      //   backgroundColor: AppColor.white,
-      //   title: Padding(
-      //     padding: EdgeInsets.symmetric(vertical: 20.h),
-      //     child: SizedBox(
-      //       width: double.infinity,
-      //       child: Image.asset("assets/images/shawarma_box.png"),
-      //     ),
-      //   ),
-      //   toolbarHeight: 200.h,
-      // ),
+    
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -168,16 +159,13 @@ class AddNewMeal extends StatelessWidget {
                       );
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 10,
-                        horizontal: 5,
-                      ),
+                      padding: EdgeInsets.all(5.r),
                       decoration: BoxDecoration(
-                        color: AppColor.black,
-                        borderRadius: BorderRadius.circular(20),
+                        color: AppColor.LightActive,
+                        borderRadius: BorderRadius.circular(20.r),
                       ),
-                      height: 203.h,
-                      width: 176.w,
+                      height: 163.h,
+                      width: 160.w,
                       child: PopularItemCard(
                         imagePath: "assets/images/004.jpg",
                         title: "Chicken ",
@@ -197,43 +185,7 @@ class AddNewMeal extends StatelessWidget {
                   SizedBox(height: 5),
 
                   // ✅ ليستة
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                    decoration: BoxDecoration(
-                      color: AppColor.black,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    height: 203.h,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 15),
-                          child: GestureDetector(
-                            onTap: () {
-                              showAddOrderDialog(
-                                context,
-                                title: "Chicken",
-                                price: "5.00\$",
-                                oldPrice: "5.00\$",
-                                imagePath: "assets/images/004.jpg",
-                              );
-                            },
-                            child: PopularItemCard(
-                              imagePath: 'assets/images/004.jpg',
-                              title: 'Chicken',
-                              price: '5.00\$',
-                              oldPrice: "5.00\$",
-                              onFavoriteToggle: () {
-                                print('تم الضغط على المفضلة للعنصر رقم $index');
-                              },
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                   const HorizontalProductsSection(),
 
                   SizedBox(height: 10),
                   CustomButton(

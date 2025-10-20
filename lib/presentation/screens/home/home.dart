@@ -71,7 +71,7 @@ class _HomeState extends State<Home> {
               HomeFilters(onFilterTap: _onFilterTap),
 
               Animated(),
-              const SizedBox(height: 15),
+              const SizedBox(height: 5),
               Container(key: _popularKey),
               // Most Popular
               MostPopular(),
@@ -83,6 +83,7 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
                 child: CustomTitleSection(title: "Stores"),
               ),
+               const SizedBox(height: 5),
               Stores(),
               SizedBox(height: 2.h),
 
