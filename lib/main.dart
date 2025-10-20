@@ -1,8 +1,6 @@
 import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/presentation/screens/add_order/pay.dart';
-import 'package:breezefood/presentation/screens/add_order/request_order.dart';
 import 'package:breezefood/presentation/screens/add_order/success.dart';
-
 import 'package:breezefood/presentation/screens/auth/information.dart';
 import 'package:breezefood/presentation/screens/auth/login.dart';
 import 'package:breezefood/presentation/screens/auth/new_passowrd.dart';
@@ -18,7 +16,6 @@ import 'package:breezefood/presentation/screens/store_details/popular_grid_Page.
 import 'package:breezefood/presentation/screens/store_details/store_details.dart';
 import 'package:breezefood/presentation/screens/stores_nav_tab.dart';
 import 'package:breezefood/presentation/screens/successful.dart';
-import 'package:breezefood/presentation/widgets/home/discount.dart';
 import 'package:breezefood/presentation/widgets/main_shell.dart';
 
 import 'package:flutter/material.dart';
@@ -51,7 +48,7 @@ class MyApp extends StatelessWidget {
             routes: {
               AppRoute.splashScreen: (context) => const SpalshScreen(),
               AppRoute.signUp: (context) => Signup(),
-              AppRoute.verifyCode: (context) => VerfiyCode(),
+             AppRoute.verifyCode: (context) => const VerfiyCode(),
               AppRoute.successful: (context) => Successful(),
               AppRoute.phoneNumber: (context) => PhoneNumber(),
               AppRoute.newPassword: (context) => NewPassowrd(),

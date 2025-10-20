@@ -18,27 +18,22 @@ class StoresNavTab extends StatefulWidget {
 
 class _StoresNavTabState extends State<StoresNavTab>
     with SingleTickerProviderStateMixin {
-  // 👈 هذا هو المطلوب
   late final TabController _tabController;
+
+  // Keep data outside build() to avoid re-creating on every rebuild
+  late final List<Restaurant> _restaurants;
+  late final List<Restaurant> _supermarkets;
+  final List<String> _titles = const ["Restaurant", "Super Market"];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-    _tabController.addListener(() {
-      if (mounted) setState(() {}); // لتحديث مؤشر التبويب المخصص
-    });
-  }
+    _tabController = TabController(length: _titles.length, vsync: this)
+      ..addListener(() {
+        if (mounted) setState(() {}); // refresh custom tab indicator
+      });
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final restaurants = <Restaurant>[
+    _restaurants = <Restaurant>[
       Restaurant(
         imageUrl: "assets/images/004.jpg",
         name: "Chicken King_Alhamra",
@@ -62,9 +57,37 @@ class _StoresNavTabState extends State<StoresNavTab>
         orders: "220+ Order",
         time: "25M",
       ),
+        Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Sushi Roll",
+        rating: 4.8,
+        orders: "220+ Order",
+        time: "25M",
+      ),
+        Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Sushi Roll",
+        rating: 4.8,
+        orders: "220+ Order",
+        time: "25M",
+      ),
+        Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Sushi Roll",
+        rating: 4.8,
+        orders: "220+ Order",
+        time: "25M",
+      ),
+        Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Sushi Roll",
+        rating: 4.8,
+        orders: "220+ Order",
+        time: "25M",
+      ),
     ];
 
-    final supermarkets = <Restaurant>[
+    _supermarkets = <Restaurant>[
       Restaurant(
         imageUrl: "assets/images/004.jpg",
         name: "Fresh Market",
@@ -79,10 +102,59 @@ class _StoresNavTabState extends State<StoresNavTab>
         orders: "800+ Orders",
         time: "28M",
       ),
+         Restaurant(
+        imageUrl: "assets/images/004.jpg",
+        name: "Fresh Market",
+        rating: 4.6,
+        orders: "1K+ Orders",
+        time: "30M",
+      ),
+      Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Daily Mart",
+        rating: 4.5,
+        orders: "800+ Orders",
+        time: "28M",
+      ),
+         Restaurant(
+        imageUrl: "assets/images/004.jpg",
+        name: "Fresh Market",
+        rating: 4.6,
+        orders: "1K+ Orders",
+        time: "30M",
+      ),
+      Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Daily Mart",
+        rating: 4.5,
+        orders: "800+ Orders",
+        time: "28M",
+      ),
+         Restaurant(
+        imageUrl: "assets/images/004.jpg",
+        name: "Fresh Market",
+        rating: 4.6,
+        orders: "1K+ Orders",
+        time: "30M",
+      ),
+      Restaurant(
+        imageUrl: "assets/images/003.jpg",
+        name: "Daily Mart",
+        rating: 4.5,
+        orders: "800+ Orders",
+        time: "28M",
+      ),
     ];
+  }
 
-    final titles = ["Restaurant", "Super Market"];
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.Dark,
       body: SafeArea(
@@ -92,15 +164,15 @@ class _StoresNavTabState extends State<StoresNavTab>
             children: [
               const CustomAppbarHome(title: "Stores"),
 
-              // تبويبك المخصص المعتمد على _tabController.index
+              // Custom tabs header using TabController index
               Row(
-                children: List.generate(2, (index) {
-                  final isSelected = _tabController.index == index;
+                children: List.generate(_titles.length, (index) {
+                  final bool isSelected = _tabController.index == index;
                   return Expanded(
                     child: GestureDetector(
                       onTap: () => _tabController.animateTo(
                         index,
-                        duration: const Duration(milliseconds: 500),
+                        duration: const Duration(milliseconds: 320),
                         curve: Curves.easeInOutCubic,
                       ),
                       child: Center(
@@ -108,14 +180,13 @@ class _StoresNavTabState extends State<StoresNavTab>
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             CustomSubTitle(
-                              subtitle: titles[index],
-                              color: isSelected
-                                  ? AppColor.primaryColor
-                                  : AppColor.white,
+                              subtitle: _titles[index],
+                              color:
+                                  isSelected ? AppColor.primaryColor : AppColor.white,
                               fontsize: 14.sp,
                             ),
                             AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
+                              duration: const Duration(milliseconds: 220),
                               curve: Curves.easeInOut,
                               margin: EdgeInsets.only(top: 4.h),
                               height: 3,
@@ -150,7 +221,7 @@ class _StoresNavTabState extends State<StoresNavTab>
               ),
               SizedBox(height: 16.h),
 
-              // المحتوى مع نفس الستايل
+              // Content
               Expanded(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15.r),
@@ -164,74 +235,16 @@ class _StoresNavTabState extends State<StoresNavTab>
                       ),
                     ),
                     child: TabBarView(
-                      controller: _tabController, // 👈 مهم
+                      controller: _tabController,
+                      physics: const BouncingScrollPhysics(),
                       children: [
-                        ListView.builder(
+                        _StoresTabList(
                           key: const PageStorageKey('tab_restaurants'),
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 6,
-                            horizontal: 5,
-                          ),
-                          physics: const ClampingScrollPhysics(),
-                          itemCount: restaurants.length,
-                          itemBuilder: (context, index) {
-                            final r = restaurants[index];
-                            return Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () => Navigator.of(
-                                    context,
-                                  ).pushNamed(AppRoute.StoreDetails),
-                                  child: RestaurantCard(
-                                    imageUrl: r.imageUrl,
-                                    name: r.name,
-                                    rating: r.rating,
-                                    orders: r.orders,
-                                    time: r.time,
-                                    isClosed: r.isClosed,
-                                    closedText: r.closedText,
-                                  ),
-                                ),
-                                if (index != restaurants.length - 1)
-                                  const SizedBox(
-                                    height: 12,
-                                  ), // فاصل بين العناصر فقط
-                              ],
-                            );
-                          },
+                          items: _restaurants,
                         ),
-                        ListView.builder(
+                        _StoresTabList(
                           key: const PageStorageKey('tab_supermarket'),
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 6,
-                            horizontal: 5,
-                          ),
-                          physics: const ClampingScrollPhysics(),
-                          itemCount: supermarkets.length,
-                          itemBuilder: (context, index) {
-                            final s = supermarkets[index];
-                            return Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () => Navigator.of(
-                                    context,
-                                  ).pushNamed(AppRoute.StoreDetails),
-                                  child: RestaurantCard(
-                                    imageUrl: s.imageUrl,
-                                    name: s.name,
-                                    rating: s.rating,
-                                    orders: s.orders,
-                                    time: s.time,
-                                    isClosed: s.isClosed,
-                                    closedText: s.closedText,
-                                  ),
-                                ),
-                                // 🔹 نضيف مسافة بين العناصر فقط إذا لم يكن العنصر الأخير
-                                if (index != supermarkets.length - 1)
-                                  const SizedBox(height: 12),
-                              ],
-                            );
-                          },
+                          items: _supermarkets,
                         ),
                       ],
                     ),
@@ -243,5 +256,62 @@ class _StoresNavTabState extends State<StoresNavTab>
         ),
       ),
     );
+  }
+}
+
+/// A performant list for a stores tab, keeps scroll position alive per tab.
+class _StoresTabList extends StatefulWidget {
+  final List<Restaurant> items;
+  const _StoresTabList({super.key, required this.items});
+
+  @override
+  State<_StoresTabList> createState() => _StoresTabListState();
+}
+
+class _StoresTabListState extends State<_StoresTabList>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
+    return ScrollConfiguration(
+      behavior: const _NoGlowBehavior(),
+      child: ListView.separated(
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 5),
+        physics: const ClampingScrollPhysics(),
+        itemCount: widget.items.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 12),
+        itemBuilder: (context, index) {
+          final r = widget.items[index];
+          return GestureDetector(
+            onTap: () => Navigator.of(context).pushNamed(AppRoute.StoreDetails),
+            child: RestaurantCard(
+              imageUrl: r.imageUrl,
+              name: r.name,
+              rating: r.rating,
+              orders: r.orders,
+              time: r.time,
+              isClosed: r.isClosed,
+              closedText: r.closedText,
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _NoGlowBehavior extends ScrollBehavior {
+  const _NoGlowBehavior();
+  @override
+  Widget buildOverscrollIndicator(
+    BuildContext context,
+    Widget child,
+    ScrollableDetails details,
+  ) {
+    return child; // remove default glow effect
   }
 }

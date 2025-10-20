@@ -5,5 +5,9 @@ class AppLink {
 // ================================= Auth ========================== //
 
   static const String login = "$server/login";
+  static const String signup = "$server/register";
+  static const String resendCode = "$server/resend-code";
+  static const String verifyPhone = "$server/verify-phone";
+  static const String logout = "$server/logout";
 
 }

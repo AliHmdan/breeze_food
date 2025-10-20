@@ -33,7 +33,7 @@ class _FavoritePageState extends State<FavoritePage> {
         children: [
           CustomSlidableAction(
             onPressed: (context) => _deleteOrders(),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColor.red,
             borderRadius: BorderRadius.circular(11.r),
             child: Center(
               child: SvgPicture.asset(
@@ -166,17 +166,17 @@ class _FavoritePageState extends State<FavoritePage> {
       body: RefreshIndicator(
         onRefresh: _deleteOrders,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-
+          padding: const EdgeInsets.only(left: 8,right: 8,top: 30,bottom: 8),
+      
           child: Stack(
             children: [
               ListView(
                 physics: const AlwaysScrollableScrollPhysics(),
                 children: [
-                  const CustomAppbarHome(title: "Orders"),
+                  const CustomAppbarHome(title: "Favorite"),
                   SizedBox(height: 20.h),
                   _buildOrderCard(),
-
+      
                   const SizedBox(height: 40),
                 ],
               ),
