@@ -161,7 +161,6 @@ class _SearchState extends State<Search> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // شريط البحث
                   Row(
                     children: [
                       CustomArrow(
