@@ -22,7 +22,6 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  final GlobalKey _stackKey = GlobalKey(); 
   final GlobalKey _searchFieldKey = GlobalKey();
 
   // وسوم المستخدم المحلية
@@ -349,8 +348,6 @@ class _SearchState extends State<Search> {
       child: Scaffold(
         backgroundColor: AppColor.Dark,
         body: Stack(
-           key: _stackKey,
-  clipBehavior: Clip.none,
           children: [
             GestureDetector(
               behavior: HitTestBehavior.translucent,
@@ -522,95 +519,84 @@ class _SearchState extends State<Search> {
 
             // قائمة الاقتراحات المنسدلة
             if (showSuggestions)
-  Builder(
-    builder: (context) {
-      final fieldBox = _searchFieldKey.currentContext?.findRenderObject() as RenderBox?;
-      final stackBox = _stackKey.currentContext?.findRenderObject() as RenderBox?;
+              Builder(
+                builder: (context) {
+                  final renderBox =
+                      _searchFieldKey.currentContext?.findRenderObject()
+                          as RenderBox?;
+                  final offset = renderBox?.localToGlobal(Offset.zero);
+                  final topPosition = offset?.dy ?? 110.0;
+                  final double computed = (filteredSuggestions.length * 48.0.h);
+                  final double maxHeight = computed > 300.0.h
+                      ? 300.0.h
+                      : computed;
 
-      if (fieldBox == null || stackBox == null) {
-        return const SizedBox.shrink();
-      }
-
-      // موضع الحقل عالمياً
-      final fieldGlobal = fieldBox.localToGlobal(Offset.zero);
-      // موضع الـ Stack عالمياً
-      final stackGlobal = stackBox.localToGlobal(Offset.zero);
-      // نحول إلى إحداثيات محلية بالنسبة للـ Stack
-      final localTopLeft = fieldGlobal - stackGlobal;
-
-      // ارتفاع الحقل الحقيقي (بدل 45.h)
-      final fieldHeight = fieldBox.size.height;
-
-      final double computed = (filteredSuggestions.length * 48.0.h);
-      final double maxHeight = computed > 300.0.h ? 300.0.h : computed;
-
-      return Positioned(
-        top: localTopLeft.dy + fieldHeight, // أسفل الحقل مباشرة
-        left: 24.w,
-        right: 24.w,
-        child: Material(
-          color: Colors.transparent,
-          child: Container(
-            constraints: BoxConstraints(maxHeight: maxHeight),
-            decoration: BoxDecoration(
-              color: AppColor.white,
-              borderRadius: BorderRadius.circular(12.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: filteredSuggestions.isEmpty
-                ? Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(10.w),
-                      child: Text(
-                        'No suggestions found',
-                        style: TextStyle(
-                          color: AppColor.black,
-                          fontSize: 14.sp,
+                  return Positioned(
+                    top: topPosition + 45.h,
+                    left: 24.w,
+                    right: 24.w,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Container(
+                        constraints: BoxConstraints(maxHeight: maxHeight),
+                        decoration: BoxDecoration(
+                          color: AppColor.white,
+                          borderRadius: BorderRadius.circular(12.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.15),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                         ),
+                        child: filteredSuggestions.isEmpty
+                            ? Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(10.w),
+                                  child: Text(
+                                    'No suggestions found',
+                                    style: TextStyle(
+                                      color: AppColor.black,
+                                      fontSize: 14.sp,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : ListView.separated(
+                                padding: EdgeInsets.all(10.w),
+                                itemCount: filteredSuggestions.length,
+                                separatorBuilder: (_, __) =>
+                                    Divider(color: AppColor.black, height: 1.h),
+                                itemBuilder: (context, index) {
+                                  final suggestion = filteredSuggestions[index];
+                                  return InkWell(
+                                    onTap: () {
+                                      _applySuggestionToField(suggestion);
+                                      _performSearch();
+                                    },
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 12.w,
+                                        vertical: 14.h,
+                                      ),
+                                      child: Text(
+                                        suggestion,
+                                        style: TextStyle(
+                                          color: AppColor.black,
+                                          fontSize: 15.sp,
+                                          fontFamily: "Manrope",
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                       ),
                     ),
-                  )
-                : ListView.separated(
-                    padding: EdgeInsets.all(10.w),
-                    itemCount: filteredSuggestions.length,
-                    separatorBuilder: (_, __) =>
-                        Divider(color: AppColor.black, height: 1.h),
-                    itemBuilder: (context, index) {
-                      final suggestion = filteredSuggestions[index];
-                      return InkWell(
-                        onTap: () {
-                          _applySuggestionToField(suggestion);
-                          _performSearch();
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 12.w,
-                            vertical: 14.h,
-                          ),
-                          child: Text(
-                            suggestion,
-                            style: TextStyle(
-                              color: AppColor.black,
-                              fontSize: 15.sp,
-                              fontFamily: "Manrope",
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-          ),
-        ),
-      );
-    },
-  ),
-
+                  );
+                },
+              ),
           ],
         ),
       ),
