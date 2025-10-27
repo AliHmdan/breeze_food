@@ -17,4 +17,6 @@ class AppRoute {
   static const discountDetails = '/discount-details';
   static const StoreDetails = '/store-details';
   static const mainShell = '/main-shell';
+    static const info_profile = '/info_profile';
+     static const orders = '/orders';
 }

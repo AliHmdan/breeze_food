@@ -1,5 +1,6 @@
 import 'package:breezefood/core/constans/color.dart';
 import 'package:breezefood/core/constans/routes.dart';
+import 'package:breezefood/presentation/screens/add_order/add_order.dart';
 import 'package:breezefood/presentation/widgets/home/custom_title_section.dart';
 import 'package:breezefood/presentation/widgets/home/discount.dart';
 import 'package:flutter/material.dart';
@@ -46,13 +47,23 @@ padding: const EdgeInsets.only(top: 5,left: 10,right: 10),      child: Column(
                             return Container(
                               width: itemWidth,
                               margin: EdgeInsets.only(right: 10.w),
-                              child: Discount(
-                                imagePath: 'assets/images/004.jpg',
-                                title: 'Chicken shish without...',
-                                subtitle: 'burger king',
-                                price: '2.00\$',
-                                onFavoriteToggle: () {},
-                                discount: "50",
+                              child: GestureDetector(   onTap: () {
+                                   showAddOrderDialog(
+                            context,
+                            title: "Chicken",
+                            price: "5.00\$",
+                            oldPrice: "5.00\$",
+                            imagePath: "assets/images/004.jpg",
+                          );
+                                },
+                                child: Discount(
+                                  imagePath: 'assets/images/004.jpg',
+                                  title: 'Chicken shish without...',
+                                  subtitle: 'burger king',
+                                  price: '2.00\$',
+                                  onFavoriteToggle: () {},
+                                  discount: "50",
+                                ),
                               ),
                             );
                           },

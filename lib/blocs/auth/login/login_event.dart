@@ -6,12 +6,12 @@ abstract class LoginEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/// إرسال رقم الموبايل فقط
 class LoginSubmitted extends LoginEvent {
-  final String phone;     // ما تدخله من الحقل (بدون +963)
-  final String password;
+  final String phone; // ما يدخله المستخدم
 
-  const LoginSubmitted(this.phone, this.password);
+  const LoginSubmitted(this.phone);
 
   @override
-  List<Object?> get props => [phone, password];
+  List<Object?> get props => [phone];
 }

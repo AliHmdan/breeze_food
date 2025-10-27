@@ -1,25 +1,18 @@
 import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/core/constans/routes.dart';
-import 'package:breezefood/data/model/restaurant.dart';
+
 import 'package:breezefood/presentation/screens/home/animated_background.dart';
 import 'package:breezefood/presentation/screens/home/appbar_home.dart';
 import 'package:breezefood/presentation/screens/home/discount_home.dart';
 import 'package:breezefood/presentation/screens/home/most_popular.dart';
 import 'package:breezefood/presentation/screens/home/open_now.dart';
-import 'package:breezefood/presentation/widgets/CustomBottomNav.dart';
-import 'package:breezefood/presentation/widgets/animated_background.dart';
+
 import 'package:breezefood/presentation/widgets/home/Stores.dart';
 import 'package:breezefood/presentation/widgets/button/custom_button_order.dart';
-import 'package:breezefood/presentation/widgets/auth/custom_search.dart';
+
 import 'package:breezefood/presentation/widgets/home/custom_title_section.dart';
 import 'package:breezefood/presentation/widgets/home/home_filters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../widgets/custom_appbar_home.dart';
-import '../../widgets/home/custom_fast_food.dart';
-import '../../widgets/home/discount.dart';
-import '../../widgets/home/most_popular.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -69,7 +62,7 @@ class _HomeState extends State<Home> {
 
               //  أزرار الفلاتر + تمرير على الأقسام
               HomeFilters(onFilterTap: _onFilterTap),
-
+              // Ads
               Animated(),
               const SizedBox(height: 5),
               Container(key: _popularKey),
@@ -83,7 +76,7 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
                 child: CustomTitleSection(title: "Stores"),
               ),
-               const SizedBox(height: 5),
+              const SizedBox(height: 5),
               Stores(),
               SizedBox(height: 2.h),
 

@@ -1,5 +1,6 @@
 import 'package:breezefood/core/constans/color.dart';
 import 'package:breezefood/core/constans/routes.dart';
+import 'package:breezefood/presentation/screens/add_order/add_order.dart';
 import 'package:breezefood/presentation/widgets/home/custom_title_section.dart';
 import 'package:breezefood/presentation/widgets/home/most_popular.dart';
 import 'package:flutter/material.dart';
@@ -46,12 +47,23 @@ class MostPopular extends StatelessWidget {
                             return Container(
                               width: itemWidth,
                               margin: EdgeInsets.only(right: 10.w),
-                              child: PopularItemCard(
-                                imagePath: 'assets/images/004.jpg',
-                                title: 'Chicken shish without...',
-                                subtitle: 'burger king',
-                                price: '2.00\$',
-                                onFavoriteToggle: () {},
+                              child: GestureDetector(
+                                onTap: () {
+                                   showAddOrderDialog(
+                            context,
+                            title: "Chicken",
+                            price: "5.00\$",
+                            oldPrice: "5.00\$",
+                            imagePath: "assets/images/004.jpg",
+                          );
+                                },
+                                child: PopularItemCard(
+                                  imagePath: 'assets/images/004.jpg',
+                                  title: 'Chicken shish without...',
+                                  subtitle: 'burger king',
+                                  price: '2.00\$',
+                                  onFavoriteToggle: () {},
+                                ),
                               ),
                             );
                           },
