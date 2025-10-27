@@ -4,7 +4,7 @@ import 'package:breezefood/blocs/auth/login/login_state.dart';
 import 'package:breezefood/core/constans/color.dart';
 import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/data/repositories/auth_repository.dart';
-import 'package:breezefood/presentation/screens/auth/new_passowrd.dart';
+import 'package:breezefood/presentation/screens/auth/verfiy_code.dart';
 import 'package:breezefood/presentation/widgets/auth/custom_text_form_field.dart';
 import 'package:breezefood/presentation/widgets/button/custom_button.dart';
 import 'package:breezefood/presentation/widgets/main_shell.dart';
@@ -25,10 +25,14 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  // helper لعرض SnackBar موحّد
+  @override
+  void dispose() {
+    phoneController.dispose();
+    super.dispose();
+  }
+
   void _showSnackBar(
     BuildContext context, {
     required String message,
@@ -36,7 +40,7 @@ class _LoginState extends State<Login> {
     IconData? icon,
   }) {
     final messenger = ScaffoldMessenger.of(context);
-    messenger.clearSnackBars(); // تنظيف أي رسالة قديمة
+    messenger.clearSnackBars();
     messenger.showSnackBar(
       SnackBar(
         content: Row(
@@ -47,10 +51,7 @@ class _LoginState extends State<Login> {
               const SizedBox(width: 10),
             ],
             Expanded(
-              child: Text(
-                message,
-                style: const TextStyle(color: Colors.white),
-              ),
+              child: Text(message, style: const TextStyle(color: Colors.white)),
             ),
           ],
         ),
@@ -72,6 +73,18 @@ class _LoginState extends State<Login> {
         backgroundColor: AppColor.primaryColor,
         body: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) async {
+            // ✅ تم إرسال OTP → انتقل لصفحة التحقق
+            if (state is LoginOtpSent) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => VerfiyCode(phone: state.phone),
+                ),
+              );
+              return;
+            }
+
+            // ❌ فشل
             if (state is LoginFailure) {
               _showSnackBar(
                 context,
@@ -79,18 +92,47 @@ class _LoginState extends State<Login> {
                 background: Colors.redAccent,
                 icon: Icons.error_outline,
               );
-            } else if (state is LoginSuccess) {
+              return;
+            }
+
+            // ✅ نجاح عام
+            if (state is LoginSuccess) {
+              final data = state.data; // ردّ الـ API
+              final token = data['token'];
+              final status = (data['status'] ?? '').toString().toLowerCase();
+
+              // إن وُجد توكن → ادخل التطبيق مباشرة
+              if (token != null && token.toString().isNotEmpty) {
+                _showSnackBar(
+                  context,
+                  message: "تم تسجيل الدخول بنجاح ✅",
+                  background: AppColor.primaryColor,
+                  icon: Icons.check_circle_outline,
+                );
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const MainShell()),
+                  (_) => false,
+                );
+                return;
+              }
+
+              // احتياط: لو السيرفر رجّع otp_sent ولم تكن طبقت LoginOtpSent بعد
+              if (status == 'otp_sent') {
+                final phone = data['phone'] ?? phoneController.text;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => VerfiyCode(phone: phone)),
+                );
+                return;
+              }
+
+              // أي نجاح آخر غير معروف
               _showSnackBar(
                 context,
-                message: "تم تسجيل الدخول بنجاح ✅",
-                background: AppColor.primaryColor,
-                icon: Icons.check_circle_outline,
+                message: 'تم إرسال الطلب بنجاح، يرجى التحقق من الكود.',
+                background: Colors.orange,
+                icon: Icons.info_outline,
               );
-              // الانتقال مباشرة
-            Navigator.of(context).pushAndRemoveUntil(
-  MaterialPageRoute(builder: (_) => const MainShell()),
-  (_) => false,
-);
             }
           },
           builder: (context, state) {
@@ -156,8 +198,7 @@ class _LoginState extends State<Login> {
                                       ),
                                       SizedBox(height: 2.h),
                                       CustomSubTitle(
-                                        subtitle:
-                                            "Please Enter your phone to login",
+                                        subtitle: "Please Enter your phone to login",
                                         color: AppColor.gry,
                                         fontsize: 12.sp,
                                       ),
@@ -173,10 +214,8 @@ class _LoginState extends State<Login> {
                                             ),
                                             decoration: BoxDecoration(
                                               color: AppColor.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(8.r),
-                                              border: Border.all(
-                                                  color: AppColor.gry),
+                                              borderRadius: BorderRadius.circular(8.r),
+                                              border: Border.all(color: AppColor.gry),
                                             ),
                                             child: Row(
                                               children: [
@@ -188,10 +227,7 @@ class _LoginState extends State<Login> {
                                                 SizedBox(width: 8.w),
                                                 Text(
                                                   '+963',
-                                                  style: TextStyle(
-                                                    fontSize: 14.sp,
-                                                    // fontWeight: FontWeight.bold,
-                                                  ),
+                                                  style: TextStyle(fontSize: 14.sp),
                                                 ),
                                               ],
                                             ),
@@ -200,8 +236,7 @@ class _LoginState extends State<Login> {
                                           Expanded(
                                             child: CustomTextFormField(
                                               controller: phoneController,
-                                              keyboardType:
-                                                  TextInputType.number,
+                                              keyboardType: TextInputType.number,
                                               hintText: "Phone Number",
                                               validator: (v) {
                                                 final val = (v ?? '').trim();
@@ -217,43 +252,7 @@ class _LoginState extends State<Login> {
                                           ),
                                         ],
                                       ),
-                                      SizedBox(height: 16.h),
 
-                                      // Password
-                                      CustomTextFormField(
-                                        controller: passwordController,
-                                        hintText: "Password",
-                                        isPassword: true,
-                                        obscureInitially: true,
-                                        validator: (v) {
-                                          final val = (v ?? '').trim();
-                                          if (val.isEmpty) {
-                                            return 'أدخل كلمة المرور';
-                                          }
-                                          if (val.length < 6) {
-                                            return 'كلمة المرور قصيرة';
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                      SizedBox(height: 10.h),
-
-                                      // Forget password
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const NewPassowrd(),
-                                            ),
-                                          );
-                                        },
-                                        child: CustomSubTitle(
-                                          subtitle: "Forget password? ",
-                                          color: AppColor.primaryColor,
-                                          fontsize: 12.sp,
-                                        ),
-                                      ),
                                       SizedBox(height: 24.h),
 
                                       // Button or loader
@@ -270,19 +269,16 @@ class _LoginState extends State<Login> {
                                           title: "Continue",
                                           onPressed: () {
                                             FocusScope.of(context).unfocus();
-                                            if (_formKey.currentState!
-                                                .validate()) {
+                                            if (_formKey.currentState!.validate()) {
                                               context.read<LoginBloc>().add(
                                                     LoginSubmitted(
                                                       phoneController.text,
-                                                      passwordController.text,
                                                     ),
                                                   );
                                             } else {
                                               _showSnackBar(
                                                 context,
-                                                message:
-                                                    'تحقق من الحقول المطلوبة',
+                                                message: 'تحقق من الحقول المطلوبة',
                                                 background: Colors.orange,
                                                 icon: Icons.info_outline,
                                               );

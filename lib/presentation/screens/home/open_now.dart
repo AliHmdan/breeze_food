@@ -1,4 +1,5 @@
 import 'package:breezefood/core/constans/color.dart';
+import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/data/model/restaurant.dart';
 import 'package:breezefood/presentation/widgets/home/custom_fast_food.dart';
 import 'package:breezefood/presentation/widgets/home/custom_title_section.dart';
@@ -73,7 +74,6 @@ class OpenNow extends StatelessWidget {
                 physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics(),
                 ), // iOS-like
-
                 // physics: const ClampingScrollPhysics(), // Android-like
                 primary: false, // مهم داخل شجرة فيها Scroll أخرى
                 // shrinkWrap: false, // اتركها افتراضيًا (أفضل أداءً هنا)
@@ -82,14 +82,19 @@ class OpenNow extends StatelessWidget {
                 separatorBuilder: (_, __) => const SizedBox(height: 12),
                 itemBuilder: (context, index) {
                   final r = restaurants[index];
-                  return RestaurantCard(
-                    imageUrl: r.imageUrl,
-                    name: r.name,
-                    rating: r.rating,
-                    orders: r.orders,
-                    time: r.time,
-                    isClosed: r.isClosed,
-                    closedText: r.closedText,
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(AppRoute.stores_nav_tab);
+                    },
+                    child: RestaurantCard(
+                      imageUrl: r.imageUrl,
+                      name: r.name,
+                      rating: r.rating,
+                      orders: r.orders,
+                      time: r.time,
+                      isClosed: r.isClosed,
+                      closedText: r.closedText,
+                    ),
                   );
                 },
               ),

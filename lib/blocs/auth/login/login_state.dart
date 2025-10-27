@@ -9,9 +9,14 @@ abstract class LoginState extends Equatable {
 class LoginInitial extends LoginState {}
 
 class LoginLoading extends LoginState {}
+class LoginOtpSent extends LoginState {
+  final String phone;
+  const LoginOtpSent(this.phone);
+}
 
+/// نجاح العملية (مثلاً: وصول توكن أو وصول كود OTP أو بيانات المستخدم)
 class LoginSuccess extends LoginState {
-  final Map<String, dynamic> data; // {token, user, ...} كما يرجّعه الـ API
+  final Map<String, dynamic> data;
   const LoginSuccess(this.data);
 
   @override

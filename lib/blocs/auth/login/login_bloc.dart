@@ -19,62 +19,70 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginSubmitted event,
     Emitter<LoginState> emit,
   ) async {
-    // تحقق أساسي قبل النداء
-    final phone = event.phone.trim();
-    final password = event.password.trim();
-
-    if (phone.isEmpty) {
+    // 1) تنظيف الرقم
+    final raw = event.phone.trim();
+    if (raw.isEmpty) {
       emit(const LoginFailure('أدخل رقم الهاتف'));
       return;
     }
-    if (password.isEmpty) {
-      emit(const LoginFailure('أدخل كلمة المرور'));
+
+    final phoneDigits = _digitsOnly(raw);
+    if (phoneDigits.length < 9) {
+      emit(const LoginFailure('رقم الهاتف يجب أن لا يقل عن 9 محارف.'));
       return;
     }
+
+    // إن كان الباك إند يقبل محلياً اتركه كما هو، وإلا طبّق قواعد E.164 هنا
+    final normalizedPhone = phoneDigits;
 
     emit(LoginLoading());
 
     try {
-      // 👇 ملاحظة مهمة:
-      // الـ API عندك يستقبل "identifier" وليس "phone" (كما في AuthRepository.login)
-      // ولو حابب توحّد الصيغة الدولية E.164 أضف +963 هنا إن كان لازم.
-      final normalizedIdentifier = phone; // أو '+963$phone' حسب باك إندك
+      // 2) طلب تسجيل الدخول بالهاتف
+      // تأكد أن عندك:
+      // Future<Map<String, dynamic>> loginWithPhone(String phone)
+      final Map<String, dynamic> resp =
+          await authRepository.loginWithPhone(normalizedPhone);
 
-      final Map<String, dynamic> resp = await authRepository.login(
-        normalizedIdentifier,
-        password,
-      );
-
-      // نتوقع شيئًا مثل: { "token": "....", "user": {...} } أو رسالة فشل
+      // 3) فحص التوكن
       final token = resp['token'];
       final user = resp['user'];
 
+      // ✅ مسار تسجيل مباشر (يوجد توكن)
       if (token != null && token.toString().isNotEmpty) {
-        // خزّن التوكن واليوزر
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token.toString());
         if (user != null) {
           await prefs.setString('user', jsonEncode(user));
         }
-
         emit(LoginSuccess(resp));
-      } else {
-        // إن لم يوجد توكن نقرأ رسالة الخادم (إن وجدت)
-        final serverMsg = _extractMessage(resp) ?? 'فشل تسجيل الدخول';
-        emit(LoginFailure(serverMsg));
+        return;
       }
+
+      // ✅ لا يوجد توكن = مسار OTP بغض النظر عن صيغة الرد
+      emit(LoginOtpSent(
+        // إذا رجع السيرفر الهاتف نأخذه، وإلا نستخدم المدخل
+        (resp['phone']?.toString().trim().isNotEmpty ?? false)
+            ? resp['phone'].toString().trim()
+            : normalizedPhone,
+      ));
+      return;
     } on DioException catch (e) {
-      // مهلات / انقطاع نت / رسائل السيرفر
+      // مهلات
       if (e.type == DioExceptionType.connectionTimeout ||
           e.type == DioExceptionType.sendTimeout ||
           e.type == DioExceptionType.receiveTimeout) {
         emit(const LoginFailure('انتهت مهلة الاتصال. تحقق من الشبكة.'));
         return;
       }
+
+      // لا يوجد إنترنت
       if (e.error is SocketException) {
         emit(const LoginFailure('لا يوجد اتصال بالإنترنت.'));
         return;
       }
+
+      // رسالة السيرفر إن وُجدت
       final msg = _extractMessage(e.response?.data) ?? 'خطأ في الاتصال';
       emit(LoginFailure(msg));
     } catch (e) {
@@ -82,9 +90,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
+  // إبقاء الدوال المساعدة كما هي
+  String _digitsOnly(String input) {
+    final b = StringBuffer();
+    for (final ch in input.runes) {
+      final c = String.fromCharCode(ch);
+      final code = c.codeUnitAt(0);
+      if (code >= 48 && code <= 57) {
+        b.write(c);
+      }
+    }
+    return b.toString();
+  }
+
   String? _extractMessage(dynamic data) {
     if (data is Map) {
-      final m = data['message'] ?? data['error'] ?? data['msg'];
+      final m = data['message'] ?? data['error'] ?? data['msg'] ?? data['status'];
       return m?.toString();
     }
     if (data is String && data.trim().isNotEmpty) return data;

@@ -1,4 +1,5 @@
 import 'package:breezefood/core/constans/color.dart';
+import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/presentation/widgets/home/rating_stores.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -115,7 +116,9 @@ class Stores extends StatelessWidget {
                               borderRadius: BorderRadius.circular(6.r),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).pushNamed(AppRoute.orders);
+                          },
                           child: Text(
                             "Order Now",
                             style: TextStyle(
@@ -125,17 +128,7 @@ class Stores extends StatelessWidget {
                           ),
                         ),
                         // SizedBox(height: 4.h),
-                        InkWell(
-                          onTap: () {},
-                          child: Text(
-                            item["link"]!,
-                            style: TextStyle(
-                              color: AppColor.gry,
-                              fontSize: 10.sp,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        ),
+                      
                         // RatingStores(),
                       ],
                     ),

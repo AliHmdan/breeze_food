@@ -6,7 +6,6 @@ import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constans/color.dart';
-import '../../widgets/auth/custom_date_picker_screen.dart';
 
 class InformationScreen extends StatefulWidget {
   const InformationScreen({Key? key}) : super(key: key);
@@ -86,7 +85,7 @@ class _InformationScreenState extends State<InformationScreen> {
                     title: "Login",
                     onPressed: () {
               
-                      Navigator.of(context).pushReplacementNamed(AppRoute.home);
+                      Navigator.of(context).pushReplacementNamed(AppRoute.mainShell);
                     },
                   ),
 
