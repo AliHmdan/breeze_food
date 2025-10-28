@@ -1,7 +1,7 @@
-import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/presentation/widgets/auth/custom_text_form_field.dart';
 import 'package:breezefood/presentation/widgets/button/custom_button.dart';
 import 'package:breezefood/presentation/widgets/custom_arrow.dart';
+import 'package:breezefood/presentation/widgets/main_shell.dart';
 import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,7 +15,7 @@ class InformationScreen extends StatefulWidget {
 }
 
 class _InformationScreenState extends State<InformationScreen> {
-   late TextEditingController firstnameController;
+  late TextEditingController firstnameController;
   late TextEditingController lastnameController;
 
   @override
@@ -23,21 +23,20 @@ class _InformationScreenState extends State<InformationScreen> {
     super.initState();
     firstnameController = TextEditingController();
     lastnameController = TextEditingController();
-   
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
           /// ✅ الخلفية مرنة مع الشاشة
-            Image.asset(
+          Image.asset(
             "assets/images/background_auth.png",
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             fit: BoxFit.cover,
           ),
-         
 
           SafeArea(
             child: SingleChildScrollView(
@@ -54,7 +53,6 @@ class _InformationScreenState extends State<InformationScreen> {
 
                   SizedBox(height: 16.h),
 
-               
                   CustomSubTitle(
                     subtitle: "Please enter your information",
                     color: AppColor.white,
@@ -66,30 +64,32 @@ class _InformationScreenState extends State<InformationScreen> {
                   /// الاسم
                   CustomTextFormField(
                     hintText: "First Name",
-                   controller: firstnameController,
+                    controller: firstnameController,
                   ),
 
                   SizedBox(height: 20.h),
- CustomTextFormField(
+                  CustomTextFormField(
                     hintText: "Last Name",
                     controller: lastnameController,
-                   
                   ),
+
                   /// التاريخ
                   // const CustomDatePickerField(),
-
                   SizedBox(height: 30.h),
 
                   /// الزر
                   CustomButton(
                     title: "Login",
                     onPressed: () {
-              
-                      Navigator.of(context).pushReplacementNamed(AppRoute.mainShell);
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (_) => const MainShell(initialIndex: 0),
+                        ),
+                      );
                     },
                   ),
 
-                  SizedBox(height: 40.h), 
+                  SizedBox(height: 40.h),
                 ],
               ),
             ),

@@ -1,8 +1,7 @@
 import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/presentation/widgets/button/custom_button.dart';
 import 'package:breezefood/presentation/widgets/custom_arrow.dart';
-import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
+import 'package:breezefood/presentation/widgets/main_shell.dart';
 import 'package:breezefood/presentation/widgets/title/custom_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -62,9 +61,12 @@ class Success extends StatelessWidget {
                         CustomButton(
                           title: "Ok",
                           onPressed: () {
-                            Navigator.of(
-                              context,
-                            ).pushReplacementNamed(AppRoute.home);
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    const MainShell(initialIndex: 3),
+                              ),
+                            );
                           },
                         ),
                       ],
