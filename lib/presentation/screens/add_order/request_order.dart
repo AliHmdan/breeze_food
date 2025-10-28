@@ -1,15 +1,14 @@
-import 'package:freeza_food/core/constans/color.dart';
-import 'package:freeza_food/presentation/screens/add_order/payment_method.dart';
-import 'package:freeza_food/presentation/widgets/custom_pill_input.dart';
-import 'package:freeza_food/presentation/widgets/home/custom_title_section.dart';
-import 'package:freeza_food/presentation/widgets/request_order/coupon.dart';
-import 'package:freeza_food/presentation/widgets/request_order/meal_card.dart';
-import 'package:freeza_food/presentation/widgets/request_order/total.dart';
-import 'package:freeza_food/presentation/widgets/title/custom_sub_title.dart';
+import 'package:breezefood/core/constans/color.dart';
+import 'package:breezefood/core/constans/routes.dart';
+import 'package:breezefood/presentation/screens/add_order/payment_method.dart';
+import 'package:breezefood/presentation/widgets/custom_pill_input.dart';
+import 'package:breezefood/presentation/widgets/home/custom_title_section.dart';
+import 'package:breezefood/presentation/widgets/request_order/meal_card.dart';
+import 'package:breezefood/presentation/widgets/request_order/total.dart';
+import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../widgets/request_order/delvery_location.dart';
 import '../../widgets/request_order/product_option.dart';
@@ -50,7 +49,7 @@ class _RequestOrderState extends State<RequestOrder> {
 
   // late final List<PaymentMethod> methods; // ⬅️ سنملؤها في initState
 
- late final List<String> _pngAssets;
+//  late final List<String> _pngAssets;
 
 @override
 void initState() {
@@ -61,7 +60,7 @@ void initState() {
   //   PaymentMethod(id:'visa', title:'Visa card', imageAsset:'assets/icons/visa.png'),
   //   PaymentMethod(id:'master', title:'Master card', imageAsset:'assets/icons/mastercard.png'),
   // ];
-  _pngAssets = methods.map((m) => m.imageAsset).whereType<String>().toList();
+  // _pngAssets = methods.map((m) => m.imageAsset).whereType<String>().toList();
 }
 
 @override
@@ -103,7 +102,13 @@ void didChangeDependencies() {
           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
           child: Column(
             children: [
-              const MealCard(),
+             const MealCard(
+  image: 'assets/images/003.jpg',
+  name: 'Chicken shish',
+  size: 'M',
+  price: 5.00,
+  showCounter: true,
+),
               const SizedBox(height: 8),
 
               Row(
@@ -195,7 +200,7 @@ void didChangeDependencies() {
                   // تعامل مع تغيير الطريقة (Bloc/API) إن رغبت
                 },
                 onOrder: () {
-                  // تنفيذ الطلب
+                  Navigator.of(context).pushNamed(AppRoute.success);
                 },
               ),
             ],

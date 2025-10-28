@@ -1,6 +1,7 @@
+import 'package:breezefood/data/model/search/search_history_model.dart';
+import 'package:breezefood/data/model/search/search_result_model.dart';
 import 'package:equatable/equatable.dart';
-import 'package:freeza_food/models/search_history_model.dart';
-import 'package:freeza_food/models/search_result_model.dart';
+
 
 abstract class SearchState extends Equatable {
   const SearchState();

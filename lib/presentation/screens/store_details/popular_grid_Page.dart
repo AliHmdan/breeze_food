@@ -1,7 +1,6 @@
-import 'package:freeza_food/core/constans/color.dart';
-import 'package:freeza_food/presentation/widgets/home/Stores.dart';
-import 'package:freeza_food/presentation/widgets/home/most_popular.dart';
-import 'package:freeza_food/presentation/widgets/title/custom_appbar_profile.dart';
+import 'package:breezefood/core/constans/color.dart';
+import 'package:breezefood/presentation/widgets/home/most_popular.dart';
+import 'package:breezefood/presentation/widgets/title/custom_appbar_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

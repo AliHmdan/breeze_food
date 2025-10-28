@@ -1,15 +1,29 @@
-import 'package:freeza_food/core/constans/routes.dart';
-import 'package:freeza_food/presentation/widgets/auth/custom_text_form_field.dart';
-import 'package:freeza_food/presentation/widgets/button/custom_button.dart';
-import 'package:freeza_food/presentation/widgets/custom_arrow.dart';
-import 'package:freeza_food/presentation/widgets/title/custom_sub_title.dart';
+import 'package:breezefood/presentation/widgets/auth/custom_text_form_field.dart';
+import 'package:breezefood/presentation/widgets/button/custom_button.dart';
+import 'package:breezefood/presentation/widgets/custom_arrow.dart';
+import 'package:breezefood/presentation/widgets/main_shell.dart';
+import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constans/color.dart';
-import '../../widgets/auth/custom_date_picker_screen.dart';
 
-class InformationScreen extends StatelessWidget {
+class InformationScreen extends StatefulWidget {
   const InformationScreen({Key? key}) : super(key: key);
+
+  @override
+  State<InformationScreen> createState() => _InformationScreenState();
+}
+
+class _InformationScreenState extends State<InformationScreen> {
+  late TextEditingController firstnameController;
+  late TextEditingController lastnameController;
+
+  @override
+  void initState() {
+    super.initState();
+    firstnameController = TextEditingController();
+    lastnameController = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +31,12 @@ class InformationScreen extends StatelessWidget {
       body: Stack(
         children: [
           /// ✅ الخلفية مرنة مع الشاشة
-            Image.asset(
+          Image.asset(
             "assets/images/background_auth.png",
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             fit: BoxFit.cover,
           ),
-         
 
           SafeArea(
             child: SingleChildScrollView(
@@ -40,7 +53,6 @@ class InformationScreen extends StatelessWidget {
 
                   SizedBox(height: 16.h),
 
-               
                   CustomSubTitle(
                     subtitle: "Please enter your information",
                     color: AppColor.white,
@@ -51,28 +63,33 @@ class InformationScreen extends StatelessWidget {
 
                   /// الاسم
                   CustomTextFormField(
-                    hintText: "Full Name",
-                    backgroundColor: AppColor.white,
-                    hintColor: AppColor.gry,
+                    hintText: "First Name",
+                    controller: firstnameController,
                   ),
 
                   SizedBox(height: 20.h),
+                  CustomTextFormField(
+                    hintText: "Last Name",
+                    controller: lastnameController,
+                  ),
 
                   /// التاريخ
-                  const CustomDatePickerField(),
-
+                  // const CustomDatePickerField(),
                   SizedBox(height: 30.h),
 
                   /// الزر
                   CustomButton(
                     title: "Login",
                     onPressed: () {
-              
-                      Navigator.of(context).pushReplacementNamed(AppRoute.UpdateAddressScreen);
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (_) => const MainShell(initialIndex: 0),
+                        ),
+                      );
                     },
                   ),
 
-                  SizedBox(height: 40.h), 
+                  SizedBox(height: 40.h),
                 ],
               ),
             ),

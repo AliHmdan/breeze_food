@@ -1,24 +1,29 @@
-import 'package:freeza_food/core/constans/color.dart';
-import 'package:freeza_food/presentation/widgets/request_order/counter_request.dart';
-import 'package:freeza_food/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:breezefood/core/constans/color.dart';
+import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
+import 'counter_request.dart';
 
-class MealCard extends StatefulWidget {
-  const MealCard({super.key});
+class MealCard extends StatelessWidget {
+  final String image;
+  final String name;
+  final String size;
+  final double price;
+  final bool showCounter; // إظهار/إخفاء العداد
 
-  @override
-  State<MealCard> createState() => _MealCardState();
-}
-
-class _MealCardState extends State<MealCard> {
-
+  const MealCard({
+    super.key,
+    required this.image,
+    required this.name,
+    required this.size,
+    required this.price,
+    this.showCounter = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // margin: const EdgeInsets.all(12),
-      padding: const EdgeInsets.only(left: 1,right: 10),
+      padding: const EdgeInsets.only(left: 1, right: 10),
       decoration: BoxDecoration(
         color: AppColor.black,
         borderRadius: BorderRadius.circular(15),
@@ -30,11 +35,12 @@ class _MealCardState extends State<MealCard> {
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(0),
               bottomLeft: Radius.circular(0),
-              topRight: Radius.circular(40),   // ممكن تغير القيمة حسب اللي يعجبك
+              topRight: Radius.circular(40),
               bottomRight: Radius.circular(40),
-            ),            child: Image.asset(
-              "assets/images/003.jpg",
-              width: 85.w,
+            ),
+            child: Image.asset(
+              image,
+              width: 100.w,
               height: 105.h,
               fit: BoxFit.cover,
             ),
@@ -42,14 +48,19 @@ class _MealCardState extends State<MealCard> {
 
           const SizedBox(width: 12),
 
-          // تفاصيل الوجبة
+          // تفاصيل الوجبة + (اختياري) العداد
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-              CustomSubTitle(subtitle: "Chicken shish", color: AppColor.white, fontsize: 14.sp),
+                CustomSubTitle(
+                  subtitle: name,
+                  color: AppColor.white,
+                  fontsize: 14.sp,
+                ),
                 const SizedBox(height: 4),
+
+                // السايز
                 RichText(
                   text: TextSpan(
                     children: [
@@ -58,12 +69,10 @@ class _MealCardState extends State<MealCard> {
                         style: TextStyle(
                           color: AppColor.gry,
                           fontSize: 16.sp,
-
                         ),
                       ),
-
                       TextSpan(
-                        text: " M",
+                        text: " $size",
                         style: TextStyle(
                           color: AppColor.gry,
                           fontSize: 16.sp,
@@ -71,9 +80,11 @@ class _MealCardState extends State<MealCard> {
                       ),
                     ],
                   ),
-                )
-,
+                ),
+
                 const SizedBox(height: 4),
+
+                // السعر
                 RichText(
                   text: TextSpan(
                     children: [
@@ -82,12 +93,10 @@ class _MealCardState extends State<MealCard> {
                         style: TextStyle(
                           color: AppColor.gry,
                           fontSize: 16.sp,
-
                         ),
                       ),
-
                       TextSpan(
-                        text: "5.00\$ ",
+                        text: "${price.toStringAsFixed(2)}\$ ",
                         style: TextStyle(
                           color: AppColor.yellow,
                           fontSize: 16.sp,
@@ -95,13 +104,17 @@ class _MealCardState extends State<MealCard> {
                       ),
                     ],
                   ),
-                )
+                ),
+
+                // العداد (اختياري)
+                
               ],
             ),
           ),
-
-          // أزرار التحكم بالعدد
-          CounterRequest()
+          if (showCounter) ...[
+                  const SizedBox(height: 6),
+                  const CounterRequest(),
+                ],
         ],
       ),
     );

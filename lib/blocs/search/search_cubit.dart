@@ -1,8 +1,7 @@
+import 'package:breezefood/data/repositories/search_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:freeza_food/data/repositories/search_repository.dart';
-import 'package:freeza_food/models/search_history_model.dart';
-import 'package:freeza_food/models/search_result_model.dart';
+
 import 'search_state.dart';
 
 class SearchCubit extends Cubit<SearchState> {
