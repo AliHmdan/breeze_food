@@ -1,6 +1,6 @@
 // lib/presentation/ads/widgets/gradient_background.dart
-import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/presentation/screens/ads/widget/rays_painter.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/presentation/screens/ads/widget/rays_painter.dart';
 import 'package:flutter/material.dart';
 
 class GradientBackground extends StatelessWidget {

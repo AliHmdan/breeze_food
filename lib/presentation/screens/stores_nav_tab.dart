@@ -1,12 +1,12 @@
-import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/core/constans/routes.dart';
-import 'package:breezefood/data/model/restaurant.dart';
-import 'package:breezefood/presentation/screens/store_details/market_page.dart';
-import 'package:breezefood/presentation/widgets/auth/custom_search.dart';
-import 'package:breezefood/presentation/widgets/custom_appbar_home.dart';
-import 'package:breezefood/presentation/widgets/home/custom_fast_food.dart';
-import 'package:breezefood/presentation/widgets/location_chip.dart';
-import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/core/constans/routes.dart';
+import 'package:freeza_food/data/model/restaurant.dart';
+import 'package:freeza_food/presentation/screens/store_details/market_page.dart';
+import 'package:freeza_food/presentation/widgets/auth/custom_search.dart';
+import 'package:freeza_food/presentation/widgets/custom_appbar_home.dart';
+import 'package:freeza_food/presentation/widgets/home/custom_fast_food.dart';
+import 'package:freeza_food/presentation/widgets/location_chip.dart';
+import 'package:freeza_food/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

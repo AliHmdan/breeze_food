@@ -1,9 +1,9 @@
 // lib/presentation/ads/referral_ad_page.dart
-import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/presentation/screens/ads/widget/action_pill.dart';
-import 'package:breezefood/presentation/screens/ads/widget/circle_icon_button.dart';
-import 'package:breezefood/presentation/screens/ads/widget/gradient_background.dart';
-import 'package:breezefood/presentation/screens/ads/widget/referral_code_box.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/presentation/screens/ads/widget/action_pill.dart';
+import 'package:freeza_food/presentation/screens/ads/widget/circle_icon_button.dart';
+import 'package:freeza_food/presentation/screens/ads/widget/gradient_background.dart';
+import 'package:freeza_food/presentation/screens/ads/widget/referral_code_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';

@@ -1,38 +1,38 @@
-import 'package:breezefood/presentation/screens/ads/page_ads.dart';
-import 'package:breezefood/presentation/screens/pay_your_order.dart';
-import 'package:breezefood/presentation/screens/profile/info_profile.dart';
-import 'package:breezefood/presentation/screens/resturant.dart';
+import 'package:freeza_food/presentation/screens/ads/page_ads.dart';
+import 'package:freeza_food/presentation/screens/pay_your_order.dart';
+import 'package:freeza_food/presentation/screens/profile/info_profile.dart';
+import 'package:freeza_food/presentation/screens/resturant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:breezefood/core/constans/routes.dart';
+import 'package:freeza_food/core/constans/routes.dart';
 
 // Repositories
-import 'package:breezefood/data/repositories/search_repository.dart';
-import 'package:breezefood/data/repositories/profile_repository.dart';
+import 'package:freeza_food/data/repositories/search_repository.dart';
+import 'package:freeza_food/data/repositories/profile_repository.dart';
 
 // Cubits
-import 'package:breezefood/blocs/search/search_cubit.dart';
-import 'package:breezefood/blocs/auth/auth_cubit.dart'; // أنصح تضيف AuthCubit كمصدر حالة عالمي للمستخدم
+import 'package:freeza_food/blocs/search/search_cubit.dart';
+import 'package:freeza_food/blocs/auth/auth_cubit.dart'; // أنصح تضيف AuthCubit كمصدر حالة عالمي للمستخدم
 
 // Screens
-import 'package:breezefood/presentation/screens/splash_video_screen.dart';
-import 'package:breezefood/presentation/screens/auth/signup.dart';
-import 'package:breezefood/presentation/screens/successful.dart';
-import 'package:breezefood/presentation/screens/auth/phone_number.dart';
-import 'package:breezefood/presentation/screens/auth/new_passowrd.dart';
-import 'package:breezefood/presentation/screens/auth/information.dart';
-import 'package:breezefood/presentation/screens/auth/login.dart';
-import 'package:breezefood/presentation/screens/search/search.dart';
-import 'package:breezefood/presentation/screens/add_order/pay.dart';
-import 'package:breezefood/presentation/screens/add_order/success.dart';
-import 'package:breezefood/presentation/screens/profile/profile.dart';
-import 'package:breezefood/presentation/screens/stores_nav_tab.dart';
-import 'package:breezefood/presentation/screens/store_details/popular_grid_Page.dart';
-import 'package:breezefood/presentation/screens/discount_grid_Page.dart';
-import 'package:breezefood/presentation/screens/store_details/store_details.dart';
-import 'package:breezefood/presentation/widgets/main_shell.dart';
+import 'package:freeza_food/presentation/screens/splash_video_screen.dart';
+import 'package:freeza_food/presentation/screens/auth/signup.dart';
+import 'package:freeza_food/presentation/screens/successful.dart';
+import 'package:freeza_food/presentation/screens/auth/phone_number.dart';
+import 'package:freeza_food/presentation/screens/auth/new_passowrd.dart';
+import 'package:freeza_food/presentation/screens/auth/information.dart';
+import 'package:freeza_food/presentation/screens/auth/login.dart';
+import 'package:freeza_food/presentation/screens/search/search.dart';
+import 'package:freeza_food/presentation/screens/add_order/pay.dart';
+import 'package:freeza_food/presentation/screens/add_order/success.dart';
+import 'package:freeza_food/presentation/screens/profile/profile.dart';
+import 'package:freeza_food/presentation/screens/stores_nav_tab.dart';
+import 'package:freeza_food/presentation/screens/store_details/popular_grid_Page.dart';
+import 'package:freeza_food/presentation/screens/discount_grid_Page.dart';
+import 'package:freeza_food/presentation/screens/store_details/store_details.dart';
+import 'package:freeza_food/presentation/widgets/main_shell.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -110,12 +110,12 @@ class MyApp extends StatelessWidget {
                       initialRoute: AppRoute.splash_video_screen,
                       routes: {
                         AppRoute.splash_video_screen: (_) => const SplashVideoScreen(),
-                        AppRoute.signUp: (_) => const Signup(),
+                        AppRoute.signUp: (_) =>  Signup(),
                         AppRoute.successful: (_) => const Successful(),
                         AppRoute.phoneNumber: (_) => const PhoneNumber(),
                         AppRoute.newPassword: (_) => const NewPassowrd(),
                         AppRoute.information: (_) => const InformationScreen(),
-                        AppRoute.login: (_) => const Login(),
+                        AppRoute.login: (_) =>  Login(),
                       AppRoute.mainShell: (_) => const MainShell(),
                         // AppRoute.home: (_) => const Home(),
                         AppRoute.search: (_) => const Search(),

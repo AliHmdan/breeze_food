@@ -1,8 +1,8 @@
-import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/core/constans/routes.dart';
-import 'package:breezefood/data/model/restaurant.dart';
-import 'package:breezefood/presentation/widgets/home/custom_fast_food.dart';
-import 'package:breezefood/presentation/widgets/home/custom_title_section.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/core/constans/routes.dart';
+import 'package:freeza_food/data/model/restaurant.dart';
+import 'package:freeza_food/presentation/widgets/home/custom_fast_food.dart';
+import 'package:freeza_food/presentation/widgets/home/custom_title_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

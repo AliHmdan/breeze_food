@@ -1,6 +1,6 @@
-import 'package:breezefood/blocs/profile/profile_state.dart';
-import 'package:breezefood/data/model/profile/user_profile.dart';
-import 'package:breezefood/data/repositories/profile_repository.dart';
+import 'package:freeza_food/blocs/profile/profile_state.dart';
+import 'package:freeza_food/data/model/profile/user_profile.dart';
+import 'package:freeza_food/data/repositories/profile_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {

@@ -1,4 +1,4 @@
-import 'package:breezefood/data/model/profile/user_profile.dart';
+import 'package:freeza_food/data/model/profile/user_profile.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ProfileState extends Equatable {

@@ -1,4 +1,4 @@
-package com.breezefood.breezefood
+package com.freeza_food.freeza_food
 
 import io.flutter.embedding.android.FlutterActivity
 

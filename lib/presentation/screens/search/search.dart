@@ -1,11 +1,11 @@
-import 'package:breezefood/blocs/search/search_cubit.dart';
-import 'package:breezefood/blocs/search/search_state.dart';
-import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/presentation/widgets/custom_arrow.dart';
-import 'package:breezefood/presentation/widgets/home/most_popular.dart';
-import 'package:breezefood/data/model/search/search_result_model.dart'; // موديلات ال API
-import 'package:breezefood/data/model/search/search_history_model.dart'; // موديل التاريخ
-import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
+import 'package:freeza_food/blocs/search/search_cubit.dart';
+import 'package:freeza_food/blocs/search/search_state.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/presentation/widgets/custom_arrow.dart';
+import 'package:freeza_food/presentation/widgets/home/most_popular.dart';
+import 'package:freeza_food/data/model/search/search_result_model.dart'; // موديلات ال API
+import 'package:freeza_food/data/model/search/search_history_model.dart'; // موديل التاريخ
+import 'package:freeza_food/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

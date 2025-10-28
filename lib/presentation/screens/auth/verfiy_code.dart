@@ -31,7 +31,7 @@ class _VerfiyCodeState extends State<VerfiyCode> {
       child: BlocConsumer<VerifyCodeCubit, VerifyCodeState>(
         listener: (context, state) {
           if (state is VerifyCodeSuccess) {
-            Navigator.of(context).pushReplacementNamed(AppRoute.UpdateAddressScreen);
+            Navigator.of(context).pushReplacementNamed(AppRoute.home);
           } else if (state is ResendCodeSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("✅ تم إعادة إرسال الكود")),

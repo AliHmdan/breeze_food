@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:breezefood/data/model/profile/user_profile.dart';
+import 'package:freeza_food/data/model/profile/user_profile.dart';
 
 class AuthState extends Equatable {
   final UserProfile? user;

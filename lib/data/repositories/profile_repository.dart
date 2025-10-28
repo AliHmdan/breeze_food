@@ -1,4 +1,4 @@
-import 'package:breezefood/data/model/profile/user_profile.dart';
+import 'package:freeza_food/data/model/profile/user_profile.dart';
 import 'package:dio/dio.dart';
 
 class ProfileRepository {

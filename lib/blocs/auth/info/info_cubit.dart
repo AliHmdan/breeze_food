@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'info_state.dart';
-import 'package:breezefood/data/repositories/auth_repository.dart';
+import 'package:freeza_food/data/repositories/auth_repository.dart';
 
 class InfoCubit extends Cubit<InfoState> {
   final AuthRepository repo;

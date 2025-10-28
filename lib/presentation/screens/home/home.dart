@@ -1,18 +1,18 @@
-import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/core/constans/routes.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/core/constans/routes.dart';
 
-import 'package:breezefood/presentation/screens/home/animated_background.dart';
-import 'package:breezefood/presentation/screens/home/appbar_home.dart';
-import 'package:breezefood/presentation/screens/home/discount_home.dart';
-import 'package:breezefood/presentation/screens/home/most_popular.dart';
-import 'package:breezefood/presentation/screens/home/open_now.dart';
-import 'package:breezefood/presentation/screens/ads/page_ads.dart';
+import 'package:freeza_food/presentation/screens/home/animated_background.dart';
+import 'package:freeza_food/presentation/screens/home/appbar_home.dart';
+import 'package:freeza_food/presentation/screens/home/discount_home.dart';
+import 'package:freeza_food/presentation/screens/home/most_popular.dart';
+import 'package:freeza_food/presentation/screens/home/open_now.dart';
+import 'package:freeza_food/presentation/screens/ads/page_ads.dart';
 
-import 'package:breezefood/presentation/widgets/home/Stores.dart';
-import 'package:breezefood/presentation/widgets/button/custom_button_order.dart';
+import 'package:freeza_food/presentation/widgets/home/Stores.dart';
+import 'package:freeza_food/presentation/widgets/button/custom_button_order.dart';
 
-import 'package:breezefood/presentation/widgets/home/custom_title_section.dart';
-import 'package:breezefood/presentation/widgets/home/home_filters.dart';
+import 'package:freeza_food/presentation/widgets/home/custom_title_section.dart';
+import 'package:freeza_food/presentation/widgets/home/home_filters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

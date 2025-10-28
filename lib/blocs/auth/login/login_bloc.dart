@@ -11,7 +11,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginSubmitted>((event, emit) async {
       emit(LoginLoading());
       try {
-        final result = await authRepository.login(event.phone, event.password);
+        final result = await authRepository.login(event.phone);
         emit(LoginSuccess(result));
       } catch (e, stackTrace) {
         print(e);
