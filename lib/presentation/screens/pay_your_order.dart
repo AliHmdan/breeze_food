@@ -3,26 +3,58 @@ import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/presentation/screens/add_order/payment_method.dart';
 import 'package:breezefood/presentation/widgets/custom_pill_input.dart';
 import 'package:breezefood/presentation/widgets/home/custom_title_section.dart';
+import 'package:breezefood/presentation/widgets/request_order/delvery_location.dart';
 import 'package:breezefood/presentation/widgets/request_order/meal_card.dart';
+import 'package:breezefood/presentation/widgets/request_order/product_option.dart';
+import 'package:breezefood/presentation/widgets/request_order/title_location.dart';
 import 'package:breezefood/presentation/widgets/request_order/total.dart';
+import 'package:breezefood/presentation/widgets/title/custom_appbar_profile.dart';
 import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../widgets/request_order/delvery_location.dart';
-import '../../widgets/request_order/product_option.dart';
-import '../../widgets/request_order/title_location.dart';
-import '../../widgets/title/custom_appbar_profile.dart';
+class OrderItem {
+  final String image; // asset path or network
+  final String title;
+  final String size; // e.g. "M"
+  final double price;
+  final int qty;
 
-class RequestOrder extends StatefulWidget {
-  const RequestOrder({super.key});
+  const OrderItem({
+    required this.image,
+    required this.title,
+    required this.size,
+    required this.price,
+    this.qty = 1,
+  });
+
+  double get total => price * qty;
+}
+class PayYourOrder extends StatefulWidget {
+  const PayYourOrder({super.key});
 
   @override
-  State<RequestOrder> createState() => _RequestOrderState();
+  State<PayYourOrder> createState() => _PayYourOrderState();
 }
 
-class _RequestOrderState extends State<RequestOrder> {
+class _PayYourOrderState extends State<PayYourOrder> {
+   final List<OrderItem> _items = const [
+    OrderItem(
+      image: 'assets/images/food1.jpg',
+      title: 'Chicken shish',
+      size: 'M',
+      price: 5.00,
+      qty: 1,
+    ),
+    OrderItem(
+      image: 'assets/images/food1.jpg',
+      title: 'Chicken shish',
+      size: 'M',
+      price: 5.00,
+      qty: 1,
+    ),
+  ];
   final methods = [
   const PaymentMethod(
     id: 'cash',
@@ -78,7 +110,7 @@ void didChangeDependencies() {
     );
   }
 }
-
+  bool showCounter = false;
   @override
   Widget build(BuildContext context) {
     final double total = subTotal + delivery + coupon;
@@ -102,49 +134,15 @@ void didChangeDependencies() {
           padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
           child: Column(
             children: [
-             const MealCard(
+           const MealCard(
   image: 'assets/images/003.jpg',
   name: 'Chicken shish',
   size: 'M',
   price: 5.00,
-  showCounter: true,
+  showCounter: false,
 ),
               const SizedBox(height: 8),
 
-              Row(
-                children: [
-                  Icon(Icons.add, color: AppColor.primaryColor, size: 20.sp),
-                  CustomSubTitle(
-                    subtitle: "Add",
-                    color: AppColor.primaryColor,
-                    fontsize: 14.sp,
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 8),
-
-              Container(
-                padding: EdgeInsets.all(12.w),
-                decoration: BoxDecoration(
-                  color: AppColor.black,
-                  borderRadius: BorderRadius.circular(11.r),
-                ),
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomSubTitle(
-                      subtitle: "Want a ?",
-                      color: AppColor.white,
-                      fontsize: 16,
-                    ),
-                    SizedBox(height: 5),
-                    ProudectOption(),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 8),
 
               Container(
                 padding: EdgeInsets.symmetric(vertical: 18.h, horizontal: 10.w),
@@ -164,32 +162,8 @@ void didChangeDependencies() {
                 ),
               ),
 
-              const SizedBox(height: 10),
 
-              const CustomTitleSection(title: "Delivery to"),
-              const TitleLocation(),
-              const SizedBox(height: 10),
-              const DeliveryLocationCard(),
-
-              const SizedBox(height: 10),
-
-              Row(
-                children: [
-                  CustomPillInput(
-                    hint: 'Floor number',
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    width: 130.w,
-                  ),
-                  SizedBox(width: 10.w),
-                  CustomPillInput(
-                    hint: 'Door number',
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    width: 130.w,
-                  ),
-                ],
-              ),
+             
 
               // --- قسم الدفع ---
               PaymentMethodSection(

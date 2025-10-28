@@ -1,4 +1,5 @@
 import 'package:breezefood/core/constans/color.dart';
+import 'package:breezefood/core/constans/routes.dart';
 
 import 'package:breezefood/presentation/screens/home/animated_background.dart';
 import 'package:breezefood/presentation/screens/home/appbar_home.dart';
@@ -94,13 +95,15 @@ class _HomeState extends State<Home> {
                 children: [
                   OpenNow(),
                   Positioned(
-                    bottom: 85,
+                    bottom: 20,
                     left: 0,
                     right: 0,
                     child: Center(
                       child: CustomButtonOrder(
                         title: "Your order",
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(AppRoute.pay_your_order);
+                        },
                       ),
                     ),
                   ),

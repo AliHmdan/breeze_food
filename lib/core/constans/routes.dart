@@ -19,4 +19,6 @@ class AppRoute {
   static const mainShell = '/main-shell';
     static const info_profile = '/info_profile';
      static const orders = '/orders';
+      static const pay_your_order = '/pay_your_order';
+
 }

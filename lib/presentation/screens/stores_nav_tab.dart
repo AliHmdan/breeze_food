@@ -1,6 +1,7 @@
 import 'package:breezefood/core/constans/color.dart';
 import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/data/model/restaurant.dart';
+import 'package:breezefood/presentation/screens/store_details/market_page.dart';
 import 'package:breezefood/presentation/widgets/auth/custom_search.dart';
 import 'package:breezefood/presentation/widgets/custom_appbar_home.dart';
 import 'package:breezefood/presentation/widgets/home/custom_fast_food.dart';
@@ -8,6 +9,8 @@ import 'package:breezefood/presentation/widgets/location_chip.dart';
 import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+// ✅ استيراد صفحة الماركت
 
 class StoresNavTab extends StatefulWidget {
   const StoresNavTab({super.key});
@@ -57,28 +60,28 @@ class _StoresNavTabState extends State<StoresNavTab>
         orders: "220+ Order",
         time: "25M",
       ),
-        Restaurant(
+      Restaurant(
         imageUrl: "assets/images/003.jpg",
         name: "Sushi Roll",
         rating: 4.8,
         orders: "220+ Order",
         time: "25M",
       ),
-        Restaurant(
+      Restaurant(
         imageUrl: "assets/images/003.jpg",
         name: "Sushi Roll",
         rating: 4.8,
         orders: "220+ Order",
         time: "25M",
       ),
-        Restaurant(
+      Restaurant(
         imageUrl: "assets/images/003.jpg",
         name: "Sushi Roll",
         rating: 4.8,
         orders: "220+ Order",
         time: "25M",
       ),
-        Restaurant(
+      Restaurant(
         imageUrl: "assets/images/003.jpg",
         name: "Sushi Roll",
         rating: 4.8,
@@ -102,7 +105,7 @@ class _StoresNavTabState extends State<StoresNavTab>
         orders: "800+ Orders",
         time: "28M",
       ),
-         Restaurant(
+      Restaurant(
         imageUrl: "assets/images/004.jpg",
         name: "Fresh Market",
         rating: 4.6,
@@ -116,7 +119,7 @@ class _StoresNavTabState extends State<StoresNavTab>
         orders: "800+ Orders",
         time: "28M",
       ),
-         Restaurant(
+      Restaurant(
         imageUrl: "assets/images/004.jpg",
         name: "Fresh Market",
         rating: 4.6,
@@ -130,7 +133,7 @@ class _StoresNavTabState extends State<StoresNavTab>
         orders: "800+ Orders",
         time: "28M",
       ),
-         Restaurant(
+      Restaurant(
         imageUrl: "assets/images/004.jpg",
         name: "Fresh Market",
         rating: 4.6,
@@ -238,13 +241,24 @@ class _StoresNavTabState extends State<StoresNavTab>
                       controller: _tabController,
                       physics: const BouncingScrollPhysics(),
                       children: [
+                        // ✅ تبويب المطاعم: السلوك الحالي كما هو
                         _StoresTabList(
                           key: const PageStorageKey('tab_restaurants'),
                           items: _restaurants,
                         ),
+                        // ✅ تبويب السوبرماركت: انتقال إلى MarketPage
                         _StoresTabList(
                           key: const PageStorageKey('tab_supermarket'),
                           items: _supermarkets,
+                          onItemTap: (ctx, r) {
+                            Navigator.of(ctx).push(
+                              MaterialPageRoute(
+                                builder: (_) => const MarketPage(),
+                              ),
+                            );
+                            // أو لو عندك راوت جاهز:
+                            // Navigator.of(ctx).pushNamed(AppRoute.MarketPage);
+                          },
                         ),
                       ],
                     ),
@@ -262,7 +276,13 @@ class _StoresNavTabState extends State<StoresNavTab>
 /// A performant list for a stores tab, keeps scroll position alive per tab.
 class _StoresTabList extends StatefulWidget {
   final List<Restaurant> items;
-  const _StoresTabList({super.key, required this.items});
+  final void Function(BuildContext context, Restaurant r)? onItemTap; // 👈 جديد
+
+  const _StoresTabList({
+    super.key,
+    required this.items,
+    this.onItemTap,
+  });
 
   @override
   State<_StoresTabList> createState() => _StoresTabListState();
@@ -287,7 +307,13 @@ class _StoresTabListState extends State<_StoresTabList>
         itemBuilder: (context, index) {
           final r = widget.items[index];
           return GestureDetector(
-            onTap: () => Navigator.of(context).pushNamed(AppRoute.StoreDetails),
+            onTap: () {
+              if (widget.onItemTap != null) {
+                widget.onItemTap!(context, r); // سلوك السوبرماركت
+              } else {
+                Navigator.of(context).pushNamed(AppRoute.StoreDetails); // المطاعم
+              }
+            },
             child: RestaurantCard(
               imageUrl: r.imageUrl,
               name: r.name,
