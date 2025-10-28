@@ -6,6 +6,7 @@ import 'package:breezefood/presentation/screens/home/appbar_home.dart';
 import 'package:breezefood/presentation/screens/home/discount_home.dart';
 import 'package:breezefood/presentation/screens/home/most_popular.dart';
 import 'package:breezefood/presentation/screens/home/open_now.dart';
+import 'package:breezefood/presentation/screens/ads/page_ads.dart';
 
 import 'package:breezefood/presentation/widgets/home/Stores.dart';
 import 'package:breezefood/presentation/widgets/button/custom_button_order.dart';
@@ -64,7 +65,16 @@ class _HomeState extends State<Home> {
               //  أزرار الفلاتر + تمرير على الأقسام
               HomeFilters(onFilterTap: _onFilterTap),
               // Ads
-              Animated(),
+              GestureDetector(onTap: () {
+                Navigator.of(context).push(
+  MaterialPageRoute(builder: (_) => const ReferralAdPage(
+    // يمكن تمرير باراميترات للتخصيص
+    // highlight: '25',
+    // currency: 'AED',
+    // referralCode: 'APP-9M2Q4',
+  )),
+);
+              },child: Animated()),
               const SizedBox(height: 5),
               Container(key: _popularKey),
               // Most Popular
