@@ -8,13 +8,15 @@ import 'package:breezefood/presentation/widgets/CustomBottomNav.dart';
 import 'package:flutter/material.dart';
 
 class MainShell extends StatefulWidget {
-  const MainShell({super.key});
+  final int initialIndex; // 👈 أضفناه
+  const MainShell({super.key, this.initialIndex = 0});
+
   @override
   State<MainShell> createState() => _MainShellState();
 }
 
 class _MainShellState extends State<MainShell> {
-  int _index = 0;
+  late int _index; // 👈 بدلناها لـ late ونقرأ من widget.initialIndex
 
   final _pages = const [
     Home(),
@@ -24,10 +26,16 @@ class _MainShellState extends State<MainShell> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _index = widget.initialIndex; // 👈 نبدأ من الإندكس القادم من الكونستركتور
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.Dark,
-      extendBody: true, // مهم مع خلفية شفافة/Blur
+      extendBody: true,
       body: IndexedStack(index: _index, children: _pages),
       bottomNavigationBar: BottomNavBreeze(
         currentIndex: _index,

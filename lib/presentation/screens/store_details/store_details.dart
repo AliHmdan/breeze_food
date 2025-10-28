@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/presentation/screens/add_order/add_order.dart';
-import 'package:breezefood/presentation/widgets/auth/custom_search.dart';
 import 'package:breezefood/presentation/widgets/store_details/horizontal_products_section.dart';
 import 'package:breezefood/presentation/widgets/store_details/pinch_zoom_header.dart';
 import 'package:breezefood/presentation/widgets/store_details/shadows.dart';

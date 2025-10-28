@@ -22,7 +22,6 @@ import 'package:breezefood/presentation/screens/auth/phone_number.dart';
 import 'package:breezefood/presentation/screens/auth/new_passowrd.dart';
 import 'package:breezefood/presentation/screens/auth/information.dart';
 import 'package:breezefood/presentation/screens/auth/login.dart';
-import 'package:breezefood/presentation/screens/home/home.dart';
 import 'package:breezefood/presentation/screens/search/search.dart';
 import 'package:breezefood/presentation/screens/add_order/pay.dart';
 import 'package:breezefood/presentation/screens/add_order/success.dart';

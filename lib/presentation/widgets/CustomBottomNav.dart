@@ -50,10 +50,7 @@ class BottomNavBreeze extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.08),
               border: Border(
-                top: BorderSide(
-                  color: Colors.white.withOpacity(0.2),
-                  width: 1,
-                ),
+                top: BorderSide(color: Colors.white.withOpacity(0.2), width: 1),
               ),
               boxShadow: [
                 BoxShadow(
@@ -64,48 +61,65 @@ class BottomNavBreeze extends StatelessWidget {
               ],
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: List.generate(_svgIcons.length, (index) {
                 final isSelected = currentIndex == index;
                 return GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () => onChanged(index),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeOutCubic,
-                    width: isSelected ? 113.w : 50.w,
-                    height: 40.h,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: isSelected ? 12.w : 0,
-                      vertical: 8.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isSelected ? AppColor.primaryColor : Colors.transparent,
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _icon(_svgIcons[index], selected: isSelected, size: 22.sp),
-                        AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 200),
-                          child: isSelected
-                              ? Padding(
-                                  key: ValueKey(index),
-                                  padding: EdgeInsets.only(left: 4.w),
-                                  child: Text(
-                                    _labels[index],
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: "Manrope",
+                  child: ConstrainedBox(constraints: BoxConstraints(
+    minWidth: 50.w,
+    maxWidth: 150.w, // حد أقصى للكرد لمنع الانفجار
+  ),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeOutCubic,
+                      // width: isSelected ? 113.w : 50.w,
+                      height: 40.h,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isSelected ? 12.w : 0,
+                        vertical: 8.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? AppColor.primaryColor
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min, // مهم ليتبع المحتوى
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _icon(
+                            _svgIcons[index],
+                            selected: isSelected,
+                            size: 22.sp,
+                          ),
+                          AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            child: isSelected
+                                ? Padding(
+                                    key: ValueKey(index),
+                                    padding: EdgeInsets.only(left: 4.w),
+                                    child: Flexible(
+                                      child: Text(
+                                        _labels[index],
+                                        maxLines: 1,
+                                        softWrap: false,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: "Manrope",
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                )
-                              : const SizedBox.shrink(),
-                        ),
-                      ],
+                                  )
+                                : const SizedBox.shrink(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
