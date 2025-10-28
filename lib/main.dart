@@ -1,3 +1,4 @@
+import 'package:breezefood/presentation/screens/pay_your_order.dart';
 import 'package:breezefood/presentation/screens/profile/info_profile.dart';
 import 'package:breezefood/presentation/screens/resturant.dart';
 import 'package:flutter/material.dart';
@@ -132,6 +133,7 @@ class MyApp extends StatelessWidget {
                       
                           AppRoute.info_profile: (_) => const InfoProfile(),
                            AppRoute.orders: (_) => const Orders(),
+                           AppRoute.pay_your_order: (_) => const PayYourOrder(),
                       },
                       // لو بدك onGenerateRoute لتزوّد Cubit خاص بمسار معيّن، استخدمه بدل routes الثابتة
                       // onGenerateRoute: (settings) { ... }
