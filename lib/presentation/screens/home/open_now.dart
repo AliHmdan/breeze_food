@@ -1,56 +1,40 @@
 import 'package:freeza_food/core/constans/color.dart';
-import 'package:freeza_food/data/model/restaurant.dart';
+import 'package:freeza_food/data/model/home_model.dart';
+import 'package:freeza_food/data/model/restaurant.dart' as ui_rest;
 import 'package:freeza_food/presentation/widgets/home/custom_fast_food.dart';
 import 'package:freeza_food/presentation/widgets/home/custom_title_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OpenNow extends StatelessWidget {
-  const OpenNow({super.key});
+  const OpenNow({super.key, this.nearbyRestaurants});
+
+  final List<RestaurantModel>? nearbyRestaurants;
 
   @override
   Widget build(BuildContext context) {
-    final List<Restaurant> restaurants = [
-      Restaurant(
-        imageUrl: "assets/images/004.jpg",
-        name: "Chicken King_Alhamra",
-        rating: 4.9,
-        orders: "500+ Order",
-        time: "20M",
-      ),
-      Restaurant(
-        imageUrl: "assets/images/002.jpg",
-        name: "Chicken King_Alhamra",
-        rating: 4.9,
-        orders: "500+ Order",
-        time: "20M",
-        isClosed: true,
-        closedText: "Open tomorrow at 09:00 AM",
-      ),
-      Restaurant(
-        imageUrl: "assets/images/003.jpg",
-        name: "Chicken King_Alhamra",
-        rating: 4.9,
-        orders: "500+ Order",
-        time: "20M",
-      ),
-      Restaurant(
-        imageUrl: "assets/images/004.jpg",
-        name: "Chicken King_Alhamra",
-        rating: 4.9,
-        orders: "500+ Order",
-        time: "20M",
-      ),
-      Restaurant(
-        imageUrl: "assets/images/002.jpg",
-        name: "Chicken King_Alhamra",
-        rating: 4.9,
-        orders: "500+ Order",
-        time: "20M",
-        isClosed: true,
-        closedText: "Open tomorrow at 09:00 AM",
-      ),
-    ];
+    // Map API RestaurantModel -> UI Restaurant (lib/data/model/restaurant.dart)
+    final List<ui_rest.Restaurant> restaurants =
+        (nearbyRestaurants != null && nearbyRestaurants!.isNotEmpty)
+        ? nearbyRestaurants!.map((r) {
+            // choose image: prefer logo, then coverImage, fallback to asset
+            final image = (r.logo != null && r.logo!.isNotEmpty)
+                ? r.logo!
+                : (r.coverImage != null && r.coverImage!.isNotEmpty)
+                ? r.coverImage!
+                : 'assets/images/004.jpg';
+
+            return ui_rest.Restaurant(
+              imageUrl: image.startsWith('http') || image.startsWith('/')
+                  ? image
+                  : image,
+              name: r.name,
+              rating: 0.0, // API doesn't supply rating in this payload
+              orders: '',
+              time: '',
+            );
+          }).toList()
+        : [];
 
     return Padding(
       padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
@@ -69,14 +53,10 @@ class OpenNow extends StatelessWidget {
               ),
               child: ListView.separated(
                 scrollDirection: Axis.vertical,
-                // ✅ فعّل التمرير (اختَر واحدة):
                 physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics(),
-                ), // iOS-like
-
-                // physics: const ClampingScrollPhysics(), // Android-like
-                primary: false, // مهم داخل شجرة فيها Scroll أخرى
-                // shrinkWrap: false, // اتركها افتراضيًا (أفضل أداءً هنا)
+                ),
+                primary: false,
                 cacheExtent: 600,
                 itemCount: restaurants.length,
                 separatorBuilder: (_, __) => const SizedBox(height: 12),

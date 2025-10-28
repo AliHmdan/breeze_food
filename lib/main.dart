@@ -24,6 +24,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freeza_food/blocs/search/search_cubit.dart';
 import 'package:freeza_food/data/repositories/search_repository.dart';
+import 'package:freeza_food/data/repositories/home_repository.dart';
+import 'package:freeza_food/blocs/home/home_cubit.dart';
+import 'package:freeza_food/presentation/screens/update_address_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,21 +45,25 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider<SearchCubit>(
-              create: (_) => SearchCubit(SearchRepository())..loadSearchHistory(),
+              create: (_) =>
+                  SearchCubit(SearchRepository())..loadSearchHistory(),
             ),
-
+            BlocProvider<HomeCubit>(
+              create: (_) => HomeCubit(HomeRepository())..loadHome(),
+            ),
           ],
           child: MediaQuery(
             data: MediaQuery.of(context).copyWith(textScaleFactor: 1.2),
             child: MaterialApp(
               title: 'breeze food',
               debugShowCheckedModeBanner: false,
-              initialRoute: AppRoute.splashScreen,
+              initialRoute: AppRoute.UpdateAddressScreen,
               routes: {
                 AppRoute.splashScreen: (context) => const SpalshScreen(),
                 AppRoute.signUp: (context) => Signup(),
                 AppRoute.verifyCode: (context) {
-                  final phone = ModalRoute.of(context)!.settings.arguments as String;
+                  final phone =
+                      ModalRoute.of(context)!.settings.arguments as String;
                   return VerfiyCode(phone: phone);
                 },
                 AppRoute.successful: (context) => Successful(),
@@ -64,7 +71,9 @@ class MyApp extends StatelessWidget {
                 AppRoute.newPassword: (context) => NewPassowrd(),
                 AppRoute.information: (context) => InformationScreen(),
                 AppRoute.login: (context) => Login(),
-                AppRoute.home: (context) => Home(),
+                // When navigating to AppRoute.home we first show an update-address screen
+                // which will call the address update API and then open the real Home.
+                AppRoute.UpdateAddressScreen: (context) => const UpdateAddressScreen(),
                 AppRoute.search: (context) => Search(),
                 AppRoute.pay: (context) => Pay(),
                 AppRoute.Success: (context) => Success(),

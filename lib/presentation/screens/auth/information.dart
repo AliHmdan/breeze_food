@@ -68,7 +68,7 @@ class InformationScreen extends StatelessWidget {
                     title: "Login",
                     onPressed: () {
               
-                      Navigator.of(context).pushReplacementNamed(AppRoute.home);
+                      Navigator.of(context).pushReplacementNamed(AppRoute.UpdateAddressScreen);
                     },
                   ),
 

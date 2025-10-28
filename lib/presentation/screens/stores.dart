@@ -53,15 +53,18 @@ class Stores extends StatelessWidget {
         children: [
           const CustomAppbarHome(title: "Stores"),
           SizedBox(height: 40.h),
-          const CustomSearch(
-            hint: "Search food ,stores,restaurants",
-            boxicon: 'assets/icons/boxsearch.svg',
-          ),
-          LocationChip(
-            text: "LocationChip",
-            iconPath: "assets/icons/telegram.svg",
-            onTap: () {},
-          ),
+           CustomSearch(
+                  hint: 'Search',
+                  readOnly: true,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(AppRoute.search);
+                  },
+                ),
+          // LocationChip(
+          //   text: "LocationChip",
+          //   iconPath: "assets/icons/telegram.svg",
+          //   onTap: () {},
+          // ),
           SizedBox(height: 20.h),
 
           // 🔽 هنا نستخدم ListView.builder

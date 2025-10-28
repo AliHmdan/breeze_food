@@ -48,7 +48,7 @@ void showLogoutDialog(BuildContext context) {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.of(context).pushReplacementNamed(AppRoute.home); // إغلاق الديالوج
+                      Navigator.of(context).pushReplacementNamed(AppRoute.UpdateAddressScreen); // إغلاق الديالوج
                       // كود تسجيل الخروج
                       ScaffoldMessenger.of(context).showSnackBar(
                          SnackBar(

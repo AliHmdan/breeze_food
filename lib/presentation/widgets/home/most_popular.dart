@@ -1,4 +1,5 @@
 import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/linkapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -45,6 +46,27 @@ class _PopularItemCardState extends State<PopularItemCard>
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
+  Widget _buildImage(String path, {double? height}) {
+    if (path.startsWith('http') || path.startsWith('/')) {
+      final src = path.startsWith('http') ? path : '${AppLink.server}$path';
+      return Image.network(
+        src,
+        height: height,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) =>
+            Container(height: height, color: Colors.grey.shade300),
+      );
+    }
+    return Image.asset(
+      path,
+      height: height,
+      width: double.infinity,
+      cacheWidth: 600,
+      fit: BoxFit.cover,
+    );
+  }
+
   void _toggleFavorite() {
     setState(() {
       isFavorite = !isFavorite;
@@ -75,13 +97,7 @@ class _PopularItemCardState extends State<PopularItemCard>
                     topLeft: Radius.circular(12.r),
                     topRight: Radius.circular(12.r),
                   ),
-                  child: Image.asset(
-                    widget.imagePath,
-                    height: 100.h,
-                    width: double.infinity, 
-                    cacheWidth: 600,
-                    fit: BoxFit.cover,
-                  ),
+                  child: _buildImage(widget.imagePath, height: 100.h),
                 ),
                 Positioned(
                   top: 4.h,
@@ -93,9 +109,7 @@ class _PopularItemCardState extends State<PopularItemCard>
                       scale: _scaleAnimation,
                       child: Container(
                         padding: EdgeInsets.all(6.w),
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                        ),
+                        decoration: const BoxDecoration(shape: BoxShape.circle),
                         child: Icon(
                           isFavorite ? Icons.favorite : Icons.favorite_border,
                           color: isFavorite ? AppColor.red : AppColor.gry,
@@ -116,7 +130,7 @@ class _PopularItemCardState extends State<PopularItemCard>
                 ),
               ),
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.w, ),
+                padding: EdgeInsets.symmetric(horizontal: 5.w),
                 child: Column(
                   children: [
                     Center(

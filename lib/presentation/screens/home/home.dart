@@ -15,7 +15,11 @@ import 'package:freeza_food/presentation/widgets/home/custom_title_section.dart'
 import 'package:freeza_food/presentation/widgets/home/home_filters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freeza_food/blocs/home/home_cubit.dart';
+import 'package:freeza_food/blocs/home/home_state.dart';
+import 'package:freeza_food/data/model/home_model.dart';
+import 'package:shimmer/shimmer.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -54,62 +58,147 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: AppColor.Dark,
       body: SafeArea(
-        child: SingleChildScrollView(
-          controller: _scrollController, // 👈 مهم
+        child: BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            List<AdModel>? ads;
+            List<DiscountModel>? discounts;
+            List<RestaurantModel>? nearbyRestaurants;
+            List<MenuItemModel>? mostPopular;
+            var showOrderButton = false;
+            if (state is HomeLoaded) {
+              ads = state.data.ads;
+              discounts = state.data.discounts;
+              nearbyRestaurants = state.data.nearbyRestaurants;
+              mostPopular = state.data.mostPopular;
+              showOrderButton = state.data.hasOrder;
+            }
 
-          child: Column(
-            children: [
-              // AppBar + Search
-              AppbarHome(),
+            return SingleChildScrollView(
+              controller: _scrollController, // 👈 مهم
+              child: (state is HomeLoading)
+                  ? _buildShimmer()
+                  : Column(
+                      children: [
+                        // AppBar + Search
+                        AppbarHome(),
 
-              HomeFilters(onFilterTap: _onFilterTap),
+                        HomeFilters(onFilterTap: _onFilterTap),
 
-              Animated(),
-              const SizedBox(height: 5),
-              Container(key: _popularKey),
-              // Most Popular
-              MostPopular(),
+                        Animated(),
+                        const SizedBox(height: 5),
+                        Container(key: _popularKey),
+                        // Most Popular
+                        MostPopular(mostPopular: mostPopular),
 
-              const SizedBox(height: 10),
-              // Stores
-              Container(key: _storesKey),
-              Padding(
-                padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
-                child: CustomTitleSection(title: "Stores"),
-              ),
-               const SizedBox(height: 5),
-              Stores(),
-              SizedBox(height: 2.h),
+                        const SizedBox(height: 10),
+                        // Stores
+                        Container(key: _storesKey),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 5,
+                            left: 10,
+                            right: 10,
+                          ),
+                          child: CustomTitleSection(title: "Stores"),
+                        ),
+                        const SizedBox(height: 5),
+                        Stores(ads: ads),
+                        SizedBox(height: 2.h),
 
-              // Discounts
-              Container(key: _discountsKey), // 👈 مرساة التمرير
-              const SizedBox(height: 10),
-              DiscountHome(),
+                        // Discounts
+                        Container(key: _discountsKey), // 👈 مرساة التمرير
+                        const SizedBox(height: 10),
+                        DiscountHome(discounts: discounts),
 
-              const SizedBox(height: 10),
-              Container(key: _openNowKey),
+                        const SizedBox(height: 10),
+                        Container(key: _openNowKey),
 
-              // const SizedBox(height: 10),
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  OpenNow(),
-                  Positioned(
-                    bottom: 85,
-                    left: 0,
-                    right: 0,
-                    child: Center(
-                      child: CustomButtonOrder(
-                        title: "Your order",
-                        onPressed: () {},
-                      ),
+                        // const SizedBox(height: 10),
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            OpenNow(nearbyRestaurants: nearbyRestaurants),
+                            if (showOrderButton)
+                              Positioned(
+                                bottom: 85,
+                                left: 0,
+                                right: 0,
+                                child: Center(
+                                  child: CustomButtonOrder(
+                                    title: "Your order",
+                                    onPressed: () {},
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+            );
+          },
         ),
+      ),
+    );
+  }
+
+  Widget _buildShimmer() {
+    // Simple shimmer placeholder that mimics the main sections
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade700,
+      highlightColor: Colors.grey.shade500,
+      child: Column(
+        children: [
+          const SizedBox(height: 20),
+          // Appbar placeholder
+          Container(
+            height: 64,
+            margin: const EdgeInsets.symmetric(horizontal: 12),
+            color: Colors.black26,
+          ),
+          const SizedBox(height: 12),
+          // Filters placeholder
+          Container(
+            height: 40,
+            margin: const EdgeInsets.symmetric(horizontal: 12),
+            color: Colors.black26,
+          ),
+          const SizedBox(height: 12),
+          // Animated/banner placeholder
+          Container(
+            height: 140,
+            margin: const EdgeInsets.symmetric(horizontal: 12),
+            color: Colors.black26,
+          ),
+          const SizedBox(height: 12),
+          // Most popular placeholder
+          Container(
+            height: 178,
+            margin: const EdgeInsets.symmetric(horizontal: 12),
+            color: Colors.black26,
+          ),
+          const SizedBox(height: 12),
+          // Stores placeholder
+          Container(
+            height: 160,
+            margin: const EdgeInsets.symmetric(horizontal: 12),
+            color: Colors.black26,
+          ),
+          const SizedBox(height: 12),
+          // Discounts placeholder
+          Container(
+            height: 178,
+            margin: const EdgeInsets.symmetric(horizontal: 12),
+            color: Colors.black26,
+          ),
+          const SizedBox(height: 12),
+          // Open now placeholder
+          Container(
+            height: 320,
+            margin: const EdgeInsets.symmetric(horizontal: 12),
+            color: Colors.black26,
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }

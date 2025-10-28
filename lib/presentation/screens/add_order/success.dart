@@ -64,7 +64,7 @@ class Success extends StatelessWidget {
                           onPressed: () {
                             Navigator.of(
                               context,
-                            ).pushReplacementNamed(AppRoute.home);
+                            ).pushReplacementNamed(AppRoute.UpdateAddressScreen);
                           },
                         ),
                       ],

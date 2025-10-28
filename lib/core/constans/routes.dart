@@ -10,7 +10,7 @@ class AppRoute {
   static const String phoneNumber = "/phone_number";
   static const String information = "/information";
 // ========================= Home ========================
-  static const String home = "/home";
+  static const String UpdateAddressScreen = "/UpdateAddressScreen";
  static const String search = "/search";
   static const String pay = "/pay";
   static const String Success = "/success";

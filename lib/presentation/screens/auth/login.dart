@@ -41,7 +41,7 @@ class _LoginState extends State<Login> {
               ScaffoldMessenger.of(
                 context,
               ).showSnackBar(const SnackBar(content: Text("Login successful")));
-              Navigator.pushNamed(context, AppRoute.home);
+              Navigator.pushNamed(context, AppRoute.UpdateAddressScreen);
             } else if (state is LoginFailure) {
               ScaffoldMessenger.of(
                 context,

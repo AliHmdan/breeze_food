@@ -1,4 +1,5 @@
 import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/linkapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -27,7 +28,8 @@ class Discount extends StatefulWidget {
   State<Discount> createState() => _DiscountState();
 }
 
-class _DiscountState extends State<Discount> with SingleTickerProviderStateMixin {
+class _DiscountState extends State<Discount>
+    with SingleTickerProviderStateMixin {
   bool isFavorite = false;
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
@@ -43,6 +45,27 @@ class _DiscountState extends State<Discount> with SingleTickerProviderStateMixin
       begin: 1.0,
       end: 1.3,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  Widget _buildImage(String path, {double? height}) {
+    if (path.startsWith('http') || path.startsWith('/')) {
+      final src = path.startsWith('http') ? path : '${AppLink.server}$path';
+      return Image.network(
+        src,
+        height: height,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) =>
+            Container(height: height, color: Colors.grey.shade300),
+      );
+    }
+    return Image.asset(
+      path,
+      height: height,
+      width: double.infinity,
+      cacheWidth: 600,
+      fit: BoxFit.cover,
+    );
   }
 
   void _toggleFavorite() {
@@ -76,13 +99,7 @@ class _DiscountState extends State<Discount> with SingleTickerProviderStateMixin
                     topLeft: Radius.circular(12.r),
                     topRight: Radius.circular(12.r),
                   ),
-                  child: Image.asset(
-                    widget.imagePath,
-                    height: 100.h,
-                    width: double.infinity,
-                    cacheWidth: 600,
-                    fit: BoxFit.cover,
-                  ),
+                  child: _buildImage(widget.imagePath, height: 100.h),
                 ),
                 // ❤️ المفضلة
                 Positioned(
@@ -134,7 +151,7 @@ class _DiscountState extends State<Discount> with SingleTickerProviderStateMixin
                           'assets/icons/nspah.svg',
                           width: 18.w,
                           height: 18.h,
-                          
+
                           color: AppColor.white,
                         ),
                       ],
