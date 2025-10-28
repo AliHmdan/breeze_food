@@ -17,8 +17,8 @@ class AppRoute {
   static const discountDetails = '/discount-details';
   static const StoreDetails = '/store-details';
   static const mainShell = '/main-shell';
-    static const info_profile = '/info_profile';
-     static const orders = '/orders';
-      static const pay_your_order = '/pay_your_order';
-
+  static const info_profile = '/info_profile';
+  static const orders = '/orders';
+  static const pay_your_order = '/pay_your_order';
+  static const page_ads='/pade_ads';
 }
