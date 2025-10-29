@@ -17,12 +17,6 @@ import 'package:lottie/lottie.dart';
 
 import '../../../data/repositories/auth_repository.dart' show AuthRepository;
 
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lottie/lottie.dart';
-
 import '../../widgets/main_shell.dart';
 
 class Login extends StatefulWidget {
@@ -43,11 +37,11 @@ class _LoginState extends State<Login> {
   }
 
   void _showSnackBar(
-      BuildContext context, {
-        required String message,
-        Color? background,
-        IconData? icon,
-      }) {
+    BuildContext context, {
+    required String message,
+    Color? background,
+    IconData? icon,
+  }) {
     final messenger = ScaffoldMessenger.of(context);
     messenger.clearSnackBars();
     messenger.showSnackBar(
@@ -107,6 +101,19 @@ class _LoginState extends State<Login> {
             // ✅ نجاح عام
             if (state is LoginSuccess) {
               final data = state.data; // ردّ الـ API
+              // Some backends return an OTP/debug_code inside a success response
+              // Example: { message: 'تم إرسال رمز التحقق إلى رقم الهاتف.', debug_code: 1562 }
+              // If we find a debug_code (or an explicit OTP indicator) navigate to verify screen.
+              final debugCode =
+                  data['debug_code'] ?? data['debug'] ?? data['otp'];
+              if (debugCode != null) {
+                final phone = data['phone'] ?? phoneController.text;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => VerfiyCode(phone: phone)),
+                );
+                return;
+              }
               final token = data['token'];
               final status = (data['status'] ?? '').toString().toLowerCase();
 
@@ -120,7 +127,7 @@ class _LoginState extends State<Login> {
                 );
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (_) => const MainShell()),
-                      (_) => false,
+                  (_) => false,
                 );
                 return;
               }
@@ -199,7 +206,8 @@ class _LoginState extends State<Login> {
                               Expanded(
                                 child: SingleChildScrollView(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       CustomTitle(
                                         title: "Welcome to breeze",
@@ -207,7 +215,8 @@ class _LoginState extends State<Login> {
                                       ),
                                       SizedBox(height: 2.h),
                                       CustomSubTitle(
-                                        subtitle: "Please Enter your phone to login",
+                                        subtitle:
+                                            "Please Enter your phone to login",
                                         color: AppColor.gry,
                                         fontsize: 12.sp,
                                       ),
@@ -223,8 +232,11 @@ class _LoginState extends State<Login> {
                                             ),
                                             decoration: BoxDecoration(
                                               color: AppColor.white,
-                                              borderRadius: BorderRadius.circular(8.r),
-                                              border: Border.all(color: AppColor.gry),
+                                              borderRadius:
+                                                  BorderRadius.circular(8.r),
+                                              border: Border.all(
+                                                color: AppColor.gry,
+                                              ),
                                             ),
                                             child: Row(
                                               children: [
@@ -236,7 +248,9 @@ class _LoginState extends State<Login> {
                                                 SizedBox(width: 8.w),
                                                 Text(
                                                   '+963',
-                                                  style: TextStyle(fontSize: 14.sp),
+                                                  style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -245,7 +259,8 @@ class _LoginState extends State<Login> {
                                           Expanded(
                                             child: CustomTextFormField(
                                               controller: phoneController,
-                                              keyboardType: TextInputType.number,
+                                              keyboardType:
+                                                  TextInputType.number,
                                               hintText: "Phone Number",
                                               validator: (v) {
                                                 final val = (v ?? '').trim();
@@ -278,7 +293,8 @@ class _LoginState extends State<Login> {
                                           title: "Continue",
                                           onPressed: () {
                                             FocusScope.of(context).unfocus();
-                                            if (_formKey.currentState!.validate()) {
+                                            if (_formKey.currentState!
+                                                .validate()) {
                                               context.read<LoginBloc>().add(
                                                 LoginSubmitted(
                                                   phoneController.text,
@@ -287,7 +303,8 @@ class _LoginState extends State<Login> {
                                             } else {
                                               _showSnackBar(
                                                 context,
-                                                message: 'تحقق من الحقول المطلوبة',
+                                                message:
+                                                    'تحقق من الحقول المطلوبة',
                                                 background: Colors.orange,
                                                 icon: Icons.info_outline,
                                               );
@@ -323,8 +340,9 @@ class _LoginState extends State<Login> {
                                           ),
                                           recognizer: TapGestureRecognizer()
                                             ..onTap = () {
-                                              Navigator.of(context)
-                                                  .pushNamed(AppRoute.signUp);
+                                              Navigator.of(
+                                                context,
+                                              ).pushNamed(AppRoute.signUp);
                                             },
                                         ),
                                       ],

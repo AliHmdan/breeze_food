@@ -13,31 +13,34 @@ class AuthRepository {
     _bootstrapAuthHeader();
   }
 
-  final Dio _dio = Dio(
-    BaseOptions(
-      baseUrl: 'https://syriansociety.org/api', // المسار الأساسي لاستدعاءات /me
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 15),
-      sendTimeout: const Duration(seconds: 15),
-      headers: const {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      // نسمح بقراءة 4xx بدل رمي استثناء فوري
-      validateStatus: (status) => status != null && status < 500,
-      responseType: ResponseType.json,
-    ),
-  )..interceptors.addAll([
-    if (kDebugMode)
-      LogInterceptor(
-        request: true,
-        requestHeader: true,
-        requestBody: true,
-        responseHeader: false,
-        responseBody: true,
-        error: true,
-      ),
-  ]);
+  final Dio _dio =
+      Dio(
+          BaseOptions(
+            baseUrl:
+                'https://syriansociety.org/api', // المسار الأساسي لاستدعاءات /me
+            connectTimeout: const Duration(seconds: 10),
+            receiveTimeout: const Duration(seconds: 15),
+            sendTimeout: const Duration(seconds: 15),
+            headers: const {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            // نسمح بقراءة 4xx بدل رمي استثناء فوري
+            validateStatus: (status) => status != null && status < 500,
+            responseType: ResponseType.json,
+          ),
+        )
+        ..interceptors.addAll([
+          if (kDebugMode)
+            LogInterceptor(
+              request: true,
+              requestHeader: true,
+              requestBody: true,
+              responseHeader: false,
+              responseBody: true,
+              error: true,
+            ),
+        ]);
 
   // ========= Authorization Header =========
   void setAuthHeader(String token) {
@@ -75,15 +78,15 @@ class AuthRepository {
   }) async {
     final body = <String, dynamic>{
       if (firstName != null) 'first_name': firstName,
-      if (lastName  != null) 'last_name' : lastName,
-      if (email     != null) 'email'     : email,
-      if (birthday  != null) 'birthday'  : birthday,
+      if (lastName != null) 'last_name': lastName,
+      if (email != null) 'email': email,
+      if (birthday != null) 'birthday': birthday,
     };
     return _dio.patch('/me', data: body);
   }
 
   // ========= LOGIN (قديم - اختياري) =========
-  Future<Map<String, dynamic>> login(String phone, ) async {
+  Future<Map<String, dynamic>> login(String phone) async {
     try {
       final response = await _dio.post(
         AppLink.login, // يقبل رابط كامل أو نسبي
@@ -106,8 +109,10 @@ class AuthRepository {
         error: serverMsg ?? 'Login failed',
       );
     } on DioException catch (e) {
-      if (_isTimeout(e)) throw Exception('انتهت مهلة الاتصال أثناء تسجيل الدخول.');
-      if (e.error is SocketException) throw Exception('لا يوجد اتصال بالإنترنت.');
+      if (_isTimeout(e))
+        throw Exception('انتهت مهلة الاتصال أثناء تسجيل الدخول.');
+      if (e.error is SocketException)
+        throw Exception('لا يوجد اتصال بالإنترنت.');
       rethrow;
     }
   }
@@ -139,8 +144,10 @@ class AuthRepository {
         error: 'Login with phone failed',
       );
     } on DioException catch (e) {
-      if (_isTimeout(e)) throw Exception('انتهت مهلة الاتصال أثناء تسجيل الدخول.');
-      if (e.error is SocketException) throw Exception('لا يوجد اتصال بالإنترنت.');
+      if (_isTimeout(e))
+        throw Exception('انتهت مهلة الاتصال أثناء تسجيل الدخول.');
+      if (e.error is SocketException)
+        throw Exception('لا يوجد اتصال بالإنترنت.');
       rethrow;
     }
   }
@@ -184,6 +191,28 @@ class AuthRepository {
     );
   }
 
+  // ========= UPDATE PROFILE (/api/updateProfile) =========
+  /// Some backends expect a POST to /api/updateProfile with first_name/last_name
+  /// and require Authorization header (Bearer token). This helper posts the
+  /// provided fields and returns the raw Response for callers to inspect.
+  Future<Response> updateProfile({
+    required String firstName,
+    required String lastName,
+  }) async {
+    final body = {'first_name': firstName, 'last_name': lastName};
+
+    try {
+      final resp = await _dio.post(
+        AppLink.updateProfile,
+        data: body,
+        options: Options(contentType: Headers.jsonContentType),
+      );
+      return resp;
+    } on DioException {
+      rethrow;
+    }
+  }
+
   Future<Response> resendCode({required String phone}) async {
     return _dio.post(
       AppLink.resendCode,
@@ -212,8 +241,8 @@ class AuthRepository {
 
   bool _isTimeout(DioException e) =>
       e.type == DioExceptionType.connectionTimeout ||
-          e.type == DioExceptionType.sendTimeout ||
-          e.type == DioExceptionType.receiveTimeout;
+      e.type == DioExceptionType.sendTimeout ||
+      e.type == DioExceptionType.receiveTimeout;
 
   Map<String, dynamic> _asMap(dynamic data) {
     if (data is Map<String, dynamic>) return data;
@@ -223,7 +252,8 @@ class AuthRepository {
 
   String? _extractMessage(dynamic data) {
     if (data is Map) {
-      final msg = data['message'] ?? data['error'] ?? data['msg'] ?? data['status'];
+      final msg =
+          data['message'] ?? data['error'] ?? data['msg'] ?? data['status'];
       return msg?.toString();
     }
     if (data is String && data.trim().isNotEmpty) return data;
