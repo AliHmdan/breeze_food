@@ -1,10 +1,10 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:freeza_food/core/constans/color.dart';
 import 'package:freeza_food/data/repositories/address_repository.dart';
-import 'package:freeza_food/presentation/screens/home/home.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:freeza_food/presentation/widgets/main_shell.dart';
+import 'package:geolocator/geolocator.dart';
 
 class UpdateAddressScreen extends StatefulWidget {
   const UpdateAddressScreen({super.key});
@@ -25,44 +25,66 @@ class _UpdateAddressScreenState extends State<UpdateAddressScreen> {
 
   Future<void> _start() async {
     print("UpdateAddressScreen started");
-    // Arguments can be passed when navigating to this route: { 'latitude': 12.3, 'longitude': 45.6 }
-    final args = ModalRoute.of(context)?.settings.arguments;
-    double? lat;
-    double? lng;
-    if (args is Map) {
-      lat = (args['latitude'] is num)
-          ? (args['latitude'] as num).toDouble()
-          : null;
-      lng = (args['longitude'] is num)
-          ? (args['longitude'] as num).toDouble()
-          : null;
-    }
-
-    if (lat == null || lng == null) {
-      // No coordinates provided — skip update and open Home
-      // _navigateToHome();
-      return;
-    }
 
     try {
+      // تحقق من تشغيل خدمة الموقع
+      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        setState(() => _status = 'Location services are disabled');
+        print('Location services disabled');
+        return;
+      }
+
+      // تحقق من الإذن
+      LocationPermission permission = await Geolocator.checkPermission();
+      print('Initial permission: $permission');
+
+      if (permission == LocationPermission.denied) {
+        print('Requesting permission...');
+        permission = await Geolocator.requestPermission();
+        print('After request: $permission');
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        print('Permission permanently denied');
+        setState(() => _status = 'Permission permanently denied');
+        return;
+      }
+
+      if (permission == LocationPermission.denied) {
+        print('User denied permission');
+        setState(() => _status = 'Permission denied');
+        return;
+      }
+
+      // إذا وصلنا هنا فالإذن متاح
+      setState(() => _status = 'Getting your location...');
+      final pos = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      print('Current location: lat=${pos.latitude}, lng=${pos.longitude}');
+
       setState(() => _status = 'Updating your address...');
-      final msg = await _repo.updateAddress(latitude: lat, longitude: lng);
+      final msg = await _repo.updateAddress(
+        latitude: pos.latitude,
+        longitude: pos.longitude,
+      );
+      print('Server response: $msg');
       setState(() => _status = msg);
-    } catch (e) {
+    } catch (e, st) {
+      print('Error in _start: $e\n$st');
       setState(() => _status = 'Failed to update address');
     }
-    log('Address update process completed $lng');
-    // Proceed to Home regardless of success to avoid blocking the user
-    await Future.delayed(const Duration(seconds: 300));
 
-    // _navigateToHome();
+    await Future.delayed(const Duration(seconds: 2));
+    _navigateToHome();
   }
 
   void _navigateToHome() {
-    // Replace this route with the real Home widget
-    // Navigator.of(
-    //   context,
-    // ).pushReplacement(MaterialPageRoute(builder: (_) => const Home()));
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (_) => const MainShell(initialIndex: 0)),
+    );
   }
 
   @override

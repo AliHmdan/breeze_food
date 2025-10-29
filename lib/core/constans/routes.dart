@@ -8,6 +8,8 @@ class AppRoute {
   static const information = '/information';
   static const login = '/login';
   static const home = '/home';
+  static const UpdateAddressScreen = '/update_address_screen';
+
   static const search = '/search';
   static const pay = '/pay';
   static const success = '/success'; // ✅ هذا الجديد بدل Success
@@ -20,5 +22,5 @@ class AppRoute {
   static const info_profile = '/info_profile';
   static const orders = '/orders';
   static const pay_your_order = '/pay_your_order';
-  static const page_ads='/pade_ads';
+  static const page_ads = '/pade_ads';
 }

@@ -202,10 +202,20 @@ class AuthRepository {
     final body = {'first_name': firstName, 'last_name': lastName};
 
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
       final resp = await _dio.post(
         AppLink.updateProfile,
         data: body,
-        options: Options(contentType: Headers.jsonContentType),
+
+        options: Options(
+          contentType: Headers.jsonContentType,
+          headers: {
+            "Authorization": "Bearer $token",
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+          },
+        ),
       );
       return resp;
     } on DioException {

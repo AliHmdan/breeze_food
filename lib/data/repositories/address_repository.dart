@@ -13,7 +13,7 @@ class AddressRepository {
   }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = "28|BryfypIXROJ7QU5fq4OCZtXuqd6F9RCqGdEtWVVG293965fa";
+      final token = "81|FyqIoGp7C5FeF6koNHLpYc4flg2gbJIinliQcOOqe4adf5d0";
 
       final response = await _dio.post(
         AppLink.updateAddress,

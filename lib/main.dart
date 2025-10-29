@@ -25,6 +25,7 @@ import 'package:freeza_food/presentation/screens/auth/new_passowrd.dart';
 import 'package:freeza_food/presentation/screens/auth/information.dart';
 import 'package:freeza_food/presentation/screens/auth/login.dart';
 import 'package:freeza_food/presentation/screens/search/search.dart';
+import 'package:freeza_food/presentation/screens/update_address_screen.dart';
 import 'package:freeza_food/presentation/screens/add_order/pay.dart';
 import 'package:freeza_food/presentation/screens/add_order/success.dart';
 import 'package:freeza_food/presentation/screens/profile/profile.dart';
@@ -33,10 +34,11 @@ import 'package:freeza_food/presentation/screens/store_details/popular_grid_Page
 import 'package:freeza_food/presentation/screens/discount_grid_Page.dart';
 import 'package:freeza_food/presentation/screens/store_details/store_details.dart';
 import 'package:freeza_food/presentation/widgets/main_shell.dart';
+import 'package:geolocator/geolocator.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Geolocator.isLocationServiceEnabled();
   // (اختياري) مراقبة الـ Blocs للتصحيح
   Bloc.observer = SimpleBlocObserver();
 
@@ -79,9 +81,7 @@ class MyApp extends StatelessWidget {
           child: MultiBlocProvider(
             providers: [
               // مصدر حالة المستخدم للتطبيق كله
-              BlocProvider<AuthCubit>(
-                create: (_) => AuthCubit(),
-              ),
+              BlocProvider<AuthCubit>(create: (_) => AuthCubit()),
 
               // SearchCubit عالمي (للبحث والسجل)
               BlocProvider<SearchCubit>(
@@ -107,35 +107,44 @@ class MyApp extends StatelessWidget {
                       title: 'breeze food',
                       debugShowCheckedModeBanner: false,
                       useInheritedMediaQuery: true,
-                      initialRoute: AppRoute.splash_video_screen,
+                      initialRoute: AppRoute.home,
                       routes: {
-                        AppRoute.splash_video_screen: (_) => const SplashVideoScreen(),
-                        AppRoute.signUp: (_) =>  Signup(),
+                        AppRoute.home: (_) => const UpdateAddressScreen(),
+                        // AppRoute.splash_video_screen: (_) =>
+                        //     const SplashVideoScreen(),
+                        AppRoute.signUp: (_) => Signup(),
                         AppRoute.successful: (_) => const Successful(),
                         AppRoute.phoneNumber: (_) => const PhoneNumber(),
                         AppRoute.newPassword: (_) => const NewPassowrd(),
                         AppRoute.information: (_) => const InformationScreen(),
-                        AppRoute.login: (_) =>  Login(),
-                      AppRoute.mainShell: (_) => const MainShell(),
-                        // AppRoute.home: (_) => const Home(),
+                        AppRoute.login: (_) => Login(),
+                        AppRoute.mainShell: (_) => const MainShell(),
+
                         AppRoute.search: (_) => const Search(),
-                    
+
                         AppRoute.pay: (_) => const Pay(),
                         AppRoute.success: (_) => const Success(),
-                    
+
                         AppRoute.profile: (_) => const Profile(),
                         AppRoute.stores_nav_tab: (_) => const StoresNavTab(),
-                        AppRoute.PopularGridPage: (_) => const PopularGridPage(),
-                        AppRoute.discountDetails: (_) => const DiscountGridPage(),
-                    
+                        AppRoute.PopularGridPage: (_) =>
+                            const PopularGridPage(),
+                        AppRoute.discountDetails: (_) =>
+                            const DiscountGridPage(),
+
                         AppRoute.StoreDetails: (_) => const StoreDetails(
-                          categories: ["Burger", "Chrispy", "India food", "Home"],
+                          categories: [
+                            "Burger",
+                            "Chrispy",
+                            "India food",
+                            "Home",
+                          ],
                         ),
-                      
-                          AppRoute.info_profile: (_) => const InfoProfile(),
-                           AppRoute.orders: (_) => const Orders(),
-                           AppRoute.pay_your_order: (_) => const PayYourOrder(),
-                             AppRoute.page_ads: (_) => const ReferralAdPage(),
+
+                        AppRoute.info_profile: (_) => const InfoProfile(),
+                        AppRoute.orders: (_) => const Orders(),
+                        AppRoute.pay_your_order: (_) => const PayYourOrder(),
+                        AppRoute.page_ads: (_) => const ReferralAdPage(),
                       },
                       // لو بدك onGenerateRoute لتزوّد Cubit خاص بمسار معيّن، استخدمه بدل routes الثابتة
                       // onGenerateRoute: (settings) { ... }
