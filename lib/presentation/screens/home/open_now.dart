@@ -1,57 +1,34 @@
 import 'package:freeza_food/core/constans/color.dart';
 import 'package:freeza_food/core/constans/routes.dart';
 import 'package:freeza_food/data/model/restaurant.dart';
+import 'package:freeza_food/data/model/home_model.dart' as home_model;
 import 'package:freeza_food/presentation/widgets/home/custom_fast_food.dart';
 import 'package:freeza_food/presentation/widgets/home/custom_title_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OpenNow extends StatelessWidget {
-  const OpenNow({super.key});
+  final List<home_model.RestaurantModel>? nearbyRestaurants;
+
+  const OpenNow({super.key, this.nearbyRestaurants});
 
   @override
   Widget build(BuildContext context) {
-    final List<Restaurant> restaurants = [
-      Restaurant(
-        imageUrl: "assets/images/004.jpg",
-        name: "Chicken King_Alhamra",
-        rating: 4.9,
-        orders: "500+ Order",
-        time: "20M",
-      ),
-      Restaurant(
-        imageUrl: "assets/images/002.jpg",
-        name: "Chicken King_Alhamra",
-        rating: 4.9,
-        orders: "500+ Order",
-        time: "20M",
-        isClosed: true,
-        closedText: "Open tomorrow at 09:00 AM",
-      ),
-      Restaurant(
-        imageUrl: "assets/images/003.jpg",
-        name: "Chicken King_Alhamra",
-        rating: 4.9,
-        orders: "500+ Order",
-        time: "20M",
-      ),
-      Restaurant(
-        imageUrl: "assets/images/004.jpg",
-        name: "Chicken King_Alhamra",
-        rating: 4.9,
-        orders: "500+ Order",
-        time: "20M",
-      ),
-      Restaurant(
-        imageUrl: "assets/images/002.jpg",
-        name: "Chicken King_Alhamra",
-        rating: 4.9,
-        orders: "500+ Order",
-        time: "20M",
-        isClosed: true,
-        closedText: "Open tomorrow at 09:00 AM",
-      ),
-    ];
+    final List<Restaurant> restaurants =
+        nearbyRestaurants != null && nearbyRestaurants!.isNotEmpty
+        ? nearbyRestaurants!.map((r) {
+            final img = r.logo ?? r.coverImage ?? '';
+            return Restaurant(
+              imageUrl: img,
+              name: r.name,
+              rating: 0.0,
+              orders: '',
+              time: r.menuItems.isNotEmpty
+                  ? '${r.menuItems.length} items'
+                  : '20M',
+            );
+          }).toList()
+        : [];
 
     return Padding(
       padding: const EdgeInsets.only(top: 5, left: 10, right: 10),

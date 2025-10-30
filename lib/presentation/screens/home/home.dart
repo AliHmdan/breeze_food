@@ -7,6 +7,10 @@ import 'package:freeza_food/presentation/screens/home/discount_home.dart';
 import 'package:freeza_food/presentation/screens/home/most_popular.dart';
 import 'package:freeza_food/presentation/screens/home/open_now.dart';
 import 'package:freeza_food/presentation/screens/ads/page_ads.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freeza_food/blocs/home/home_cubit.dart';
+import 'package:freeza_food/data/repositories/home_repository.dart';
+import 'package:freeza_food/blocs/home/home_state.dart';
 
 import 'package:freeza_food/presentation/widgets/home/Stores.dart';
 import 'package:freeza_food/presentation/widgets/button/custom_button_order.dart';
@@ -15,6 +19,7 @@ import 'package:freeza_food/presentation/widgets/home/custom_title_section.dart'
 import 'package:freeza_food/presentation/widgets/home/home_filters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -54,72 +59,179 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: AppColor.Dark,
       body: SafeArea(
-        child: SingleChildScrollView(
-          controller: _scrollController, // 👈 مهم
+        child: BlocProvider<HomeCubit>(
+          create: (_) => HomeCubit(HomeRepository())..loadHome(),
+          child: BlocBuilder<HomeCubit, HomeState>(
+            builder: (context, state) {
+              final isLoaded = state is HomeLoaded;
+              final isLoading = state is HomeLoading;
+              // Use type-test expression but keep `data` dynamic so we can safely
+              // access optional fields (like `stores`) without static getter errors.
+              final dynamic data = state is HomeLoaded ? state.data : null;
 
-          child: Column(
-            children: [
-              // AppBar + Search
-              AppbarHome(),
+              // Loading UX: show shimmer placeholders while HomeLoading
+              if (isLoading) {
+                return SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(
+                    children: [
+                      AppbarHome(),
+                      HomeFilters(onFilterTap: _onFilterTap),
+                      // Shimmer ad
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey.shade700,
+                          highlightColor: Colors.grey.shade500,
+                          child: Container(
+                            height: 100.h,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade800,
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      // Shimmer Most Popular
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey.shade700,
+                          highlightColor: Colors.grey.shade500,
+                          child: Container(
+                            height: 178,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade800,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      // Shimmer Discounts
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey.shade700,
+                          highlightColor: Colors.grey.shade500,
+                          child: Container(
+                            height: 178,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade800,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      // Shimmer Open Now
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey.shade700,
+                          highlightColor: Colors.grey.shade500,
+                          child: Container(
+                            height: 320.h,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade800,
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                );
+              }
 
-              //  أزرار الفلاتر + تمرير على الأقسام
-              HomeFilters(onFilterTap: _onFilterTap),
-              // Ads
-              GestureDetector(onTap: () {
-                Navigator.of(context).push(
-  MaterialPageRoute(builder: (_) => const ReferralAdPage(
-    // يمكن تمرير باراميترات للتخصيص
-    // highlight: '25',
-    // currency: 'AED',
-    // referralCode: 'APP-9M2Q4',
-  )),
-);
-              },child: Animated()),
-              const SizedBox(height: 5),
-              Container(key: _popularKey),
-              // Most Popular
-              MostPopular(),
+              return SingleChildScrollView(
+                controller: _scrollController, // 👈 مهم
+                child: Column(
+                  children: [
+                    // AppBar + Search
+                    AppbarHome(),
 
-              const SizedBox(height: 10),
-              // Stores
-              Container(key: _storesKey),
-              Padding(
-                padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
-                child: CustomTitleSection(title: "Stores"),
-              ),
-              const SizedBox(height: 5),
-              Stores(),
-              SizedBox(height: 2.h),
+                    //  أزرار الفلاتر + تمرير على الأقسام
+                    HomeFilters(onFilterTap: _onFilterTap),
 
-              // Discounts
-              Container(key: _discountsKey), // 👈 مرساة التمرير
-              const SizedBox(height: 10),
-              DiscountHome(),
-
-              const SizedBox(height: 10),
-              Container(key: _openNowKey),
-
-              // const SizedBox(height: 10),
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  OpenNow(),
-                  Positioned(
-                    bottom: 20,
-                    left: 0,
-                    right: 0,
-                    child: Center(
-                      child: CustomButtonOrder(
-                        title: "Your order",
-                        onPressed: () {
-                          Navigator.of(context).pushNamed(AppRoute.pay_your_order);
-                        },
+                    // Ads (use first ad if available)
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const ReferralAdPage(),
+                          ),
+                        );
+                      },
+                      child: Animated(
+                        ad: isLoaded && data!.ads.isNotEmpty
+                            ? data.ads.first
+                            : null,
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+
+                    const SizedBox(height: 5),
+                    Container(key: _popularKey),
+
+                    // Most Popular
+                    MostPopular(popular: isLoaded ? data!.mostPopular : null),
+
+                    const SizedBox(height: 10),
+
+                    // Stores
+                    Container(key: _storesKey),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 5,
+                        left: 10,
+                        right: 10,
+                      ),
+                      child: CustomTitleSection(title: "Stores"),
+                    ),
+                    const SizedBox(height: 5),
+                    // Pass stores data when available; Stores will fallback to static items if null
+                    Stores(stores: data?.stores),
+                    SizedBox(height: 2.h),
+
+                    // Discounts
+                    Container(key: _discountsKey), // 👈 مرساة التمرير
+                    const SizedBox(height: 10),
+                    DiscountHome(discounts: isLoaded ? data!.discounts : null),
+
+                    const SizedBox(height: 10),
+                    Container(key: _openNowKey),
+
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        OpenNow(
+                          nearbyRestaurants: isLoaded
+                              ? data!.nearbyRestaurants
+                              : null,
+                        ),
+                        Positioned(
+                          bottom: 20,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                            child: CustomButtonOrder(
+                              title: "Your order",
+                              onPressed: () {
+                                Navigator.of(
+                                  context,
+                                ).pushNamed(AppRoute.pay_your_order);
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),

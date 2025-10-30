@@ -12,6 +12,9 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = "28|BryfypIXROJ7QU5fq4OCZtXuqd6F9RCqGdEtWVVG293965fa";
+      // DEBUG: print token presence (do not log tokens in production)
+      // ignore: avoid_print
+      print('HomeCubit.loadHome -> token present: ${token != null}');
 
       if (token == null) {
         emit(HomeFailure("No authentication token found"));
@@ -19,9 +22,15 @@ class HomeCubit extends Cubit<HomeState> {
       }
 
       final data = await repository.getHome(token);
+      // ignore: avoid_print
+      print(
+        'HomeCubit.loadHome -> received HomeResponseModel with ads=${data.ads.length} nearby=${data.nearbyRestaurants.length}',
+      );
       emit(HomeLoaded(data));
     } catch (e) {
-      // keep the error message friendly
+      // print error to console for debugging then emit failure
+      // ignore: avoid_print
+      print('HomeCubit.loadHome -> error: $e');
       emit(HomeFailure(e.toString()));
     }
   }
