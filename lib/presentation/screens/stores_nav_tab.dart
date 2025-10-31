@@ -3,6 +3,7 @@ import 'package:freeza_food/core/constans/routes.dart';
 import 'package:freeza_food/data/model/restaurant.dart' as uiModel;
 import 'package:freeza_food/data/model/restaurant_mapper.dart';
 import 'package:freeza_food/presentation/screens/store_details/market_page.dart';
+import 'package:freeza_food/presentation/screens/store_details/store_details.dart' show StoreDetailsBloc;
 import 'package:freeza_food/presentation/widgets/auth/custom_search.dart';
 import 'package:freeza_food/presentation/widgets/custom_appbar_home.dart';
 import 'package:freeza_food/presentation/widgets/home/custom_fast_food.dart';
@@ -42,6 +43,7 @@ class _StoresNavTabState extends State<StoresNavTab>
 
     _supermarkets = <uiModel.Restaurant>[
       uiModel.Restaurant(
+        id: 1,
         imageUrl: "assets/images/004.jpg",
         name: "Fresh Market",
         rating: 4.6,
@@ -227,7 +229,9 @@ class _StoresTabListState extends State<_StoresTabList>
               if (widget.onItemTap != null) {
                 widget.onItemTap!(context, r);
               } else {
-                Navigator.of(context).pushNamed(AppRoute.StoreDetails);
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                  return  StoreDetailsBloc(restaurantId: r.id, categories: ['burger','shawarma'],);
+                },));
               }
             },
             child: RestaurantCard(

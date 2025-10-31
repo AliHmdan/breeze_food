@@ -307,6 +307,7 @@ class _SearchState extends State<Search> {
                       width: itemWidth,
                       margin: EdgeInsets.only(right: 10.w),
                       child: PopularItemCard(
+                        isFavorite: false,
                         imagePath:
                             'assets/images/shawarma_box.png', // لا يوجد image في الموديل
                         title: title,

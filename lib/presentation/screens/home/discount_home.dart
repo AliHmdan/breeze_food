@@ -67,22 +67,22 @@ class DiscountHome extends StatelessWidget {
                                     discounts!.length > index &&
                                     discounts![index].menuItems.isNotEmpty)
                                 ? discounts![index].menuItems[0].nameEn
-                                : 'Chicken shish without...',
+                                : '',
                             subtitle:
                                 (discounts != null &&
                                     discounts!.length > index &&
                                     discounts![index].restaurant != null)
                                 ? discounts![index].restaurant!.name
-                                : 'burger king',
+                                : '',
                             price:
                                 (discounts != null && discounts!.length > index)
                                 ? discounts![index].discountValue.toString()
-                                : '2.00\$',
+                                : '',
                             onFavoriteToggle: () {},
                             discount:
                                 (discounts != null && discounts!.length > index)
                                 ? discounts![index].discountValue.toString()
-                                : '50',
+                                : '',
                           ),
                         ),
                       );

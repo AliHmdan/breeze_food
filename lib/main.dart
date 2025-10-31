@@ -107,11 +107,11 @@ class MyApp extends StatelessWidget {
                       title: 'breeze food',
                       debugShowCheckedModeBanner: false,
                       useInheritedMediaQuery: true,
-                      initialRoute: AppRoute.home,
+                      initialRoute: AppRoute.splash_video_screen,
                       routes: {
                         AppRoute.home: (_) => const UpdateAddressScreen(),
-                        // AppRoute.splash_video_screen: (_) =>
-                        //     const SplashVideoScreen(),
+                        AppRoute.splash_video_screen: (_) =>
+                            const SplashVideoScreen(),
                         AppRoute.signUp: (_) => Signup(),
                         AppRoute.successful: (_) => const Successful(),
                         AppRoute.phoneNumber: (_) => const PhoneNumber(),
@@ -128,18 +128,19 @@ class MyApp extends StatelessWidget {
                         AppRoute.profile: (_) => const Profile(),
                         AppRoute.stores_nav_tab: (_) => const StoresNavTab(),
                         AppRoute.PopularGridPage: (_) =>
-                            const PopularGridPage(),
+                             PopularGridPage(),
                         AppRoute.discountDetails: (_) =>
                             const DiscountGridPage(),
 
-                        AppRoute.StoreDetails: (_) => const StoreDetails(
-                          categories: [
-                            "Burger",
-                            "Chrispy",
-                            "India food",
-                            "Home",
-                          ],
-                        ),
+                        // AppRoute.StoreDetails: (_) => const StoreDetailsBloc(
+                        //   // restaurantId: 1,
+                        //   // categories: [
+                        //   //   "Burger",
+                        //   //   "Chrispy",
+                        //   //   "India food",
+                        //   //   "Home",
+                        //   // ],
+                        // ),
 
                         AppRoute.info_profile: (_) => const InfoProfile(),
                         AppRoute.orders: (_) => const Orders(),

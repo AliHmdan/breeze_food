@@ -19,6 +19,7 @@ class OpenNow extends StatelessWidget {
         ? nearbyRestaurants!.map((r) {
             final img = r.logo ?? r.coverImage ?? '';
             return Restaurant(
+              id: 1,
               imageUrl: img,
               name: r.name,
               rating: 0.0,

@@ -235,6 +235,7 @@ class MenuItemModel {
   final String? description;
   final String basePrice;
   final bool hasVariations;
+  final bool isFavorite;
   final String?
   primaryImageUrl; // optional primary image (relative or absolute)
 
@@ -245,6 +246,7 @@ class MenuItemModel {
     this.description,
     required this.basePrice,
     required this.hasVariations,
+    this.isFavorite = false,
     this.primaryImageUrl,
   });
 
@@ -255,6 +257,7 @@ class MenuItemModel {
     description: json['description'] as String?,
     basePrice: json['base_price']?.toString() ?? '0',
     hasVariations: json['has_variations'] == true,
+    isFavorite: json['is_favorite'] == true,
     primaryImageUrl: json['primary_image'] != null
         ? (json['primary_image']['image_url'] as String?)
         : null,

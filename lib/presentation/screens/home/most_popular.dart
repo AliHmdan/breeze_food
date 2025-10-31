@@ -62,22 +62,23 @@ class MostPopular extends StatelessWidget {
                             );
                           },
                           child: PopularItemCard(
+                            isFavorite: popular![index].isFavorite,
                             imagePath:
                                 (popular != null &&
                                     popular!.length > index &&
                                     popular![index].primaryImageUrl != null)
                                 ? popular![index].primaryImageUrl!
-                                : 'assets/images/004.jpg',
+                                : '',
                             title: (popular != null && popular!.length > index)
                                 ? popular![index].name
-                                : 'Chicken shish without...',
+                                : '',
                             subtitle:
                                 (popular != null && popular!.length > index)
                                 ? (popular![index].restaurantId.toString())
-                                : 'burger king',
+                                : '',
                             price: (popular != null && popular!.length > index)
                                 ? popular![index].basePrice
-                                : '2.00\$',
+                                : '',
                             onFavoriteToggle: () {},
                           ),
                         ),

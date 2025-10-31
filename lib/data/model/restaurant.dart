@@ -1,4 +1,5 @@
 class Restaurant {
+  final int id;
   final String imageUrl;
   final String name;
   final double rating;
@@ -8,6 +9,7 @@ class Restaurant {
   final String? closedText;
 
   Restaurant({
+    required this.id,
     required this.imageUrl,
     required this.name,
     required this.rating,

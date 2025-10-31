@@ -1,6 +1,7 @@
 // في أي صفحة:
 import 'package:freeza_food/core/constans/color.dart';
 import 'package:freeza_food/core/constans/routes.dart';
+import 'package:freeza_food/presentation/screens/store_details/store_details.dart';
 import 'package:freeza_food/presentation/widgets/market_grid.dart';
 import 'package:freeza_food/presentation/widgets/title/custom_appbar_profile.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,9 @@ class MarketPage extends StatelessWidget {
       body: MarketGrid(
         items: products,
         onItemTap: (i, item) {
-          Navigator.of(context).pushNamed(AppRoute.StoreDetails);
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return  StoreDetailsBloc(restaurantId: 1, categories: ['burger','shawarma'],);
+          },));
         },
       ),
     );

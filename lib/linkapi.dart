@@ -22,4 +22,7 @@ class AppLink {
   static const String home = "$server/home";
   //==============================restaurants ========================= //
   static const String Restaurants = "$server/all-restaurants";
+  static const String get_discounts = "$server/get-discounts";
+  static const String mostPopular = "$server/most-popular";
+  static const String  restaurantDetails = "$server/restaurant-details";
 }

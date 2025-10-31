@@ -4,98 +4,100 @@ import 'package:freeza_food/presentation/widgets/title/custom_appbar_profile.dar
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../blocs/most_popular/most_popular_cubit.dart';
+import '../../../blocs/most_popular/most_popular_state.dart';
+import '../../../data/repositories/popular_repository.dart';
+
+
 class PopularGridPage extends StatelessWidget {
-  const PopularGridPage({super.key});
+
+  const PopularGridPage({super.key, });
 
   @override
   Widget build(BuildContext context) {
-    // بيانات مؤقتة
-    final List<Map<String, String>> items = List.generate(
-      10,
-      (index) => {
-        "imagePath": "assets/images/004.jpg",
-        "title": "Chicken shish",
-        "subtitle": "burger king",
-        "price": "2.00\$",
-        "discount": "50",
-      },
-    );
-
-    // تحديد عدد الأعمدة بشكل responsive
-    int getCrossAxisCount(double width) {
-      if (width < 600) {
-        return 2; // موبايل
-      } else if (width < 1000) {
-        return 3; // تابلت
-      } else {
-        return 4; // ويب
-      }
-    }
-
-    return Scaffold(
-      backgroundColor: AppColor.Dark,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.h), // ارتفاع الـ AppBar
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: CustomAppbarProfile(
-            title: "Most popular",
-            icon: Icons.arrow_back_ios,
-            ontap: () {
-          Navigator.of(context).pop();
-            },
+    return BlocProvider(
+      create: (_) => PopularCubit(PopularRepository())..loadPopularItems(),
+      child: Scaffold(
+        backgroundColor: AppColor.Dark,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(50.h),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: CustomAppbarProfile(
+              title: "Most popular",
+              icon: Icons.arrow_back_ios,
+              ontap: () => Navigator.of(context).pop(),
+            ),
           ),
         ),
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final crossAxisCount = getCrossAxisCount(constraints.maxWidth);
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            child: BlocBuilder<PopularCubit, PopularState>(
+              builder: (context, state) {
+                if (state is PopularLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is PopularError) {
+                  return Center(child: Text("Error: ${state.message}"));
+                } else if (state is PopularLoaded) {
+                  final items = state.items;
 
-              return Container(
-                width: double.infinity,
-                height: double.infinity,
+                  int getCrossAxisCount(double width) {
+                    if (width < 600) return 2;
+                    if (width < 1000) return 3;
+                    return 4;
+                  }
 
-                decoration: BoxDecoration(
-                  color: AppColor.LightActive,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: GridView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: crossAxisCount,
-                      mainAxisSpacing: 5.h, // ✅ المسافة الطولية بين الصفوف
-                      crossAxisSpacing: 12.w, // ✅ المسافة العرضية بين الأعمدة
-                      childAspectRatio: 0.92, // ✅ نسبة العرض للارتفاع
-                    ),
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      final item = items[index];
-                      return PopularItemCard(
-                        imagePath: item["imagePath"]!,
-                        title: item["title"]!, // 
-                        subtitle: item["subtitle"], 
-                        price: item["price"]!, 
-                        oldPrice: item["oldPrice"],
-                        onFavoriteToggle: () {
-                          debugPrint("Favorite toggled for ${item["title"]}");
-                        },
-                        onTap: () {
-                          // يمكنك وضع هنا التنقل إلى صفحة التفاصيل مثلاً
-                        },
+                  return LayoutBuilder(
+                    builder: (context, constraints) {
+                      final crossAxisCount = getCrossAxisCount(constraints.maxWidth);
+
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: AppColor.LightActive,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GridView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: crossAxisCount,
+                              mainAxisSpacing: 5.h,
+                              crossAxisSpacing: 12.w,
+                              childAspectRatio: 0.92,
+                            ),
+                            itemCount: items.length,
+                            itemBuilder: (context, index) {
+                              final item = items[index];
+                              return PopularItemCard(
+                                isFavorite: item.isFavorite,
+                                imagePath: item.image,
+                                title: item.nameAr,
+                                subtitle: item.restaurantName,
+                                price: item.price,
+                                oldPrice: null,
+                                onFavoriteToggle: () {},
+                                onTap: () {},
+                              );
+                            },
+                          ),
+                        ),
                       );
                     },
-                  ),
-                ),
-              );
-            },
+                  );
+                }
+
+                return const SizedBox();
+              },
+            ),
           ),
         ),
       ),
     );
   }
 }
+

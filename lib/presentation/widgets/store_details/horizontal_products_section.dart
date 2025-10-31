@@ -58,6 +58,7 @@ class HorizontalProductsSection extends StatelessWidget {
                     );
                   },
                   child: PopularItemCard(
+                    isFavorite: true,
                     imagePath: imagePath,
                     title: title,
                     price: price,

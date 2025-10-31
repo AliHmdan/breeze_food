@@ -9,16 +9,18 @@ class PopularItemCard extends StatefulWidget {
   final String? subtitle;
   final String price;
   final String? oldPrice;
+  late  bool isFavorite;
   final void Function()? onTap;
   final VoidCallback onFavoriteToggle;
 
-  const PopularItemCard({
+   PopularItemCard({
     Key? key,
     required this.imagePath,
     required this.title,
     this.subtitle,
     required this.price,
     required this.onFavoriteToggle,
+    required this.isFavorite,
     this.oldPrice,
     this.onTap,
   }) : super(key: key);
@@ -29,7 +31,6 @@ class PopularItemCard extends StatefulWidget {
 
 class _PopularItemCardState extends State<PopularItemCard>
     with SingleTickerProviderStateMixin {
-  bool isFavorite = false;
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 
@@ -69,7 +70,7 @@ class _PopularItemCardState extends State<PopularItemCard>
 
   void _toggleFavorite() {
     setState(() {
-      isFavorite = !isFavorite;
+      widget.isFavorite = !widget.isFavorite;
     });
     widget.onFavoriteToggle();
     _controller.forward().then((_) => _controller.reverse());
@@ -132,8 +133,8 @@ class _PopularItemCardState extends State<PopularItemCard>
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
-                          isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: isFavorite
+                          widget.isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: widget.isFavorite
                               ? AppColor.red
                               : AppColor.white, // ← أبيض أفضل هنا
                           size: 24.sp,

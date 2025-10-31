@@ -167,6 +167,7 @@ class AddNewMeal extends StatelessWidget {
                       height: 163.h,
                       width: 160.w,
                       child: PopularItemCard(
+                        isFavorite: false,
                         imagePath: "assets/images/004.jpg",
                         title: "Chicken ",
                         price: "5.00\$",

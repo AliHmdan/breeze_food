@@ -9,6 +9,7 @@ extension ApiToUiRestaurant on ApiRestaurant {
         : (imageBaseUrl.trim().endsWith("/") ? imageBaseUrl : "$imageBaseUrl/") + coverImage;
 
     return ui.Restaurant(
+      id: id,
       imageUrl: cover, // cover image للـ UI
       name: name,
       rating: ratingAvg,

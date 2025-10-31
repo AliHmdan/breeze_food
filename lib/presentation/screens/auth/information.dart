@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/constans/color.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/repositories/auth_repository.dart';
+import '../update_address_screen.dart';
 
 class InformationScreen extends StatefulWidget {
   const InformationScreen({Key? key}) : super(key: key);
@@ -127,7 +128,7 @@ class _InformationScreenState extends State<InformationScreen> {
                           // Navigate to home (replace stack)
                           Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
-                              builder: (_) => const MainShell(initialIndex: 0),
+                              builder: (_) => UpdateAddressScreen(),
                             ),
                           );
                         } else {

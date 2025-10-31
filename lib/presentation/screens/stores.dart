@@ -1,6 +1,7 @@
 import 'package:freeza_food/core/constans/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:freeza_food/presentation/screens/store_details/store_details.dart';
 
 import '../../core/constans/color.dart';
 import '../widgets/custom_appbar_home.dart';
@@ -82,7 +83,9 @@ class Stores extends StatelessWidget {
       final restaurant = restaurants[index];
       return GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamed(AppRoute.StoreDetails);
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return  StoreDetailsBloc(restaurantId: restaurant['id'], categories: ['burger','shawarma'],);
+          },));
         },
         child: Container(
           height: 120.h,

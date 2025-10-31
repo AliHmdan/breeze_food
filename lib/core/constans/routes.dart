@@ -17,7 +17,7 @@ class AppRoute {
   static const stores_nav_tab = '/stores-nav-tab';
   static const PopularGridPage = '/popular-grid';
   static const discountDetails = '/discount-details';
-  static const StoreDetails = '/store-details';
+  // static const StoreDetails = '/store-details';
   static const mainShell = '/main-shell';
   static const info_profile = '/info_profile';
   static const orders = '/orders';

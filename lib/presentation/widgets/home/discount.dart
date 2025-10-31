@@ -10,10 +10,11 @@ class Discount extends StatefulWidget {
   final String subtitle;
   final String price;
   final String discount;
+  late  bool isFavorite;
   final VoidCallback onFavoriteToggle;
   final void Function()? onTap;
 
-  const Discount({
+   Discount({
     Key? key,
     required this.imagePath,
     required this.title,
@@ -21,6 +22,7 @@ class Discount extends StatefulWidget {
     required this.price,
     required this.discount,
     required this.onFavoriteToggle,
+    this.isFavorite = false,
     this.onTap,
   }) : super(key: key);
 
@@ -30,7 +32,6 @@ class Discount extends StatefulWidget {
 
 class _DiscountState extends State<Discount>
     with SingleTickerProviderStateMixin {
-  bool isFavorite = false;
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 
@@ -70,7 +71,7 @@ class _DiscountState extends State<Discount>
 
   void _toggleFavorite() {
     setState(() {
-      isFavorite = !isFavorite;
+      widget.isFavorite = !widget.isFavorite;
     });
     widget.onFavoriteToggle();
     _controller.forward().then((_) => _controller.reverse());
@@ -114,8 +115,8 @@ class _DiscountState extends State<Discount>
                         padding: EdgeInsets.all(6.w),
                         decoration: const BoxDecoration(shape: BoxShape.circle),
                         child: Icon(
-                          isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: isFavorite ? AppColor.red : AppColor.gry,
+                          widget.isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: widget.isFavorite ? AppColor.red : AppColor.gry,
                           size: 20.sp,
                         ),
                       ),
