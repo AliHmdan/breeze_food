@@ -192,7 +192,7 @@ class _HomeState extends State<Home> {
                     ),
                     const SizedBox(height: 5),
                     // Pass stores data when available; Stores will fallback to static items if null
-                    Stores(stores: data?.stores),
+                    Stores(stores: data?.stories),
                     SizedBox(height: 2.h),
 
                     // Discounts
