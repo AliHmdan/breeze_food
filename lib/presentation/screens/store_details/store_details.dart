@@ -21,7 +21,7 @@ import '../../widgets/home/custom_title_section.dart';
 import '../../widgets/home/most_popular.dart';
 import '../../widgets/tiem_price.dart';
 
-class StoreDetailsBloc extends StatelessWidget {
+class StoreDetailsBloc extends StatefulWidget {
   final int restaurantId;
   final List<String> categories;
   const StoreDetailsBloc({super.key,
@@ -31,23 +31,27 @@ class StoreDetailsBloc extends StatelessWidget {
   });
 
   @override
+  State<StoreDetailsBloc> createState() => _StoreDetailsBlocState();
+}
+
+class _StoreDetailsBlocState extends State<StoreDetailsBloc> {
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => StoreCubit(StoreRepository())
-        ..loadStoreDetails(1),
-  child: StoreDetails(restaurantId: 1, categories: ["fhdf","dhsghjdg"],),
+        ..loadStoreDetails(widget.restaurantId),
+  child: StoreDetails( categories: ["fhdf","dhsghjdg"],),
 );
   }
 }
 
 
 class StoreDetails extends StatefulWidget {
-  final int restaurantId;
+
   final List<String> categories;
 
   const StoreDetails({
     super.key,
-    required this.restaurantId,
     required this.categories,
   });
 
@@ -58,11 +62,11 @@ class StoreDetails extends StatefulWidget {
 
 class _StoreDetailsState extends State<StoreDetails> {
   final ScrollController _scrollController = ScrollController();
-  @override
-  void initState() {
-    super.initState();
-    context.read<StoreCubit>().loadStoreDetails( widget.restaurantId);
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   context.read<StoreCubit>().loadStoreDetails( widget.restaurantId);
+  // }
   @override
   void dispose() {
     _scrollController.dispose();
