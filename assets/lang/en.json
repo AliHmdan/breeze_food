@@ -1,0 +1,20 @@
+{
+  "pleaseEnterYourPhoneToLogin": "Please enter your phone number to log in",
+  "language": "Language",
+  "english": "English",
+  "arabic": "Arabic",
+
+   
+   "successfullyloggedin":"You have successfully logged in.",
+   "checkthecode":"The request has been sent successfully, please check the code.",
+   "welcometobreeze":"Welcome to breeze",
+   "phonetologin":"Please Enter your phone to login",
+   "phonenumber":"Phone Number",
+   "enterphonenumber":"Enter phone number",
+   "invalidphonenumber":"Invalid phone number",
+   "continue":"Continue",
+   "Checkrequiredfields'":"Check required fields"
+
+
+
+}

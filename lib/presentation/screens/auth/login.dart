@@ -1,8 +1,8 @@
 import 'package:breezefood/blocs/auth/login/login_bloc.dart';
 import 'package:breezefood/blocs/auth/login/login_event.dart';
 import 'package:breezefood/blocs/auth/login/login_state.dart';
+import 'package:breezefood/blocs/language/language_cubit.dart';
 import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/data/repositories/auth_repository.dart';
 import 'package:breezefood/presentation/screens/auth/verfiy_code.dart';
 import 'package:breezefood/presentation/widgets/auth/custom_text_form_field.dart';
@@ -10,7 +10,6 @@ import 'package:breezefood/presentation/widgets/button/custom_button.dart';
 import 'package:breezefood/presentation/widgets/main_shell.dart';
 import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
 import 'package:breezefood/presentation/widgets/title/custom_title.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,15 +46,15 @@ class _LoginState extends State<Login> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (icon != null) ...[
-              Icon(icon, color: Colors.white),
+              Icon(icon, color: AppColor.white),
               const SizedBox(width: 10),
             ],
             Expanded(
-              child: Text(message, style: const TextStyle(color: Colors.white)),
+              child: Text(message, style: const TextStyle(color: AppColor.white)),
             ),
           ],
         ),
-        backgroundColor: background ?? Colors.redAccent,
+        backgroundColor: background ?? AppColor.red,
         behavior: SnackBarBehavior.floating,
         margin: const EdgeInsets.all(12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -66,6 +65,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+      final lang = context.watch<LanguageCubit>(); // للوصول إلى النصوص
+
     return BlocProvider(
       create: (_) => LoginBloc(AuthRepository()),
       child: Scaffold(
@@ -105,7 +106,7 @@ class _LoginState extends State<Login> {
               if (token != null && token.toString().isNotEmpty) {
                 _showSnackBar(
                   context,
-                  message: "تم تسجيل الدخول بنجاح ✅",
+                  message: lang.t('successfullyloggedin'),
                   background: AppColor.primaryColor,
                   icon: Icons.check_circle_outline,
                 );
@@ -129,7 +130,7 @@ class _LoginState extends State<Login> {
               // أي نجاح آخر غير معروف
               _showSnackBar(
                 context,
-                message: 'تم إرسال الطلب بنجاح، يرجى التحقق من الكود.',
+                message: lang.t('checkthecode'),
                 background: Colors.orange,
                 icon: Icons.info_outline,
               );
@@ -193,12 +194,12 @@ class _LoginState extends State<Login> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       CustomTitle(
-                                        title: "Welcome to breeze",
+                                        title: lang.t('welcometobreeze'),
                                         color: Colors.white,
                                       ),
                                       SizedBox(height: 2.h),
                                       CustomSubTitle(
-                                        subtitle: "Please Enter your phone to login",
+                                        subtitle: lang.t('phonetologin'),
                                         color: AppColor.gry,
                                         fontsize: 12.sp,
                                       ),
@@ -237,14 +238,14 @@ class _LoginState extends State<Login> {
                                             child: CustomTextFormField(
                                               controller: phoneController,
                                               keyboardType: TextInputType.number,
-                                              hintText: "Phone Number",
+                                              hintText: lang.t('phonenumber'),
                                               validator: (v) {
                                                 final val = (v ?? '').trim();
                                                 if (val.isEmpty) {
-                                                  return 'أدخل رقم الهاتف';
+                                                  return lang.t('enterphonenumber');
                                                 }
                                                 if (val.length < 8) {
-                                                  return 'رقم الهاتف غير صالح';
+                                                  return lang.t('invalidphonenumber');
                                                 }
                                                 return null;
                                               },
@@ -266,7 +267,7 @@ class _LoginState extends State<Login> {
                                         )
                                       else
                                         CustomButton(
-                                          title: "Continue",
+                                          title: lang.t('continue'),
                                           onPressed: () {
                                             FocusScope.of(context).unfocus();
                                             if (_formKey.currentState!.validate()) {
@@ -278,7 +279,7 @@ class _LoginState extends State<Login> {
                                             } else {
                                               _showSnackBar(
                                                 context,
-                                                message: 'تحقق من الحقول المطلوبة',
+                                                message: lang.t('Checkrequiredfields'),
                                                 background: Colors.orange,
                                                 icon: Icons.info_outline,
                                               );
@@ -290,39 +291,7 @@ class _LoginState extends State<Login> {
                                 ),
                               ),
 
-                              // Sign up
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 16.h),
-                                child: Center(
-                                  child: Text.rich(
-                                    TextSpan(
-                                      text: "Already have an account? ",
-                                      style: TextStyle(
-                                        color: AppColor.white,
-                                        fontSize: 12.sp,
-                                        fontFamily: "Manrope",
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: "Sign Up Now",
-                                          style: TextStyle(
-                                            color: AppColor.primaryColor,
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 12.sp,
-                                            fontFamily: "Manrope",
-                                          ),
-                                          recognizer: TapGestureRecognizer()
-                                            ..onTap = () {
-                                              Navigator.of(context)
-                                                  .pushNamed(AppRoute.signUp);
-                                            },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
+                            
                             ],
                           ),
                         ),

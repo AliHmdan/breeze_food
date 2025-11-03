@@ -1,7 +1,6 @@
 import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/core/constans/routes.dart';
 import 'package:breezefood/presentation/screens/add_order/add_order.dart';
-import 'package:breezefood/presentation/widgets/home/custom_title_section.dart';
+
 import 'package:breezefood/presentation/widgets/home/discount.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,15 +13,7 @@ class DiscountHome extends StatelessWidget {
     return Padding(
 padding: const EdgeInsets.only(top: 5,left: 10,right: 10),      child: Column(
         children: [
-           CustomTitleSection(
-                  title: "Discounts",
-                  all: "All",
-                  icon: Icons.arrow_forward_ios_outlined,
-                  ontap: () {
-                    Navigator.of(context).pushNamed(AppRoute.discountDetails);
-                  },
-                ),
-                const SizedBox(height: 10),
+           
                 RepaintBoundary(
                   child: Container(
                     padding: const EdgeInsets.only(
