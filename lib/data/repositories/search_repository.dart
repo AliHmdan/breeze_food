@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:breezefood/data/model/search/search_history_model.dart';
-import 'package:breezefood/data/model/search/search_result_model.dart';
-import 'package:breezefood/linkapi.dart';
+import 'package:freeza_food/data/model/search/search_history_model.dart';
+import 'package:freeza_food/data/model/search/search_result_model.dart';
+import 'package:freeza_food/linkapi.dart';
 import 'package:dio/dio.dart';
 
 class SearchRepository {

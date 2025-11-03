@@ -1,50 +1,57 @@
-import 'package:breezefood/blocs/auth/verfiy_code/verfiy_code_cubit.dart';
-import 'package:breezefood/blocs/auth/verfiy_code/verfiy_code_state.dart';
-import 'package:breezefood/core/constans/routes.dart';
-import 'package:breezefood/data/repositories/auth_repository.dart';
-import 'package:breezefood/presentation/widgets/custom_arrow.dart';
+import 'package:freeza_food/core/constans/routes.dart';
+import 'package:freeza_food/presentation/widgets/custom_arrow.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+import '../../../blocs/auth/verfiy_code/verfiy_code_cubit.dart';
+import '../../../blocs/auth/verfiy_code/verfiy_code_state.dart';
 import '../../../core/constans/color.dart';
+import '../../../data/repositories/auth_repository.dart';
 import '../../widgets/title/custom_sub_title.dart';
 import '../../widgets/title/custom_title.dart';
 
-class VerfiyCode extends StatelessWidget {
-  final String? phone;        // لم يعد required
-  final String? initialCode;  // كود تمهيدي اختياري (إن أتى من API)
-  const VerfiyCode({super.key, this.phone, this.initialCode});
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class VerfiyCode extends StatefulWidget {
+  final String phone;
+
+  const VerfiyCode({super.key, required this.phone});
 
   @override
-  Widget build(BuildContext context) {
-    // 📦 التماس الـ arguments لو ما وصل phone/ code للكونستركتر
-    final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
-    final String effectivePhone =
-        phone ?? (args?['phone']?.toString() ?? '');
-    final String? effectiveInitCode =
-        initialCode ?? args?['code']?.toString();
+  State<VerfiyCode> createState() => _VerfiyCodeState();
+}
 
+class _VerfiyCodeState extends State<VerfiyCode> {
+  @override
+  Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => VerifyCodeCubit(AuthRepository()),
       child: BlocConsumer<VerifyCodeCubit, VerifyCodeState>(
         listener: (context, state) {
           if (state is VerifyCodeSuccess) {
-            Navigator.of(context).pushReplacementNamed(AppRoute.information);
+            // If the user has no first and last name, ask for information first
+            final user = state.user;
+            // The project's UserModel uses `name`; backend may provide first_name/last_name.
+            // Consider user needs info when `name` is null or empty.
+            final needsInfo = user.name == null || user.name!.trim().isEmpty;
+            if (needsInfo) {
+              Navigator.of(context).pushReplacementNamed(AppRoute.information);
+            } else {
+              Navigator.of(context).pushReplacementNamed(AppRoute.home);
+            }
           } else if (state is ResendCodeSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("✅ تم إعادة إرسال الكود")),
             );
           } else if (state is VerifyCodeFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         builder: (context, state) {
           final cubit = context.read<VerifyCodeCubit>();
-
           return Scaffold(
             backgroundColor: Colors.transparent,
             body: Stack(
@@ -56,7 +63,10 @@ class VerfiyCode extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 20,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -66,19 +76,18 @@ class VerfiyCode extends StatelessWidget {
                         background: AppColor.white,
                       ),
                       SizedBox(height: 10.h),
-                      CustomTitle(title: "Enter the Code", color: AppColor.white),
+                      CustomTitle(
+                        title: "Enter the Code",
+                        color: AppColor.white,
+                      ),
                       SizedBox(height: 8.h),
                       CustomSubTitle(
-                        // 📞 اعرض الهاتف الفعّال (مع كود الدولة الذي تريد)
-                        subtitle: effectivePhone.isNotEmpty
-                            ? "Enter the verification code we just sent to +963$effectivePhone"
-                            : "Enter the verification code we just sent to your phone",
+                        subtitle:
+                            "Enter the verification code we just sent to ${widget.phone}",
                         color: AppColor.gry,
                         fontsize: 14.sp,
                       ),
                       SizedBox(height: 45.h),
-
-                      // 🔢 حقل الكود
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.9,
                         child: PinCodeTextField(
@@ -103,54 +112,27 @@ class VerfiyCode extends StatelessWidget {
                           ),
                           animationDuration: const Duration(milliseconds: 300),
                           enableActiveFill: true,
-                          // لو بدك تملأ الكود تلقائيًا لو وصلك initialCode من السيرفر، استخدم controller
                           onCompleted: (v) {
-                            if (effectivePhone.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('رقم الهاتف غير متوفر')),
-                              );
-                              return;
-                            }
-                            cubit.verifyCode(
-                              phone: effectivePhone, // ✅ مطلوب بالاسم وبنوع String
-                              code: v,
-                            );
+                            cubit.verifyCode(phone: widget.phone, code: v);
                           },
                           onChanged: (value) {},
                         ),
                       ),
                       SizedBox(height: 20),
-
-                      // 🔁 إعادة إرسال
                       InkWell(
                         onTap: state is ResendCodeLoading
                             ? null
                             : () {
-                                if (effectivePhone.isEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('رقم الهاتف غير متوفر')),
-                                  );
-                                  return;
-                                }
-                                cubit.resendCode(
-                                  phone: effectivePhone, // ✅ مُعامل مُسمّى (required)
-                                );
+                                cubit.resendCode(widget.phone);
                               },
                         child: CustomSubTitle(
-                          subtitle: state is ResendCodeLoading ? "Sending..." : "Resend Code",
+                          subtitle: state is ResendCodeLoading
+                              ? "Sending..."
+                              : "Resend Code",
                           color: AppColor.primaryColor,
                           fontsize: 12.sp,
                         ),
                       ),
-
-                      // (اختياري) عرض الكود المُرسل تلقائياً إن أحببت
-                      if (effectiveInitCode != null) ...[
-                        SizedBox(height: 12.h),
-                        Text(
-                          "Code: $effectiveInitCode",
-                          style: TextStyle(color: AppColor.gry, fontSize: 12.sp),
-                        ),
-                      ],
                     ],
                   ),
                 ),

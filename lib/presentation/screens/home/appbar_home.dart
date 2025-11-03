@@ -1,6 +1,6 @@
-import 'package:breezefood/core/constans/routes.dart';
-import 'package:breezefood/presentation/widgets/auth/custom_search.dart';
-import 'package:breezefood/presentation/widgets/custom_appbar_home.dart';
+import 'package:freeza_food/core/constans/routes.dart';
+import 'package:freeza_food/presentation/widgets/auth/custom_search.dart';
+import 'package:freeza_food/presentation/widgets/custom_appbar_home.dart';
 import 'package:flutter/material.dart';
 
 class AppbarHome extends StatelessWidget {

@@ -1,4 +1,4 @@
-name: breezefood
+name: freeza_food
 description: "A new Flutter project."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -25,6 +25,7 @@ dependencies:
   pin_code_fields: ^8.0.1
   intl: ^0.20.2
   dio: ^5.9.0
+  shimmer: ^2.0.0
   lottie: ^3.3.1
   carousel_slider: ^5.1.1
   flutter_rating_bar: ^4.0.1
@@ -39,6 +40,9 @@ dependencies:
   shared_preferences: ^2.5.3
   video_player: ^2.10.0
 
+
+  flutter_localization: ^0.3.3
+  geolocator: 
 
 dev_dependencies:
   flutter_test:

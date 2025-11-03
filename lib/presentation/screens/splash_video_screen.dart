@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
-import 'package:breezefood/presentation/screens/auth/login.dart';
+import 'package:freeza_food/presentation/screens/auth/login.dart';
 
 class SplashVideoScreen extends StatefulWidget {
   const SplashVideoScreen({Key? key}) : super(key: key);
@@ -80,7 +80,7 @@ class _SplashVideoScreenState extends State<SplashVideoScreen> {
 
     Navigator.of(
       context,
-    ).pushReplacement(MaterialPageRoute(builder: (_) => const Login()));
+    ).pushReplacement(MaterialPageRoute(builder: (_) =>  Login()));
   }
 
   @override

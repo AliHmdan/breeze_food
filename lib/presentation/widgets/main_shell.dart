@@ -1,10 +1,10 @@
 // main_shell.dart
-import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/presentation/favorite_page.dart';
-import 'package:breezefood/presentation/screens/home/home.dart';
-import 'package:breezefood/presentation/screens/orders.dart';
-import 'package:breezefood/presentation/screens/stores_nav_tab.dart';
-import 'package:breezefood/presentation/widgets/CustomBottomNav.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/presentation/favorite_page.dart';
+import 'package:freeza_food/presentation/screens/home/home.dart';
+import 'package:freeza_food/presentation/screens/orders.dart';
+import 'package:freeza_food/presentation/screens/stores_nav_tab.dart';
+import 'package:freeza_food/presentation/widgets/CustomBottomNav.dart';
 import 'package:flutter/material.dart';
 
 class MainShell extends StatefulWidget {

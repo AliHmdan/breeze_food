@@ -1,11 +1,11 @@
-import 'package:breezefood/blocs/search/search_cubit.dart';
-import 'package:breezefood/blocs/search/search_state.dart';
-import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/presentation/widgets/custom_arrow.dart';
-import 'package:breezefood/presentation/widgets/home/most_popular.dart';
-import 'package:breezefood/data/model/search/search_result_model.dart'; // موديلات ال API
-import 'package:breezefood/data/model/search/search_history_model.dart'; // موديل التاريخ
-import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
+import 'package:freeza_food/blocs/search/search_cubit.dart';
+import 'package:freeza_food/blocs/search/search_state.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/presentation/widgets/custom_arrow.dart';
+import 'package:freeza_food/presentation/widgets/home/most_popular.dart';
+import 'package:freeza_food/data/model/search/search_result_model.dart'; // موديلات ال API
+import 'package:freeza_food/data/model/search/search_history_model.dart'; // موديل التاريخ
+import 'package:freeza_food/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +22,7 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  final GlobalKey _stackKey = GlobalKey(); 
+  final GlobalKey _stackKey = GlobalKey();
   final GlobalKey _searchFieldKey = GlobalKey();
 
   // وسوم المستخدم المحلية
@@ -31,16 +31,7 @@ class _SearchState extends State<Search> {
   // تاريخ البحث القادم من API
   List<SearchHistoryModel> _history = [];
 
-  final List<String> allSuggestions = const [
-    "Burger",
-    "Shawarma King",
-    "KFC",
-    "Pizza Hut",
-    "Tacos",
-    "McDonald's",
-    "Shish",
-    "Parise",
-  ];
+  final List<String> allSuggestions = const [];
 
   List<String> filteredSuggestions = [];
   bool showSuggestions = false;
@@ -234,7 +225,7 @@ class _SearchState extends State<Search> {
                       color: AppColor.white,
                       fontsize: 14.sp,
                     ),
-                   
+
                     Row(
                       children: [
                         Icon(
@@ -316,6 +307,7 @@ class _SearchState extends State<Search> {
                       width: itemWidth,
                       margin: EdgeInsets.only(right: 10.w),
                       child: PopularItemCard(
+                        isFavorite: false,
                         imagePath:
                             'assets/images/shawarma_box.png', // لا يوجد image في الموديل
                         title: title,
@@ -349,8 +341,8 @@ class _SearchState extends State<Search> {
       child: Scaffold(
         backgroundColor: AppColor.Dark,
         body: Stack(
-           key: _stackKey,
-  clipBehavior: Clip.none,
+          key: _stackKey,
+          clipBehavior: Clip.none,
           children: [
             GestureDetector(
               behavior: HitTestBehavior.translucent,
@@ -522,95 +514,100 @@ class _SearchState extends State<Search> {
 
             // قائمة الاقتراحات المنسدلة
             if (showSuggestions)
-  Builder(
-    builder: (context) {
-      final fieldBox = _searchFieldKey.currentContext?.findRenderObject() as RenderBox?;
-      final stackBox = _stackKey.currentContext?.findRenderObject() as RenderBox?;
+              Builder(
+                builder: (context) {
+                  final fieldBox =
+                      _searchFieldKey.currentContext?.findRenderObject()
+                          as RenderBox?;
+                  final stackBox =
+                      _stackKey.currentContext?.findRenderObject()
+                          as RenderBox?;
 
-      if (fieldBox == null || stackBox == null) {
-        return const SizedBox.shrink();
-      }
+                  if (fieldBox == null || stackBox == null) {
+                    return const SizedBox.shrink();
+                  }
 
-      // موضع الحقل عالمياً
-      final fieldGlobal = fieldBox.localToGlobal(Offset.zero);
-      // موضع الـ Stack عالمياً
-      final stackGlobal = stackBox.localToGlobal(Offset.zero);
-      // نحول إلى إحداثيات محلية بالنسبة للـ Stack
-      final localTopLeft = fieldGlobal - stackGlobal;
+                  // موضع الحقل عالمياً
+                  final fieldGlobal = fieldBox.localToGlobal(Offset.zero);
+                  // موضع الـ Stack عالمياً
+                  final stackGlobal = stackBox.localToGlobal(Offset.zero);
+                  // نحول إلى إحداثيات محلية بالنسبة للـ Stack
+                  final localTopLeft = fieldGlobal - stackGlobal;
 
-      // ارتفاع الحقل الحقيقي (بدل 45.h)
-      final fieldHeight = fieldBox.size.height;
+                  // ارتفاع الحقل الحقيقي (بدل 45.h)
+                  final fieldHeight = fieldBox.size.height;
 
-      final double computed = (filteredSuggestions.length * 48.0.h);
-      final double maxHeight = computed > 300.0.h ? 300.0.h : computed;
+                  final double computed = (filteredSuggestions.length * 48.0.h);
+                  final double maxHeight = computed > 300.0.h
+                      ? 300.0.h
+                      : computed;
 
-      return Positioned(
-        top: localTopLeft.dy + fieldHeight, // أسفل الحقل مباشرة
-        left: 24.w,
-        right: 24.w,
-        child: Material(
-          color: Colors.transparent,
-          child: Container(
-            constraints: BoxConstraints(maxHeight: maxHeight),
-            decoration: BoxDecoration(
-              color: AppColor.white,
-              borderRadius: BorderRadius.circular(12.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: filteredSuggestions.isEmpty
-                ? Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(10.w),
-                      child: Text(
-                        'No suggestions found',
-                        style: TextStyle(
-                          color: AppColor.black,
-                          fontSize: 14.sp,
+                  return Positioned(
+                    top: localTopLeft.dy + fieldHeight, // أسفل الحقل مباشرة
+                    left: 24.w,
+                    right: 24.w,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Container(
+                        constraints: BoxConstraints(maxHeight: maxHeight),
+                        decoration: BoxDecoration(
+                          color: AppColor.white,
+                          borderRadius: BorderRadius.circular(12.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.15),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                         ),
+                        child: filteredSuggestions.isEmpty
+                            ? Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(10.w),
+                                  child: Text(
+                                    'No suggestions found',
+                                    style: TextStyle(
+                                      color: AppColor.black,
+                                      fontSize: 14.sp,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : ListView.separated(
+                                padding: EdgeInsets.all(10.w),
+                                itemCount: filteredSuggestions.length,
+                                separatorBuilder: (_, __) =>
+                                    Divider(color: AppColor.black, height: 1.h),
+                                itemBuilder: (context, index) {
+                                  final suggestion = filteredSuggestions[index];
+                                  return InkWell(
+                                    onTap: () {
+                                      _applySuggestionToField(suggestion);
+                                      _performSearch();
+                                    },
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 12.w,
+                                        vertical: 14.h,
+                                      ),
+                                      child: Text(
+                                        suggestion,
+                                        style: TextStyle(
+                                          color: AppColor.black,
+                                          fontSize: 15.sp,
+                                          fontFamily: "Manrope",
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                       ),
                     ),
-                  )
-                : ListView.separated(
-                    padding: EdgeInsets.all(10.w),
-                    itemCount: filteredSuggestions.length,
-                    separatorBuilder: (_, __) =>
-                        Divider(color: AppColor.black, height: 1.h),
-                    itemBuilder: (context, index) {
-                      final suggestion = filteredSuggestions[index];
-                      return InkWell(
-                        onTap: () {
-                          _applySuggestionToField(suggestion);
-                          _performSearch();
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 12.w,
-                            vertical: 14.h,
-                          ),
-                          child: Text(
-                            suggestion,
-                            style: TextStyle(
-                              color: AppColor.black,
-                              fontSize: 15.sp,
-                              fontFamily: "Manrope",
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-          ),
-        ),
-      );
-    },
-  ),
-
+                  );
+                },
+              ),
           ],
         ),
       ),

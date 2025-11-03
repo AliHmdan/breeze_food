@@ -1,19 +1,23 @@
-import 'package:breezefood/blocs/auth/login/login_bloc.dart';
-import 'package:breezefood/blocs/auth/login/login_event.dart';
-import 'package:breezefood/blocs/auth/login/login_state.dart';
-import 'package:breezefood/blocs/language/language_cubit.dart';
-import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/data/repositories/auth_repository.dart';
-import 'package:breezefood/presentation/screens/auth/verfiy_code.dart';
-import 'package:breezefood/presentation/widgets/auth/custom_text_form_field.dart';
-import 'package:breezefood/presentation/widgets/button/custom_button.dart';
-import 'package:breezefood/presentation/widgets/main_shell.dart';
-import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
-import 'package:breezefood/presentation/widgets/title/custom_title.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freeza_food/blocs/auth/login/login_bloc.dart';
+import 'package:freeza_food/blocs/auth/login/login_event.dart';
+import 'package:freeza_food/blocs/auth/login/login_state.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/core/constans/routes.dart';
+import 'package:freeza_food/presentation/screens/auth/new_passowrd.dart';
+import 'package:freeza_food/presentation/screens/auth/verfiy_code.dart';
+import 'package:freeza_food/presentation/widgets/auth/custom_text_form_field.dart';
+import 'package:freeza_food/presentation/widgets/button/custom_button.dart';
+import 'package:freeza_food/presentation/widgets/title/custom_sub_title.dart';
+import 'package:freeza_food/presentation/widgets/title/custom_title.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../../data/repositories/auth_repository.dart' show AuthRepository;
+
+import '../../widgets/main_shell.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -46,15 +50,15 @@ class _LoginState extends State<Login> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (icon != null) ...[
-              Icon(icon, color: AppColor.white),
+              Icon(icon, color: Colors.white),
               const SizedBox(width: 10),
             ],
             Expanded(
-              child: Text(message, style: const TextStyle(color: AppColor.white)),
+              child: Text(message, style: const TextStyle(color: Colors.white)),
             ),
           ],
         ),
-        backgroundColor: background ?? AppColor.red,
+        backgroundColor: background ?? Colors.redAccent,
         behavior: SnackBarBehavior.floating,
         margin: const EdgeInsets.all(12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -65,8 +69,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-      final lang = context.watch<LanguageCubit>(); // للوصول إلى النصوص
-
     return BlocProvider(
       create: (_) => LoginBloc(AuthRepository()),
       child: Scaffold(
@@ -99,6 +101,19 @@ class _LoginState extends State<Login> {
             // ✅ نجاح عام
             if (state is LoginSuccess) {
               final data = state.data; // ردّ الـ API
+              // Some backends return an OTP/debug_code inside a success response
+              // Example: { message: 'تم إرسال رمز التحقق إلى رقم الهاتف.', debug_code: 1562 }
+              // If we find a debug_code (or an explicit OTP indicator) navigate to verify screen.
+              final debugCode =
+                  data['debug_code'] ?? data['debug'] ?? data['otp'];
+              if (debugCode != null) {
+                final phone = data['phone'] ?? phoneController.text;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => VerfiyCode(phone: phone)),
+                );
+                return;
+              }
               final token = data['token'];
               final status = (data['status'] ?? '').toString().toLowerCase();
 
@@ -106,7 +121,7 @@ class _LoginState extends State<Login> {
               if (token != null && token.toString().isNotEmpty) {
                 _showSnackBar(
                   context,
-                  message: lang.t('successfullyloggedin'),
+                  message: "تم تسجيل الدخول بنجاح ✅",
                   background: AppColor.primaryColor,
                   icon: Icons.check_circle_outline,
                 );
@@ -130,7 +145,7 @@ class _LoginState extends State<Login> {
               // أي نجاح آخر غير معروف
               _showSnackBar(
                 context,
-                message: lang.t('checkthecode'),
+                message: 'تم إرسال الطلب بنجاح، يرجى التحقق من الكود.',
                 background: Colors.orange,
                 icon: Icons.info_outline,
               );
@@ -191,15 +206,17 @@ class _LoginState extends State<Login> {
                               Expanded(
                                 child: SingleChildScrollView(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       CustomTitle(
-                                        title: lang.t('welcometobreeze'),
+                                        title: "Welcome to breeze",
                                         color: Colors.white,
                                       ),
                                       SizedBox(height: 2.h),
                                       CustomSubTitle(
-                                        subtitle: lang.t('phonetologin'),
+                                        subtitle:
+                                            "Please Enter your phone to login",
                                         color: AppColor.gry,
                                         fontsize: 12.sp,
                                       ),
@@ -215,8 +232,11 @@ class _LoginState extends State<Login> {
                                             ),
                                             decoration: BoxDecoration(
                                               color: AppColor.white,
-                                              borderRadius: BorderRadius.circular(8.r),
-                                              border: Border.all(color: AppColor.gry),
+                                              borderRadius:
+                                                  BorderRadius.circular(8.r),
+                                              border: Border.all(
+                                                color: AppColor.gry,
+                                              ),
                                             ),
                                             child: Row(
                                               children: [
@@ -228,7 +248,9 @@ class _LoginState extends State<Login> {
                                                 SizedBox(width: 8.w),
                                                 Text(
                                                   '+963',
-                                                  style: TextStyle(fontSize: 14.sp),
+                                                  style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -237,15 +259,16 @@ class _LoginState extends State<Login> {
                                           Expanded(
                                             child: CustomTextFormField(
                                               controller: phoneController,
-                                              keyboardType: TextInputType.number,
-                                              hintText: lang.t('phonenumber'),
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              hintText: "Phone Number",
                                               validator: (v) {
                                                 final val = (v ?? '').trim();
                                                 if (val.isEmpty) {
-                                                  return lang.t('enterphonenumber');
+                                                  return 'أدخل رقم الهاتف';
                                                 }
                                                 if (val.length < 8) {
-                                                  return lang.t('invalidphonenumber');
+                                                  return 'رقم الهاتف غير صالح';
                                                 }
                                                 return null;
                                               },
@@ -267,19 +290,21 @@ class _LoginState extends State<Login> {
                                         )
                                       else
                                         CustomButton(
-                                          title: lang.t('continue'),
+                                          title: "Continue",
                                           onPressed: () {
                                             FocusScope.of(context).unfocus();
-                                            if (_formKey.currentState!.validate()) {
+                                            if (_formKey.currentState!
+                                                .validate()) {
                                               context.read<LoginBloc>().add(
-                                                    LoginSubmitted(
-                                                      phoneController.text,
-                                                    ),
-                                                  );
+                                                LoginSubmitted(
+                                                  phoneController.text,
+                                                ),
+                                              );
                                             } else {
                                               _showSnackBar(
                                                 context,
-                                                message: lang.t('Checkrequiredfields'),
+                                                message:
+                                                    'تحقق من الحقول المطلوبة',
                                                 background: Colors.orange,
                                                 icon: Icons.info_outline,
                                               );
@@ -291,7 +316,40 @@ class _LoginState extends State<Login> {
                                 ),
                               ),
 
-                            
+                              // Sign up
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 16.h),
+                                child: Center(
+                                  child: Text.rich(
+                                    TextSpan(
+                                      text: "Already have an account? ",
+                                      style: TextStyle(
+                                        color: AppColor.white,
+                                        fontSize: 12.sp,
+                                        fontFamily: "Manrope",
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                          text: "Sign Up Now",
+                                          style: TextStyle(
+                                            color: AppColor.primaryColor,
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 12.sp,
+                                            fontFamily: "Manrope",
+                                          ),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              Navigator.of(
+                                                context,
+                                              ).pushNamed(AppRoute.signUp);
+                                            },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),

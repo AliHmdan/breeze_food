@@ -1,9 +1,9 @@
-import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/core/constans/routes.dart';
-import 'package:breezefood/presentation/widgets/custom_arrow.dart';
-import 'package:breezefood/presentation/widgets/button/custom_button.dart';
-import 'package:breezefood/presentation/widgets/auth/custom_text_form_field.dart';
-import 'package:breezefood/presentation/widgets/title/custom_title.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/core/constans/routes.dart';
+import 'package:freeza_food/presentation/widgets/custom_arrow.dart';
+import 'package:freeza_food/presentation/widgets/button/custom_button.dart';
+import 'package:freeza_food/presentation/widgets/auth/custom_text_form_field.dart';
+import 'package:freeza_food/presentation/widgets/title/custom_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

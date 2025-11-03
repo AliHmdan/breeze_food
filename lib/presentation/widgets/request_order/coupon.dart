@@ -1,5 +1,6 @@
-import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
+
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,11 +14,13 @@ class CouponCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DottedBorder(
-      options: RectDottedBorderOptions(
-        color: Colors.white, // ✅ إذا عندك AppColor، غيرها إلى AppColor.white
-        strokeWidth: 1.5,
-        dashPattern: const [6, 4],
-      ),
+
+      // options: RectDottedBorderOptions(
+      //   color: Colors.white, // ✅ إذا عندك AppColor، غيرها إلى AppColor.white
+      //   strokeWidth: 1.5,
+      //   dashPattern: const [6, 4],
+      // ),
+
 
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),

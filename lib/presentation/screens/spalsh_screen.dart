@@ -1,7 +1,8 @@
-import 'package:breezefood/blocs/splash_screen/splash_cubit.dart';
-import 'package:breezefood/core/constans/color.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freeza_food/blocs/splash_screen/splash_cubit.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/constans/routes.dart';

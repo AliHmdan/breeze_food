@@ -1,4 +1,5 @@
-import 'package:breezefood/core/constans/color.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/linkapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -8,16 +9,18 @@ class PopularItemCard extends StatefulWidget {
   final String? subtitle;
   final String price;
   final String? oldPrice;
+  late  bool isFavorite;
   final void Function()? onTap;
   final VoidCallback onFavoriteToggle;
 
-  const PopularItemCard({
+   PopularItemCard({
     Key? key,
     required this.imagePath,
     required this.title,
     this.subtitle,
     required this.price,
     required this.onFavoriteToggle,
+    required this.isFavorite,
     this.oldPrice,
     this.onTap,
   }) : super(key: key);
@@ -28,7 +31,6 @@ class PopularItemCard extends StatefulWidget {
 
 class _PopularItemCardState extends State<PopularItemCard>
     with SingleTickerProviderStateMixin {
-  bool isFavorite = false;
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 
@@ -45,9 +47,30 @@ class _PopularItemCardState extends State<PopularItemCard>
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
+  Widget _buildImage(String path) {
+    if (path.startsWith('http') || path.startsWith('/')) {
+      final src = path.startsWith('http') ? path : '${AppLink.server}$path';
+      return Image.network(
+        src,
+        height: 100.h,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) =>
+            Container(height: 100.h, color: Colors.grey.shade300),
+      );
+    }
+    return Image.asset(
+      path,
+      height: 100.h,
+      width: double.infinity,
+      cacheWidth: 600,
+      fit: BoxFit.cover,
+    );
+  }
+
   void _toggleFavorite() {
     setState(() {
-      isFavorite = !isFavorite;
+      widget.isFavorite = !widget.isFavorite;
     });
     widget.onFavoriteToggle();
     _controller.forward().then((_) => _controller.reverse());
@@ -68,62 +91,60 @@ class _PopularItemCardState extends State<PopularItemCard>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           Stack(
-  children: [
-    // ✅ الصورة الأساسية
-    ClipRRect(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(12.r),
-        topRight: Radius.circular(12.r),
-      ),
-      child: Image.asset(
-        widget.imagePath,
-        height: 100.h,
-        width: double.infinity,
-        cacheWidth: 600,
-        fit: BoxFit.cover,
-      ),
-    ),
+            Stack(
+              children: [
+                // ✅ الصورة الأساسية
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(12.r),
+                    topRight: Radius.circular(12.r),
+                  ),
+                  child: _buildImage(widget.imagePath),
+                ),
 
-    // ✅ طبقة شفافية سوداء خفيفة أعلى الصورة (تغطيها بالكامل)
-    Positioned.fill(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12.r),
-            topRight: Radius.circular(12.r),
-          ),
-          color: Colors.black.withOpacity(0.25), // ← شفافية خفيفة 25%
-        ),
-      ),
-    ),
+                // ✅ طبقة شفافية سوداء خفيفة أعلى الصورة (تغطيها بالكامل)
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12.r),
+                        topRight: Radius.circular(12.r),
+                      ),
+                      color: Colors.black.withOpacity(
+                        0.25,
+                      ), // ← شفافية خفيفة 25%
+                    ),
+                  ),
+                ),
 
-    // ✅ الأيقونة في الأعلى (تظهر بوضوح الآن)
-    Positioned(
-      top: 4.h,
-      right: 2.w,
-      child: InkWell(
-        onTap: _toggleFavorite,
-        borderRadius: BorderRadius.circular(20.r),
-        child: ScaleTransition(
-          scale: _scaleAnimation,
-          child: Container(
-            padding: EdgeInsets.all(6.w),
-            decoration: BoxDecoration(
-              // color: Colors.black.withOpacity(0.4), // ← خلفية دائرية غامقة إضافية
-              shape: BoxShape.circle,
+                // ✅ الأيقونة في الأعلى (تظهر بوضوح الآن)
+                Positioned(
+                  top: 4.h,
+                  right: 2.w,
+                  child: InkWell(
+                    onTap: _toggleFavorite,
+                    borderRadius: BorderRadius.circular(20.r),
+                    child: ScaleTransition(
+                      scale: _scaleAnimation,
+                      child: Container(
+                        padding: EdgeInsets.all(6.w),
+                        decoration: BoxDecoration(
+                          // color: Colors.black.withOpacity(0.4), // ← خلفية دائرية غامقة إضافية
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          widget.isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: widget.isFavorite
+                              ? AppColor.red
+                              : AppColor.white, // ← أبيض أفضل هنا
+                          size: 24.sp,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            child: Icon(
-              isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: isFavorite ? AppColor.red : AppColor.white, // ← أبيض أفضل هنا
-              size: 24.sp,
-            ),
-          ),
-        ),
-      ),
-    ),
-  ],
-),
 
             Container(
               decoration: BoxDecoration(
@@ -134,7 +155,7 @@ class _PopularItemCardState extends State<PopularItemCard>
                 ),
               ),
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.w, ),
+                padding: EdgeInsets.symmetric(horizontal: 5.w),
                 child: Column(
                   children: [
                     Center(

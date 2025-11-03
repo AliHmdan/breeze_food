@@ -1,54 +1,37 @@
-import 'dart:convert';
+import 'dart:ui';
+import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'language_state.dart';
+
+part 'language_state.dart';
 
 class LanguageCubit extends Cubit<LanguageState> {
-  LanguageCubit() : super(const LanguageState(Locale('en')));
+  LanguageCubit() : super(LanguageState(locale: const Locale('en')));
 
-  static const _prefsKey = 'app_language_code';
-  static const _supported = {'en', 'ar'};
+  static const _prefKey = 'app_language_code';
 
-  /// نادِها في main قبل runApp
+  /// ينادى عند تشغيل التطبيق
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
-    final saved = prefs.getString(_prefsKey);
+    final saved = prefs.getString(_prefKey);
 
     if (saved != null && saved.isNotEmpty) {
-      await _loadAndEmit(saved);
+      emit(LanguageState(locale: Locale(saved)));
       return;
     }
 
-    final device = WidgetsBinding.instance.platformDispatcher.locale.languageCode;
-    final code = _supported.contains(device) ? device : 'en';
-    await _loadAndEmit(code);
-    await prefs.setString(_prefsKey, code);
+    // لغة الجهاز
+    final device = PlatformDispatcher.instance.locale;
+    final lang = (device.languageCode == 'ar') ? 'ar' : 'en';
+    emit(LanguageState(locale: Locale(lang)));
   }
 
-  Future<void> setEnglish() => _setLang('en');
-  Future<void> setArabic()  => _setLang('ar');
+  Future<void> setArabic() => setLocale(const Locale('ar'));
+  Future<void> setEnglish() => setLocale(const Locale('en'));
 
-  Future<void> _setLang(String code) async {
-    await _loadAndEmit(code);
+  Future<void> setLocale(Locale locale) async {
+    emit(LanguageState(locale: locale));
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_prefsKey, code);
-  }
-
-  /// ✅ هذه هي الدالة التي طلبتها
-  String t(String key) => state.texts[key]?.toString() ?? key;
-
-  // ---------------- Helpers ----------------
-
-  Future<void> _loadAndEmit(String code) async {
-    final picked = _supported.contains(code) ? code : 'en';
-    final map = await _loadJson(picked);
-    emit(LanguageState(Locale(picked), texts: map));
-  }
-
-  Future<Map<String, dynamic>> _loadJson(String code) async {
-    final s = await rootBundle.loadString('assets/lang/$code.json');
-    return json.decode(s) as Map<String, dynamic>;
+    await prefs.setString(_prefKey, locale.languageCode);
   }
 }

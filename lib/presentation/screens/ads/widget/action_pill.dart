@@ -1,5 +1,5 @@
 // lib/presentation/ads/widgets/action_pill.dart
-import 'package:breezefood/core/constans/color.dart';
+import 'package:freeza_food/core/constans/color.dart';
 import 'package:flutter/material.dart';
 
 class ActionPill extends StatelessWidget {

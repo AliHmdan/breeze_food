@@ -1,4 +1,4 @@
-import 'package:breezefood/presentation/screens/add_order/add_new_meal.dart';
+import 'package:freeza_food/presentation/screens/add_order/add_new_meal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
