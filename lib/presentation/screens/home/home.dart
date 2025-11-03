@@ -78,6 +78,17 @@ class _HomeState extends State<Home> {
               const SizedBox(height: 5),
               Container(key: _popularKey),
               // Most Popular
+              Padding(
+                padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
+                child: CustomTitleSection(
+                    title: "Most popular",
+                    all: "All",
+                    icon: Icons.arrow_forward_ios_outlined,
+                    ontap: () {
+                      Navigator.of(context).pushNamed(AppRoute.PopularGridPage);
+                    },
+                  ),
+              ),
               MostPopular(),
 
               const SizedBox(height: 10),
@@ -94,6 +105,18 @@ class _HomeState extends State<Home> {
               // Discounts
               Container(key: _discountsKey), // 👈 مرساة التمرير
               const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.only(top: 5, left: 10, right: 10),
+                child: CustomTitleSection(
+                    title: "Discounts",
+                    all: "All",
+                    icon: Icons.arrow_forward_ios_outlined,
+                    ontap: () {
+                      Navigator.of(context).pushNamed(AppRoute.discountDetails);
+                    },
+                  ),
+              ),
+                const SizedBox(height: 10),
               DiscountHome(),
 
               const SizedBox(height: 10),

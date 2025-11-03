@@ -15,14 +15,7 @@ class MostPopular extends StatelessWidget {
  padding: const EdgeInsets.only(top: 5,left: 10,right: 10),
        child: Column(
         children: [
-            CustomTitleSection(
-                  title: "Most popular",
-                  all: "All",
-                  icon: Icons.arrow_forward_ios_outlined,
-                  ontap: () {
-                    Navigator.of(context).pushNamed(AppRoute.PopularGridPage);
-                  },
-                ),
+            
                 const SizedBox(height: 10),
                 RepaintBoundary(
                   child: Container(
