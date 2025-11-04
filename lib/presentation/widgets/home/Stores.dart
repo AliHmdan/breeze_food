@@ -56,7 +56,7 @@ class Stores extends StatelessWidget {
                   width: 361.w,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(item["image"]!),
+                      image: Image.network(item["image"]!).image,
 
                       fit: BoxFit.cover,
                     ),

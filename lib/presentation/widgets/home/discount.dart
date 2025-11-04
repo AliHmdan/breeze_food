@@ -10,11 +10,11 @@ class Discount extends StatefulWidget {
   final String subtitle;
   final String price;
   final String discount;
-  late  bool isFavorite;
+  late bool isFavorite;
   final VoidCallback onFavoriteToggle;
   final void Function()? onTap;
 
-   Discount({
+  Discount({
     Key? key,
     required this.imagePath,
     required this.title,
@@ -48,9 +48,10 @@ class _DiscountState extends State<Discount>
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
-  Widget _buildImage(String path, {double? height}) {
+  Widget buildImage(String path, {double? height}) {
     if (path.startsWith('http') || path.startsWith('/')) {
-      final src = path.startsWith('http') ? path : '${AppLink.server}$path';
+      final src = path.startsWith('http') ? path : '${AppLink.server}/$path';
+
       return Image.network(
         src,
         height: height,
@@ -100,7 +101,7 @@ class _DiscountState extends State<Discount>
                     topLeft: Radius.circular(12.r),
                     topRight: Radius.circular(12.r),
                   ),
-                  child: _buildImage(widget.imagePath, height: 100.h),
+                  child: buildImage(widget.imagePath, height: 100.h),
                 ),
                 // ❤️ المفضلة
                 Positioned(
@@ -115,8 +116,12 @@ class _DiscountState extends State<Discount>
                         padding: EdgeInsets.all(6.w),
                         decoration: const BoxDecoration(shape: BoxShape.circle),
                         child: Icon(
-                          widget.isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: widget.isFavorite ? AppColor.red : AppColor.gry,
+                          widget.isFavorite
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: widget.isFavorite
+                              ? AppColor.red
+                              : AppColor.gry,
                           size: 20.sp,
                         ),
                       ),
