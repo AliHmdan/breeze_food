@@ -26,7 +26,8 @@ class RestaurantCard extends StatelessWidget {
 
   Widget _buildImage(String path) {
     if (path.startsWith('http') || path.startsWith('/')) {
-      final src = path.startsWith('http') ? path : '${AppLink.server}$path';
+      final src = path.startsWith('http') ? path : '${AppLink.server}/$path';
+
       return Image.network(
         src,
         height: 110.h,

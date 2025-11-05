@@ -203,7 +203,7 @@ class AuthRepository {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final token = "49|60ugUDfVdY0DLpnhvsAKzaAbt950sEfyIUimJKWwe9dbbffb";
+      final token = "83|hC0HrsctaSgWoA3BRMuo0AshP8uLa7YRo1vt7LZ3eeb993d8";
       final resp = await _dio.post(
         AppLink.updateProfile,
         data: body,
