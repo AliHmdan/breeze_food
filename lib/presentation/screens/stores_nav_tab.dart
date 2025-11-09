@@ -1,13 +1,15 @@
+import 'package:freeza_food/blocs/supermarkets/supermarkets_cubit.dart';
+import 'package:freeza_food/blocs/supermarkets/supermarkets_state.dart';
 import 'package:freeza_food/core/constans/color.dart';
 import 'package:freeza_food/core/constans/routes.dart';
 import 'package:freeza_food/data/model/restaurant.dart' as uiModel;
 import 'package:freeza_food/data/model/restaurant_mapper.dart';
+import 'package:freeza_food/data/repositories/super_market_repository.dart';
 import 'package:freeza_food/presentation/screens/store_details/market_page.dart';
 import 'package:freeza_food/presentation/screens/store_details/store_details.dart' show StoreDetailsBloc;
 import 'package:freeza_food/presentation/widgets/auth/custom_search.dart';
 import 'package:freeza_food/presentation/widgets/custom_appbar_home.dart';
 import 'package:freeza_food/presentation/widgets/home/custom_fast_food.dart';
-import 'package:freeza_food/presentation/widgets/location_chip.dart';
 import 'package:freeza_food/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -142,7 +144,7 @@ class _StoresNavTabState extends State<StoresNavTab>
                         controller: _tabController,
                         physics: const BouncingScrollPhysics(),
                         children: [
-                          // تبويب المطاعم: نستخدم BlocBuilder لعرض النتيجة
+                          // تبويب المطاعم (نفس السابق)
                           BlocBuilder<RestaurantCubit, RestaurantState>(
                             builder: (context, state) {
                               if (state is RestaurantLoading) {
@@ -152,33 +154,58 @@ class _StoresNavTabState extends State<StoresNavTab>
                                 return Center(child: Text("Error: ${state.message}"));
                               }
                               if (state is RestaurantLoaded) {
-                                // تحويل ApiRestaurant -> ui.Restaurant
                                 final items = state.restaurants
                                     .map((api) => api.toUiModel(AppLink.server))
                                     .toList();
-
                                 return _StoresTabList(
                                   key: const PageStorageKey('tab_restaurants'),
                                   items: items,
                                 );
                               }
-                              return const Center(child: CircularProgressIndicator());
+                              return const SizedBox.shrink();
                             },
                           ),
-                          // تبويب السوبرماركت
-                          _StoresTabList(
-                            key: const PageStorageKey('tab_supermarket'),
-                            items: _supermarkets,
-                            onItemTap: (ctx, r) {
-                              Navigator.of(ctx).push(
-                                MaterialPageRoute(
-                                  builder: (_) => const MarketPage(),
-                                ),
-                              );
-                            },
+
+                          // ✅ تبويب السوبرماركت الجديد
+                          BlocProvider(
+                            create: (_) =>
+                            SuperMarketsCubit(repo: SuperMarketRepository())..loadMarkets(),
+                            child: BlocBuilder<SuperMarketsCubit, SuperMarketsState>(
+                              builder: (context, state) {
+                                if (state is SuperMarketsLoading) {
+                                  return const Center(child: CircularProgressIndicator());
+                                }
+                                if (state is SuperMarketsError) {
+                                  return Center(child: Text("Error: ${state.message}"));
+                                }
+                                if (state is SuperMarketsLoaded) {
+                                  final items = state.markets
+                                      .map((m) => uiModel.Restaurant(
+                                    id: m.id,
+                                    name: m.name,
+                                    imageUrl: "${AppLink.server}${m.logo ?? ''}",
+                                    rating: m.ratingAvg,
+                                    orders: "${m.ratingCount} Reviews",
+                                    time: "${m.deliveryTime}m",
+                                  ))
+                                      .toList();
+                                  return _StoresTabList(
+                                    key: const PageStorageKey('tab_supermarkets'),
+                                    items: items,
+                                    onItemTap: (ctx, r) {
+                                      Navigator.of(ctx).push(MaterialPageRoute(
+                                        builder: (_) => const MarketPage(),
+                                      ));
+                                    },
+                                  );
+                                }
+                                return const SizedBox.shrink();
+                              },
+                            ),
                           ),
                         ],
                       ),
+
                     ),
                   ),
                 ),

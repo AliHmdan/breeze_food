@@ -1,3 +1,4 @@
+
 import 'package:freeza_food/blocs/search/search_cubit.dart';
 import 'package:freeza_food/blocs/search/search_state.dart';
 import 'package:freeza_food/core/constans/color.dart';
@@ -11,6 +12,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../../linkapi.dart';
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -39,6 +42,7 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     super.initState();
+    print("i'm in search page now ");
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
         _filterSuggestions(_controller.text);
@@ -206,16 +210,15 @@ class _SearchState extends State<Search> {
           child: Row(
             children: [
               ClipOval(
-                child: Image.asset(
-                  'assets/images/shawarma_box.png', // شعار افتراضي
-                  width: 35.w,
-                  height: 35.w,
-                  fit: BoxFit.cover,
+                child: _buildImage(
+                  r.logo.isNotEmpty
+                      ? "https://syriansociety.org${r.logo}"
+                      : 'assets/images/shawarma_box.png',
+
                 ),
               ),
               SizedBox(width: 8.w),
 
-              // اسم المطعم + مدة التوصيل + التقييم من API
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,22 +227,6 @@ class _SearchState extends State<Search> {
                       subtitle: r.name,
                       color: AppColor.white,
                       fontsize: 14.sp,
-                    ),
-
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.access_time,
-                          color: Colors.white70,
-                          size: 14.sp,
-                        ),
-                        SizedBox(width: 4.w),
-                        CustomSubTitle(
-                          subtitle: "15-40 min",
-                          color: AppColor.white,
-                          fontsize: 12.sp,
-                        ),
-                      ],
                     ),
                   ],
                 ),
@@ -259,7 +246,7 @@ class _SearchState extends State<Search> {
                   Icon(Icons.star, color: AppColor.yellow, size: 16.sp),
                   SizedBox(width: 4.w),
                   Text(
-                    (r.rating.avg?.toStringAsFixed(1) ?? "—"),
+                    r.rating.avg != null ? r.rating.avg!.toStringAsFixed(1) : "0.0",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 13.sp,
@@ -290,7 +277,7 @@ class _SearchState extends State<Search> {
               color: AppColor.LightActive,
               borderRadius: BorderRadius.circular(15),
             ),
-            height: 178,
+            height: 200,
             child: LayoutBuilder(
               builder: (context, constraints) {
                 final itemWidth = constraints.maxWidth / 2.3;
@@ -303,16 +290,17 @@ class _SearchState extends State<Search> {
                     final title = item.names.en; // عنوان
                     final subtitle = item.names.en; // سطر ثانٍ
 
-                    return Container(
+                     return Container(
                       width: itemWidth,
                       margin: EdgeInsets.only(right: 10.w),
                       child: PopularItemCard(
                         isFavorite: false,
-                        imagePath:
-                            'assets/images/shawarma_box.png', // لا يوجد image في الموديل
-                        title: title,
-                        subtitle: subtitle,
-                        price: "—", // لا يوجد price في الموديل
+                        imagePath: item.imageUrl.isNotEmpty
+                            ? "https://syriansociety.org${item.imageUrl}"
+                            : 'assets/images/shawarma_box.png',
+                        title: item.names.ar,
+                        subtitle: "${item.ordersCount} order",
+                        price: "${item.basePrice.toString()} ل.س",
                         onFavoriteToggle: () {},
                       ),
                     );
@@ -611,6 +599,27 @@ class _SearchState extends State<Search> {
           ],
         ),
       ),
+    );
+  }
+  Widget _buildImage(String path) {
+    if (path.startsWith('http') || path.startsWith('/')) {
+      final src = path.startsWith('http') ? path : '${AppLink.server}$path';
+      return Image.network(
+        src,
+        height: 35.h,
+        width: 35.w,
+
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) =>
+            Container(height: 35.h, color: Colors.grey.shade300),
+      );
+    }
+    return Image.network(
+      path,
+      height: 35.h,
+      width: 35.w,
+      cacheWidth: 35,
+      fit: BoxFit.cover,
     );
   }
 }
