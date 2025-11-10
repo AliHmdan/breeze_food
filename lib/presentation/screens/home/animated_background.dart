@@ -19,7 +19,7 @@ class _AnimatedState extends State<Animated> {
     final hasAd = widget.ad != null;
     Widget child = Center(
       child: Text(
-        'مرحباً 👋',
+        'hjghhhhhhhhhhhhhhhhhhhhh',
         style: TextStyle(
           color: Colors.white,
           fontSize: 18.sp,

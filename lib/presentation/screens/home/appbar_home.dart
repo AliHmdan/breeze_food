@@ -12,8 +12,8 @@ class AppbarHome extends StatelessWidget {
      padding: const EdgeInsets.only(top: 16,left: 16,right: 16),
       child: Column(children: [
          CustomAppbarHome(
-                  title: "Deliver to",
-                  subtitle: "Poplar Ave,CA",
+                  title: "Your Address Now",
+                  subtitle: "",
                   image: "assets/icons/location.svg",
                   onTap: () {
                     Navigator.of(context).pushNamed(AppRoute.profile);

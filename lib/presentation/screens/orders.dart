@@ -1,7 +1,11 @@
+import 'package:dio/dio.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freeza_food/blocs/current_orders/current_orders_cubit.dart';
 import 'package:freeza_food/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../blocs/orders_history/orders_history_cubit.dart';
 import '../../core/constans/color.dart';
 import '../widgets/custom_appbar_home.dart';
 import '../widgets/page_orders/current_orders.dart';
@@ -97,7 +101,15 @@ class _OrdersState extends State<Orders> with SingleTickerProviderStateMixin {
             Expanded(
               child: TabBarView(
                 controller: _tabController,
-                children: const [CurrentOrders(), OrdersHistory()],
+                children:  [
+                  BlocProvider(
+  create: (context) => CurrentOrdersCubit(dio: Dio()),
+  child: CurrentOrders(),
+),
+                  BlocProvider(
+  create: (context) => OrdersHistoryCubit(dio: Dio()),
+  child: OrdersHistory(),
+)],
               ),
             ),
           ],

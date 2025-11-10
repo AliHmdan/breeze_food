@@ -20,11 +20,13 @@ class SearchResultItem {
 class Restaurant {
   final int id;
   final String name;
+  final String logo;
   final Rating rating;
 
   Restaurant({
     required this.id,
     required this.name,
+    required this.logo,
     required this.rating,
   });
 
@@ -32,6 +34,7 @@ class Restaurant {
     return Restaurant(
       id: json['id'],
       name: json['name'],
+      logo: json['logo'],
       rating: Rating.fromJson(json['rating']),
     );
   }
@@ -54,19 +57,44 @@ class Rating {
   }
 }
 
+// class Item {
+//   final int id;
+//   final Names names;
+//
+//   Item({
+//     required this.id,
+//     required this.names,
+//   });
+//
+//   factory Item.fromJson(Map<String, dynamic> json) {
+//     return Item(
+//       id: json['id'],
+//       names: Names.fromJson(json['names']),
+//     );
+//   }
+// }
 class Item {
   final int id;
   final Names names;
+  final String basePrice;
+  final int ordersCount;
+  final String imageUrl;
 
   Item({
     required this.id,
     required this.names,
+    required this.basePrice,
+    required this.ordersCount,
+    required this.imageUrl,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) {
     return Item(
       id: json['id'],
       names: Names.fromJson(json['names']),
+      basePrice: json['base_price'],
+      ordersCount: json['orders_count'] ?? 0,
+      imageUrl: json['image_url'] ?? '',
     );
   }
 }

@@ -1,11 +1,10 @@
-import 'package:freeza_food/presentation/screens/ads/page_ads.dart';
-import 'package:freeza_food/presentation/screens/pay_your_order.dart';
-import 'package:freeza_food/presentation/screens/profile/info_profile.dart';
-import 'package:freeza_food/presentation/screens/resturant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:freeza_food/presentation/screens/orders.dart';
+import 'package:geolocator/geolocator.dart';
 
+// Routes constants
 import 'package:freeza_food/core/constans/routes.dart';
 
 // Repositories
@@ -14,7 +13,7 @@ import 'package:freeza_food/data/repositories/profile_repository.dart';
 
 // Cubits
 import 'package:freeza_food/blocs/search/search_cubit.dart';
-import 'package:freeza_food/blocs/auth/auth_cubit.dart'; // أنصح تضيف AuthCubit كمصدر حالة عالمي للمستخدم
+import 'package:freeza_food/blocs/auth/auth_cubit.dart';
 
 // Screens
 import 'package:freeza_food/presentation/screens/splash_video_screen.dart';
@@ -32,14 +31,19 @@ import 'package:freeza_food/presentation/screens/profile/profile.dart';
 import 'package:freeza_food/presentation/screens/stores_nav_tab.dart';
 import 'package:freeza_food/presentation/screens/store_details/popular_grid_Page.dart';
 import 'package:freeza_food/presentation/screens/discount_grid_Page.dart';
-import 'package:freeza_food/presentation/screens/store_details/store_details.dart';
+import 'package:freeza_food/presentation/screens/profile/info_profile.dart';
+import 'package:freeza_food/presentation/screens/pay_your_order.dart';
+import 'package:freeza_food/presentation/screens/ads/page_ads.dart';
 import 'package:freeza_food/presentation/widgets/main_shell.dart';
-import 'package:geolocator/geolocator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // مبدئيًا فقط تأكد من توفر الخدمات (اختياري)
+  // لا تطلب صلاحيات أو Streams هنا لتجنّب حظر الـ UI Thread
   await Geolocator.isLocationServiceEnabled();
-  // (اختياري) مراقبة الـ Blocs للتصحيح
+
+  // مراقب تغيّرات الـ BLoC (Debug فقط)
   Bloc.observer = SimpleBlocObserver();
 
   runApp(const MyApp());
@@ -51,7 +55,6 @@ class SimpleBlocObserver extends BlocObserver {
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
     assert(() {
-      // ما يطبع إلا في Debug
       // ignore: avoid_print
       print('${bloc.runtimeType} -> $change');
       return true;
@@ -80,15 +83,12 @@ class MyApp extends StatelessWidget {
           ],
           child: MultiBlocProvider(
             providers: [
-              // مصدر حالة المستخدم للتطبيق كله
               BlocProvider<AuthCubit>(create: (_) => AuthCubit()),
-
-              // SearchCubit عالمي (للبحث والسجل)
               BlocProvider<SearchCubit>(
                 create: (ctx) {
                   final repo = ctx.read<SearchRepository>();
                   final cubit = SearchCubit(repo);
-                  // نشغّل التحميل بعد فريم البناء الأول لضمان توافر الشجرة
+                  // شغّل أي تحميل بعد أول فريم
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     cubit.loadSearchHistory();
                   });
@@ -98,65 +98,82 @@ class MyApp extends StatelessWidget {
             ],
             child: Builder(
               builder: (ctx) {
-                // طبّق تكبير النص على التطبيق كله
                 final media = MediaQuery.of(ctx);
-                return MediaQuery(
-                  data: media.copyWith(textScaleFactor: 1.2),
-                  child: SafeArea(
-                    child: MaterialApp(
-                      title: 'breeze food',
-                      debugShowCheckedModeBanner: false,
-                      useInheritedMediaQuery: true,
-                      initialRoute: AppRoute.mainShell,
-                      routes: {
-                        AppRoute.home: (_) => const UpdateAddressScreen(),
-                        AppRoute.splash_video_screen: (_) =>
-                            const SplashVideoScreen(),
-                        AppRoute.signUp: (_) => Signup(),
-                        AppRoute.successful: (_) => const Successful(),
-                        AppRoute.phoneNumber: (_) => const PhoneNumber(),
-                        AppRoute.newPassword: (_) => const NewPassowrd(),
-                        AppRoute.information: (_) => const InformationScreen(),
-                        AppRoute.login: (_) => Login(),
-                        // AppRoute.mainShell: (_) => const MainShell(),
+                return MaterialApp(
+                  title: 'breeze food',
+                  debugShowCheckedModeBanner: false,
+                  useInheritedMediaQuery: true,
+                  // إن كنت تريد بداية من Splash فعلاً، تأكد أن المفتاح موجود بالـ routes:
+                  initialRoute: AppRoute.splash_video_screen,
+                  // بديل آمن: استخدم home بدل initialRoute (اختر واحد فقط)
+                  // home: const SplashVideoScreen(),
 
-                        AppRoute.search: (_) => const Search(),
+                  routes: {
+                    // ✅ تأكدنا من وجود الراوت الخاص بالـ initialRoute
+                    AppRoute.splash_video_screen: (_) => const SplashVideoScreen(),
 
-                        AppRoute.pay: (_) => const Pay(),
-                        AppRoute.success: (_) => const Success(),
+                    AppRoute.home: (_) => const UpdateAddressScreen(),
+                    AppRoute.signUp: (_) => Signup(),
+                    AppRoute.successful: (_) => const Successful(),
+                    AppRoute.phoneNumber: (_) => const PhoneNumber(),
+                    AppRoute.newPassword: (_) => const NewPassowrd(),
+                    AppRoute.information: (_) => const InformationScreen(),
+                    AppRoute.login: (_) => Login(),
+                    AppRoute.mainShell: (_) => const MainShell(),
 
-                        AppRoute.profile: (_) => const Profile(),
-                        AppRoute.stores_nav_tab: (_) => const StoresNavTab(),
-                        AppRoute.PopularGridPage: (_) =>
-                             PopularGridPage(),
-                        AppRoute.discountDetails: (_) =>
-                            const DiscountGridPage(),
+                    AppRoute.search: (_) => const Search(),
 
-                        // AppRoute.StoreDetails: (_) => const StoreDetailsBloc(
-                        //   // restaurantId: 1,
-                        //   // categories: [
-                        //   //   "Burger",
-                        //   //   "Chrispy",
-                        //   //   "India food",
-                        //   //   "Home",
-                        //   // ],
-                        // ),
+                    AppRoute.pay: (_) => const Pay(),
+                    AppRoute.success: (_) => const Success(),
 
-                        AppRoute.info_profile: (_) => const InfoProfile(),
-                        AppRoute.orders: (_) => const Orders(),
-                        AppRoute.pay_your_order: (_) => const PayYourOrder(),
-                        AppRoute.page_ads: (_) => const ReferralAdPage(),
-                      },
-                      // لو بدك onGenerateRoute لتزوّد Cubit خاص بمسار معيّن، استخدمه بدل routes الثابتة
-                      // onGenerateRoute: (settings) { ... }
-                    ),
-                  ),
+                    AppRoute.profile: (_) => const Profile(),
+                    AppRoute.stores_nav_tab: (_) => const StoresNavTab(),
+                    AppRoute.PopularGridPage: (_) => PopularGridPage(),
+                    AppRoute.discountDetails: (_) => const DiscountGridPage(),
+
+                    AppRoute.info_profile: (_) => const InfoProfile(),
+                    AppRoute.orders: (_) => const Orders(),
+                    AppRoute.pay_your_order: (_) => const PayYourOrder(),
+                    AppRoute.page_ads: (_) => const ReferralAdPage(),
+                  },
+
+                  // امسك أي مسار غير معرّف برسالة/صفحة لطيفة بدل انهيار صامت
+                  onUnknownRoute: (settings) {
+                    return MaterialPageRoute(
+                      builder: (_) => const _RouteNotFoundPage(),
+                    );
+                  },
+
+                  // لو تحب تثبيت عامل تكبير النص للتطبيق كله
+                  builder: (context, child) {
+                    return MediaQuery(
+                      data: media.copyWith(textScaleFactor: 1.2),
+                      child: child ?? const SizedBox.shrink(),
+                    );
+                  },
                 );
               },
             ),
           ),
         );
       },
+    );
+  }
+}
+
+/// صفحة بسيطة لمسارات غير معرّفة
+class _RouteNotFoundPage extends StatelessWidget {
+  const _RouteNotFoundPage();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(
+          'الصفحة غير موجودة',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+      ),
     );
   }
 }

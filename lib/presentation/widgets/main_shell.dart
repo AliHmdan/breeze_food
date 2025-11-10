@@ -1,4 +1,6 @@
 // main_shell.dart
+import 'package:dio/dio.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freeza_food/core/constans/color.dart';
 import 'package:freeza_food/presentation/favorite_page.dart';
 import 'package:freeza_food/presentation/screens/home/home.dart';
@@ -6,6 +8,8 @@ import 'package:freeza_food/presentation/screens/orders.dart';
 import 'package:freeza_food/presentation/screens/stores_nav_tab.dart';
 import 'package:freeza_food/presentation/widgets/CustomBottomNav.dart';
 import 'package:flutter/material.dart';
+
+import '../../blocs/favorities/favorite_cubit.dart';
 
 class MainShell extends StatefulWidget {
   final int initialIndex; // 👈 أضفناه
@@ -18,10 +22,13 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   late int _index; // 👈 بدلناها لـ late ونقرأ من widget.initialIndex
 
-  final _pages = const [
+  final _pages =  [
     Home(),
     StoresNavTab(),
-    FavoritePage(),
+    BlocProvider(
+      create: (context) => FavoriteCubit(dio: Dio())..loadFavorites(),
+      child: FavoritePage(),
+    ),
     Orders(),
   ];
 
