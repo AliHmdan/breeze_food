@@ -1,6 +1,6 @@
-import 'package:breezefood/core/constans/routes.dart';
-import 'package:breezefood/presentation/widgets/auth/custom_search.dart';
-import 'package:breezefood/presentation/widgets/custom_appbar_home.dart';
+import 'package:freeza_food/core/constans/routes.dart';
+import 'package:freeza_food/presentation/widgets/auth/custom_search.dart';
+import 'package:freeza_food/presentation/widgets/custom_appbar_home.dart';
 import 'package:flutter/material.dart';
 
 class AppbarHome extends StatelessWidget {
@@ -12,8 +12,8 @@ class AppbarHome extends StatelessWidget {
      padding: const EdgeInsets.only(top: 16,left: 16,right: 16),
       child: Column(children: [
          CustomAppbarHome(
-                  title: "Deliver to",
-                  subtitle: "Poplar Ave,CA",
+                  title: "Your Address Now",
+                  subtitle: "",
                   image: "assets/icons/location.svg",
                   onTap: () {
                     Navigator.of(context).pushNamed(AppRoute.profile);

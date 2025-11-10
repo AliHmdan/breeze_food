@@ -1,40 +1,38 @@
-import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/core/constans/routes.dart';
-import 'package:breezefood/presentation/widgets/home/rating_stores.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/core/constans/routes.dart';
+// Removed unused import: rating_stores.dart
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:freeza_food/data/model/home_model.dart';
 
 class Stores extends StatelessWidget {
-  Stores({super.key});
+  // Accept optional stores data from the home response. If null or empty,
+  // the widget falls back to the local static `items` list below.
+  final List<StoryItem>? stores;
 
-  final List<Map<String, String>> items = [
-    {
-      "image": "assets/images/002.jpg",
-      "title": "Best Menu Today",
-      "subtitle": "Secret Recipes",
-      "label": "Discount Up To 50% Off",
-      "link": "www.restaurant.com"
-    },
-    {
-      "image": "assets/images/003.jpg",
-      "title": "Best Menu Today",
-      "subtitle": "Secret Recipes",
-      "label": "Discount Up To 50% Off",
-      "link": "www.restaurant.com"
-    },
-    {
-      "image": "assets/images/004.jpg",
-      "title": "Best Menu Today",
-      "subtitle": "Secret Recipes",
-      "label": "Discount Up To 50% Off",
-      "link": "www.restaurant.com"
-    }
-    
-  ];
- final double height =160.h;
+  Stores({super.key, this.stores});
+
+  final List<Map<String, String>> items = [];
+  final double height = 160.h;
   @override
   Widget build(BuildContext context) {
+    // Build a list of items to display. If `stores` was passed in, try to
+    // map each store to the internal Map<String,String> shape we expect.
+    final List<Map<String, String>> displayedItems =
+        (stores != null && stores!.isNotEmpty)
+        ? stores!
+              .map<Map<String, String>>(
+                (s) => {
+                  'image': s.image,
+                  'title': s.title,
+                  'subtitle': s.description,
+                  'label': '',
+                  'link': '',
+                },
+              )
+              .toList()
+        : items;
     return RepaintBoundary(
       child: SizedBox(
         height: height,
@@ -42,24 +40,24 @@ class Stores extends StatelessWidget {
         child: CarouselSlider.builder(
           options: CarouselOptions(
             height: height,
-            
+
             autoPlay: true,
             enlargeCenterPage: true,
           ),
-          itemCount: items.length,
+          itemCount: displayedItems.length,
           itemBuilder: (context, index, realIndex) {
-            final item = items[index];
+            final item = displayedItems[index];
             return Stack(
               alignment: Alignment.center,
               children: [
                 // خلفية الصورة
                 Container(
-             height: height,
-        width: 361.w,
+                  height: height,
+                  width: 361.w,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(item["image"]!),
-                      
+                      image: Image.network(item["image"]!).image,
+
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(12.r),
@@ -73,7 +71,8 @@ class Stores extends StatelessWidget {
                     color: Colors.black.withOpacity(0.4),
                   ),
                 ),
-                Positioned(left: 0,
+                Positioned(
+                  left: 0,
                   child: Padding(
                     padding: EdgeInsets.all(12.w),
                     child: Column(
@@ -128,13 +127,12 @@ class Stores extends StatelessWidget {
                           ),
                         ),
                         // SizedBox(height: 4.h),
-                      
+
                         // RatingStores(),
                       ],
                     ),
                   ),
                 ),
-               
               ],
             );
           },

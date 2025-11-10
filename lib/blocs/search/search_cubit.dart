@@ -1,4 +1,4 @@
-import 'package:breezefood/data/repositories/search_repository.dart';
+import 'package:freeza_food/data/repositories/search_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

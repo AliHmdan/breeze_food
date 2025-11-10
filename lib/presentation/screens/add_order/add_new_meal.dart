@@ -1,9 +1,9 @@
-import 'package:breezefood/presentation/screens/add_order/add_order.dart';
-import 'package:breezefood/presentation/screens/add_order/request_order.dart';
-import 'package:breezefood/presentation/widgets/button/custom_button.dart';
-import 'package:breezefood/presentation/widgets/store_details/horizontal_products_section.dart';
-import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
-import 'package:breezefood/presentation/widgets/title/custom_title.dart';
+import 'package:freeza_food/presentation/screens/add_order/add_order.dart';
+import 'package:freeza_food/presentation/screens/add_order/request_order.dart';
+import 'package:freeza_food/presentation/widgets/button/custom_button.dart';
+import 'package:freeza_food/presentation/widgets/store_details/horizontal_products_section.dart';
+import 'package:freeza_food/presentation/widgets/title/custom_sub_title.dart';
+import 'package:freeza_food/presentation/widgets/title/custom_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -167,6 +167,7 @@ class AddNewMeal extends StatelessWidget {
                       height: 163.h,
                       width: 160.w,
                       child: PopularItemCard(
+                        isFavorite: false,
                         imagePath: "assets/images/004.jpg",
                         title: "Chicken ",
                         price: "5.00\$",

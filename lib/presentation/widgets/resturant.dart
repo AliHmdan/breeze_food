@@ -1,4 +1,4 @@
-// import 'package:breezefood/data/model/restaurant.dart';
+// import 'package:freeza_food/data/model/restaurant.dart';
 // import 'package:flutter/material.dart';
 
 // class RestaurantCard extends StatelessWidget {

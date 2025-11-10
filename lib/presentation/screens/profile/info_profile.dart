@@ -1,10 +1,10 @@
-import 'package:breezefood/blocs/auth/info/info_cubit.dart';
-import 'package:breezefood/blocs/auth/info/info_state.dart';
-import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/data/model/profile/user_profile.dart';
-import 'package:breezefood/presentation/widgets/button/custom_button.dart';
-import 'package:breezefood/presentation/widgets/profile/custom_textfaild_info.dart';
-import 'package:breezefood/presentation/widgets/title/custom_appbar_profile.dart';
+import 'package:freeza_food/blocs/auth/info/info_cubit.dart';
+import 'package:freeza_food/blocs/auth/info/info_state.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/data/model/profile/user_profile.dart';
+import 'package:freeza_food/presentation/widgets/button/custom_button.dart';
+import 'package:freeza_food/presentation/widgets/profile/custom_textfaild_info.dart';
+import 'package:freeza_food/presentation/widgets/title/custom_appbar_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,7 +15,7 @@ import '../../../blocs/profile/profile_state.dart';
 import '../../../data/repositories/profile_repository.dart';
 
 // استورد AuthCubit العالمي
-import 'package:breezefood/blocs/auth/auth_cubit.dart';
+import 'package:freeza_food/blocs/auth/auth_cubit.dart';
 
 // ✅ NEW: استيراد InfoCubit + InfoState
 

@@ -1,5 +1,5 @@
-import 'package:breezefood/presentation/screens/add_order/add_order.dart';
-import 'package:breezefood/presentation/widgets/home/most_popular.dart';
+import 'package:freeza_food/presentation/screens/add_order/add_order.dart';
+import 'package:freeza_food/presentation/widgets/home/most_popular.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -58,6 +58,7 @@ class HorizontalProductsSection extends StatelessWidget {
                     );
                   },
                   child: PopularItemCard(
+                    isFavorite: true,
                     imagePath: imagePath,
                     title: title,
                     price: price,

@@ -1,6 +1,6 @@
 // bottom_nav_breeze.dart
 import 'dart:ui';
-import 'package:breezefood/core/constans/color.dart';
+import 'package:freeza_food/core/constans/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';

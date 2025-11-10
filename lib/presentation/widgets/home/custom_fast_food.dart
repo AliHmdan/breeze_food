@@ -1,4 +1,5 @@
-import 'package:breezefood/core/constans/color.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/linkapi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,6 +24,28 @@ class RestaurantCard extends StatelessWidget {
     this.closedText,
   });
 
+  Widget _buildImage(String path) {
+    if (path.startsWith('http') || path.startsWith('/')) {
+      final src = path.startsWith('http') ? path : '${AppLink.server}/$path';
+
+      return Image.network(
+        src,
+        height: 110.h,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) =>
+            Container(height: 110.h, color: Colors.grey.shade300),
+      );
+    }
+    return Image.asset(
+      path,
+      height: 110.h,
+      width: double.infinity,
+      cacheWidth: 600,
+      fit: BoxFit.cover,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -33,14 +56,11 @@ class RestaurantCard extends StatelessWidget {
           ColorFiltered(
             colorFilter: isClosed
                 ? const ColorFilter.mode(Colors.grey, BlendMode.saturation)
-                : const ColorFilter.mode(Colors.transparent, BlendMode.multiply),
-            child: Image.asset(
-              imageUrl,
-              height: 110.h,
-              width: double.infinity,
-              cacheWidth: 600,
-              fit: BoxFit.cover,
-            ),
+                : const ColorFilter.mode(
+                    Colors.transparent,
+                    BlendMode.multiply,
+                  ),
+            child: _buildImage(imageUrl),
           ),
 
           // التدرج العلوي والأسفل لتوضيح النص
@@ -77,10 +97,8 @@ class RestaurantCard extends StatelessWidget {
                           children: [
                             RatingBarIndicator(
                               rating: rating,
-                              itemBuilder: (context, index) => const Icon(
-                                Icons.star,
-                                color: Colors.yellow,
-                              ),
+                              itemBuilder: (context, index) =>
+                                  const Icon(Icons.star, color: Colors.yellow),
                               itemCount: 1,
                               itemSize: 14,
                               direction: Axis.horizontal,
@@ -88,14 +106,23 @@ class RestaurantCard extends StatelessWidget {
                             const SizedBox(width: 4),
                             Text(
                               rating.toString(),
-                              style:  TextStyle(color:AppColor.white, fontSize: 12.sp),
+                              style: TextStyle(
+                                color: AppColor.white,
+                                fontSize: 12.sp,
+                              ),
                             ),
                             const SizedBox(width: 4),
-                            const Text("|", style: TextStyle(color: Colors.white54)),
+                            const Text(
+                              "|",
+                              style: TextStyle(color: Colors.white54),
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               orders,
-                              style:  TextStyle(color: AppColor.white, fontSize: 12.sp),
+                              style: TextStyle(
+                                color: AppColor.white,
+                                fontSize: 12.sp,
+                              ),
                             ),
                           ],
                         ),
@@ -103,11 +130,18 @@ class RestaurantCard extends StatelessWidget {
                         // الوقت
                         Row(
                           children: [
-                            const Icon(Icons.access_time, color: Colors.white, size: 14),
+                            const Icon(
+                              Icons.access_time,
+                              color: Colors.white,
+                              size: 14,
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               time,
-                              style: const TextStyle(color: Colors.white, fontSize: 12),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
                             ),
                           ],
                         ),

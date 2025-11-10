@@ -1,4 +1,4 @@
-import 'package:breezefood/presentation/widgets/request_order/counter_request.dart';
+import 'package:freeza_food/presentation/widgets/request_order/counter_request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

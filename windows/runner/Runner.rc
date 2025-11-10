@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.breezefood" "\0"
-            VALUE "FileDescription", "breezefood" "\0"
+            VALUE "CompanyName", "com.freeza_food" "\0"
+            VALUE "FileDescription", "freeza_food" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "breezefood" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2025 com.breezefood. All rights reserved." "\0"
-            VALUE "OriginalFilename", "breezefood.exe" "\0"
-            VALUE "ProductName", "breezefood" "\0"
+            VALUE "InternalName", "freeza_food" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2025 com.freeza_food. All rights reserved." "\0"
+            VALUE "OriginalFilename", "freeza_food.exe" "\0"
+            VALUE "ProductName", "freeza_food" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

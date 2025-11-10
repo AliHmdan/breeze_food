@@ -1,7 +1,6 @@
-import 'package:breezefood/blocs/language/language_cubit.dart';
-import 'package:breezefood/blocs/language/language_state.dart';
-import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/presentation/widgets/title/custom_appbar_profile.dart';
+import 'package:freeza_food/blocs/language/language_cubit.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/presentation/widgets/title/custom_appbar_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

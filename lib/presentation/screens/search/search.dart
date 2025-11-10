@@ -1,16 +1,19 @@
-import 'package:breezefood/blocs/search/search_cubit.dart';
-import 'package:breezefood/blocs/search/search_state.dart';
-import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/presentation/widgets/custom_arrow.dart';
-import 'package:breezefood/presentation/widgets/home/most_popular.dart';
-import 'package:breezefood/data/model/search/search_result_model.dart'; // موديلات ال API
-import 'package:breezefood/data/model/search/search_history_model.dart'; // موديل التاريخ
-import 'package:breezefood/presentation/widgets/title/custom_sub_title.dart';
+
+import 'package:freeza_food/blocs/search/search_cubit.dart';
+import 'package:freeza_food/blocs/search/search_state.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/presentation/widgets/custom_arrow.dart';
+import 'package:freeza_food/presentation/widgets/home/most_popular.dart';
+import 'package:freeza_food/data/model/search/search_result_model.dart'; // موديلات ال API
+import 'package:freeza_food/data/model/search/search_history_model.dart'; // موديل التاريخ
+import 'package:freeza_food/presentation/widgets/title/custom_sub_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../../linkapi.dart';
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -22,7 +25,7 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  final GlobalKey _stackKey = GlobalKey(); 
+  final GlobalKey _stackKey = GlobalKey();
   final GlobalKey _searchFieldKey = GlobalKey();
 
   // وسوم المستخدم المحلية
@@ -31,16 +34,7 @@ class _SearchState extends State<Search> {
   // تاريخ البحث القادم من API
   List<SearchHistoryModel> _history = [];
 
-  final List<String> allSuggestions = const [
-    "Burger",
-    "Shawarma King",
-    "KFC",
-    "Pizza Hut",
-    "Tacos",
-    "McDonald's",
-    "Shish",
-    "Parise",
-  ];
+  final List<String> allSuggestions = const [];
 
   List<String> filteredSuggestions = [];
   bool showSuggestions = false;
@@ -48,6 +42,7 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     super.initState();
+    print("i'm in search page now ");
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
         _filterSuggestions(_controller.text);
@@ -215,16 +210,15 @@ class _SearchState extends State<Search> {
           child: Row(
             children: [
               ClipOval(
-                child: Image.asset(
-                  'assets/images/shawarma_box.png', // شعار افتراضي
-                  width: 35.w,
-                  height: 35.w,
-                  fit: BoxFit.cover,
+                child: _buildImage(
+                  r.logo.isNotEmpty
+                      ? "https://syriansociety.org${r.logo}"
+                      : 'assets/images/shawarma_box.png',
+
                 ),
               ),
               SizedBox(width: 8.w),
 
-              // اسم المطعم + مدة التوصيل + التقييم من API
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,22 +227,6 @@ class _SearchState extends State<Search> {
                       subtitle: r.name,
                       color: AppColor.white,
                       fontsize: 14.sp,
-                    ),
-                   
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.access_time,
-                          color: Colors.white70,
-                          size: 14.sp,
-                        ),
-                        SizedBox(width: 4.w),
-                        CustomSubTitle(
-                          subtitle: "15-40 min",
-                          color: AppColor.white,
-                          fontsize: 12.sp,
-                        ),
-                      ],
                     ),
                   ],
                 ),
@@ -268,7 +246,7 @@ class _SearchState extends State<Search> {
                   Icon(Icons.star, color: AppColor.yellow, size: 16.sp),
                   SizedBox(width: 4.w),
                   Text(
-                    (r.rating.avg?.toStringAsFixed(1) ?? "—"),
+                    r.rating.avg != null ? r.rating.avg!.toStringAsFixed(1) : "0.0",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 13.sp,
@@ -299,7 +277,7 @@ class _SearchState extends State<Search> {
               color: AppColor.LightActive,
               borderRadius: BorderRadius.circular(15),
             ),
-            height: 178,
+            height: 200,
             child: LayoutBuilder(
               builder: (context, constraints) {
                 final itemWidth = constraints.maxWidth / 2.3;
@@ -312,15 +290,17 @@ class _SearchState extends State<Search> {
                     final title = item.names.en; // عنوان
                     final subtitle = item.names.en; // سطر ثانٍ
 
-                    return Container(
+                     return Container(
                       width: itemWidth,
                       margin: EdgeInsets.only(right: 10.w),
                       child: PopularItemCard(
-                        imagePath:
-                            'assets/images/shawarma_box.png', // لا يوجد image في الموديل
-                        title: title,
-                        subtitle: subtitle,
-                        price: "—", // لا يوجد price في الموديل
+                        isFavorite: false,
+                        imagePath: item.imageUrl.isNotEmpty
+                            ? "https://syriansociety.org${item.imageUrl}"
+                            : 'assets/images/shawarma_box.png',
+                        title: item.names.ar,
+                        subtitle: "${item.ordersCount} order",
+                        price: "${item.basePrice.toString()} ل.س",
                         onFavoriteToggle: () {},
                       ),
                     );
@@ -349,8 +329,8 @@ class _SearchState extends State<Search> {
       child: Scaffold(
         backgroundColor: AppColor.Dark,
         body: Stack(
-           key: _stackKey,
-  clipBehavior: Clip.none,
+          key: _stackKey,
+          clipBehavior: Clip.none,
           children: [
             GestureDetector(
               behavior: HitTestBehavior.translucent,
@@ -522,98 +502,124 @@ class _SearchState extends State<Search> {
 
             // قائمة الاقتراحات المنسدلة
             if (showSuggestions)
-  Builder(
-    builder: (context) {
-      final fieldBox = _searchFieldKey.currentContext?.findRenderObject() as RenderBox?;
-      final stackBox = _stackKey.currentContext?.findRenderObject() as RenderBox?;
+              Builder(
+                builder: (context) {
+                  final fieldBox =
+                      _searchFieldKey.currentContext?.findRenderObject()
+                          as RenderBox?;
+                  final stackBox =
+                      _stackKey.currentContext?.findRenderObject()
+                          as RenderBox?;
 
-      if (fieldBox == null || stackBox == null) {
-        return const SizedBox.shrink();
-      }
+                  if (fieldBox == null || stackBox == null) {
+                    return const SizedBox.shrink();
+                  }
 
-      // موضع الحقل عالمياً
-      final fieldGlobal = fieldBox.localToGlobal(Offset.zero);
-      // موضع الـ Stack عالمياً
-      final stackGlobal = stackBox.localToGlobal(Offset.zero);
-      // نحول إلى إحداثيات محلية بالنسبة للـ Stack
-      final localTopLeft = fieldGlobal - stackGlobal;
+                  // موضع الحقل عالمياً
+                  final fieldGlobal = fieldBox.localToGlobal(Offset.zero);
+                  // موضع الـ Stack عالمياً
+                  final stackGlobal = stackBox.localToGlobal(Offset.zero);
+                  // نحول إلى إحداثيات محلية بالنسبة للـ Stack
+                  final localTopLeft = fieldGlobal - stackGlobal;
 
-      // ارتفاع الحقل الحقيقي (بدل 45.h)
-      final fieldHeight = fieldBox.size.height;
+                  // ارتفاع الحقل الحقيقي (بدل 45.h)
+                  final fieldHeight = fieldBox.size.height;
 
-      final double computed = (filteredSuggestions.length * 48.0.h);
-      final double maxHeight = computed > 300.0.h ? 300.0.h : computed;
+                  final double computed = (filteredSuggestions.length * 48.0.h);
+                  final double maxHeight = computed > 300.0.h
+                      ? 300.0.h
+                      : computed;
 
-      return Positioned(
-        top: localTopLeft.dy + fieldHeight, // أسفل الحقل مباشرة
-        left: 24.w,
-        right: 24.w,
-        child: Material(
-          color: Colors.transparent,
-          child: Container(
-            constraints: BoxConstraints(maxHeight: maxHeight),
-            decoration: BoxDecoration(
-              color: AppColor.white,
-              borderRadius: BorderRadius.circular(12.r),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.15),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: filteredSuggestions.isEmpty
-                ? Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(10.w),
-                      child: Text(
-                        'No suggestions found',
-                        style: TextStyle(
-                          color: AppColor.black,
-                          fontSize: 14.sp,
+                  return Positioned(
+                    top: localTopLeft.dy + fieldHeight, // أسفل الحقل مباشرة
+                    left: 24.w,
+                    right: 24.w,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Container(
+                        constraints: BoxConstraints(maxHeight: maxHeight),
+                        decoration: BoxDecoration(
+                          color: AppColor.white,
+                          borderRadius: BorderRadius.circular(12.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.15),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
                         ),
+                        child: filteredSuggestions.isEmpty
+                            ? Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(10.w),
+                                  child: Text(
+                                    'No suggestions found',
+                                    style: TextStyle(
+                                      color: AppColor.black,
+                                      fontSize: 14.sp,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : ListView.separated(
+                                padding: EdgeInsets.all(10.w),
+                                itemCount: filteredSuggestions.length,
+                                separatorBuilder: (_, __) =>
+                                    Divider(color: AppColor.black, height: 1.h),
+                                itemBuilder: (context, index) {
+                                  final suggestion = filteredSuggestions[index];
+                                  return InkWell(
+                                    onTap: () {
+                                      _applySuggestionToField(suggestion);
+                                      _performSearch();
+                                    },
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 12.w,
+                                        vertical: 14.h,
+                                      ),
+                                      child: Text(
+                                        suggestion,
+                                        style: TextStyle(
+                                          color: AppColor.black,
+                                          fontSize: 15.sp,
+                                          fontFamily: "Manrope",
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                       ),
                     ),
-                  )
-                : ListView.separated(
-                    padding: EdgeInsets.all(10.w),
-                    itemCount: filteredSuggestions.length,
-                    separatorBuilder: (_, __) =>
-                        Divider(color: AppColor.black, height: 1.h),
-                    itemBuilder: (context, index) {
-                      final suggestion = filteredSuggestions[index];
-                      return InkWell(
-                        onTap: () {
-                          _applySuggestionToField(suggestion);
-                          _performSearch();
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 12.w,
-                            vertical: 14.h,
-                          ),
-                          child: Text(
-                            suggestion,
-                            style: TextStyle(
-                              color: AppColor.black,
-                              fontSize: 15.sp,
-                              fontFamily: "Manrope",
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-          ),
-        ),
-      );
-    },
-  ),
-
+                  );
+                },
+              ),
           ],
         ),
       ),
+    );
+  }
+  Widget _buildImage(String path) {
+    if (path.startsWith('http') || path.startsWith('/')) {
+      final src = path.startsWith('http') ? path : '${AppLink.server}$path';
+      return Image.network(
+        src,
+        height: 35.h,
+        width: 35.w,
+
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) =>
+            Container(height: 35.h, color: Colors.grey.shade300),
+      );
+    }
+    return Image.network(
+      path,
+      height: 35.h,
+      width: 35.w,
+      cacheWidth: 35,
+      fit: BoxFit.cover,
     );
   }
 }

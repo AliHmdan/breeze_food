@@ -1,5 +1,5 @@
-import 'package:breezefood/core/constans/color.dart';
-import 'package:breezefood/presentation/widgets/custom_arrow.dart';
+import 'package:freeza_food/core/constans/color.dart';
+import 'package:freeza_food/presentation/widgets/custom_arrow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'dart:ui' as ui; // للـ BackdropFilter (ImageFilter)

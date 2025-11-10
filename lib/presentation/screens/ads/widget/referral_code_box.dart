@@ -1,5 +1,5 @@
 // lib/presentation/ads/widgets/referral_code_box.dart
-import 'package:breezefood/core/constans/color.dart';
+import 'package:freeza_food/core/constans/color.dart';
 import 'package:flutter/material.dart';
 
 class ReferralCodeBox extends StatelessWidget {
