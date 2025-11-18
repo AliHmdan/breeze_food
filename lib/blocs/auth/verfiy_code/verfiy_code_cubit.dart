@@ -23,7 +23,7 @@ class VerifyCodeCubit extends Cubit<VerifyCodeState> {
       if (response.statusCode == 200) {
         final token = response.data["token"];
         final user = UserModel.fromJson(response.data["user"]);
-
+print("profile !!!! ${user.toJson().toString()}");
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString("token", token);
         await prefs.setString("user", user.toJson().toString());

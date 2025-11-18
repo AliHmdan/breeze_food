@@ -34,7 +34,8 @@ class _VerfiyCodeState extends State<VerfiyCode> {
             final user = state.user;
             // The project's UserModel uses `name`; backend may provide first_name/last_name.
             // Consider user needs info when `name` is null or empty.
-            final needsInfo = user.name == null || user.name!.trim().isEmpty;
+            print("user.name == null || user.name!.trim().isEmpty ${state.user.firstName}");
+            final needsInfo = user.firstName == null || user.firstName!.trim().isEmpty;
             if (needsInfo) {
               Navigator.of(context).pushReplacementNamed(AppRoute.information);
             } else {

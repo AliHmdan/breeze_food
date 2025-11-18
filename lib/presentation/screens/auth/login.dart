@@ -317,39 +317,39 @@ class _LoginState extends State<Login> {
                               ),
 
                               // Sign up
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 16.h),
-                                child: Center(
-                                  child: Text.rich(
-                                    TextSpan(
-                                      text: "Already have an account? ",
-                                      style: TextStyle(
-                                        color: AppColor.white,
-                                        fontSize: 12.sp,
-                                        fontFamily: "Manrope",
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: "Sign Up Now",
-                                          style: TextStyle(
-                                            color: AppColor.primaryColor,
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 12.sp,
-                                            fontFamily: "Manrope",
-                                          ),
-                                          recognizer: TapGestureRecognizer()
-                                            ..onTap = () {
-                                              Navigator.of(
-                                                context,
-                                              ).pushNamed(AppRoute.signUp);
-                                            },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              // Padding(
+                              //   padding: EdgeInsets.only(bottom: 16.h),
+                              //   child: Center(
+                              //     child: Text.rich(
+                              //       TextSpan(
+                              //         text: "Already have an account? ",
+                              //         style: TextStyle(
+                              //           color: AppColor.white,
+                              //           fontSize: 12.sp,
+                              //           fontFamily: "Manrope",
+                              //           fontWeight: FontWeight.w400,
+                              //         ),
+                              //         children: [
+                              //           TextSpan(
+                              //             text: "Sign Up Now",
+                              //             style: TextStyle(
+                              //               color: AppColor.primaryColor,
+                              //               fontWeight: FontWeight.w400,
+                              //               fontSize: 12.sp,
+                              //               fontFamily: "Manrope",
+                              //             ),
+                              //             recognizer: TapGestureRecognizer()
+                              //               ..onTap = () {
+                              //                 Navigator.of(
+                              //                   context,
+                              //                 ).pushNamed(AppRoute.signUp);
+                              //               },
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
